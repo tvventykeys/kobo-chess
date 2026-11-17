@@ -1,0 +1,12 @@
+{
+  "id": "polgar-pocket",
+  "display_name": "Polgár Trainer Pocket",
+  "short_label": "Polgár Pocket",
+  "summary": "Study twenty chess puzzles offline with local progress.",
+  "version": "0.1.0",
+  "release_notes": "First controlled-test build: offline puzzles and local progress.",
+  "glyph": "chess-white-knight",
+  "capabilities": [],
+  "setup": { "steps": [{ "text": "No account or Wi-Fi needed. Includes twenty CC0 Lichess puzzles." }] },
+  "page_description": "A quiet native chess puzzle book for Kobo."
+}

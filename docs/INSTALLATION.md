@@ -1,5 +1,9 @@
 # Build artifacts and first device test
 
+For v0.2, read [the exact signing investigation](COBALT-SIGNING.md) and
+[the conditional hardware, uninstall and rollback guide](HARDWARE-TEST.md) first.
+There is no authorized device operation in this repository task.
+
 No Kobo was connected, probed or modified. KOReader, Focus Reader, Nickel,
 startup hooks, firmware and installed Cobalt were untouched. This application is
 an independent native Cobalt process; it is not a KOReader plugin or web wrapper.
@@ -14,7 +18,7 @@ It is a statically linked ARMv7 hard-float musl EABI5 executable, with no ELF
 interpreter or dependency on Kobo system shared libraries. Host simulator builds
 are separate. The public puzzle pack is embedded, so no data download is needed.
 
-Generate and verify a **development** Cobalt bundle:
+Generate and verify a **verification-only** Cobalt bundle:
 
 ```bash
 bash scripts/package-pocket.sh /workspace/verification/pocket-bundle

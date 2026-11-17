@@ -3,7 +3,8 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 source scripts/env.sh
-pocket_out="${1:-/workspace/verification/pocket-bundle}"
+pocket_out="${1:-/workspace/verification/pocket-v02/bundle}"
+pocket_version="$(python3 -c 'import json; print(json.load(open("cobalt-app.json"))["version"])')"
 mkdir -p "$pocket_out"
 python3 - "$pocket_out" "$CARGO_TARGET_DIR" <<'PY'
 import hashlib, json, pathlib, secrets, sys
@@ -23,8 +24,9 @@ PY
 "$CARGO_TARGET_DIR/debug/kobo" app-key --seed "$pocket_out/development.seed" > "$pocket_out/development-public-key.txt"
 "$CARGO_TARGET_DIR/debug/kobo" app-bundle --manifest "$pocket_out/manifest.json" \
     --binary "$CARGO_TARGET_DIR/armv7-unknown-linux-musleabihf/release/polgar-pocket" \
-    --seed "$pocket_out/development.seed" --out "$pocket_out/polgar-pocket-0.1.0-development.cobaltapp"
-"$CARGO_TARGET_DIR/debug/kobo" app-verify --package "$pocket_out/polgar-pocket-0.1.0-development.cobaltapp" \
+    --seed "$pocket_out/development.seed" --out "$pocket_out/polgar-pocket-$pocket_version-verification-only.cobaltapp"
+"$CARGO_TARGET_DIR/debug/kobo" app-verify --package "$pocket_out/polgar-pocket-$pocket_version-verification-only.cobaltapp" \
     --public-key "$pocket_out/development-public-key.txt" --manifest "$pocket_out/manifest.json" \
     --binary "$CARGO_TARGET_DIR/armv7-unknown-linux-musleabihf/release/polgar-pocket"
-echo 'Development signature verified. Stock Cobalt installation requires trusted release signing.'
+python3 scripts/check-signing-fixture.py "$pocket_out"
+echo 'Verification fixture only: not installable by stock Cobalt. Trusted package AND catalog signing remain external.'

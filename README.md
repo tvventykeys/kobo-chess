@@ -2,9 +2,9 @@
 
 Independent native Cobalt chess application workspace for Kobo Libra Colour
 (N428, code 390). Polgár Trainer Pocket is a native offline chess puzzle book
-built with the pinned Cobalt SDK. The first application implementation is now available.
+built with the pinned Cobalt SDK. Version 0.2 audits and polishes the merged offline implementation.
 
-## Polgár Trainer Pocket v0.1
+## Polgár Trainer Pocket v0.2
 
 A large brown/paper chessboard, twenty genuine CC0 Lichess puzzles, touch moves,
 legal destination dots, capture/check outlines, promotion choice, castling and
@@ -15,7 +15,7 @@ text size; normal and 170% Libra Colour layouts are simulator-tested.
 Choose the one installed collection, continue studying, and use Hint (source
 piece only), Retry, Reveal, Prev and Next. The supplied solution controls
 validation and deterministic opponent replies. A different legal winning move
-is outside this v0.1 line. Reveals do not complete puzzles or count as clean;
+is outside this supplied line. Reveals do not complete puzzles or count as clean;
 a new retry is a distinct attempt and preserves earlier history. Explanations
 show theme labels immediately below the board at completion.
 
@@ -23,8 +23,9 @@ Progress includes attempts, wrong moves, hints, reveal history, completion,
 clean solves, optional timestamp and the active line. Atomic Cobalt storage
 survives process restart, including partly played assisted attempts. Failed
 writes are visible and retryable; corrupt data is preserved with read-only study.
-Physical page callbacks support previous/next and confirm before leaving an
-active attempt. No network account, engine, polling or background task is used.
+Home/Continue preserves the current attempt. Exit waits for acknowledged writes;
+a storage failure offers retry or explicit unsaved exit/sleep. Physical page
+callbacks confirm before switching an active puzzle. No network account, engine, polling or background task is used.
 
 ```bash
 cd /workspace/kobo-chess
@@ -44,14 +45,17 @@ in `src/`, packs in `packs/`; the existing setup scripts remain unchanged.
 * [Artifacts, packaging limitation and hardware test](docs/INSTALLATION.md)
 * [Private-trainer research and future sync design](docs/INTEGRATION.md)
 * [Application validation report](docs/VALIDATION.md)
+* [v0.2 source audit, UI and battery review](docs/AUDIT-V02.md)
+* [Exact Cobalt signing investigation](docs/COBALT-SIGNING.md)
+* [Safe hardware test and rollback guide for existing readers](docs/HARDWARE-TEST.md)
 * [License and attribution](THIRD-PARTY.md)
 
 The private trainer was inspected read-only; public builds contain no private
 book data. A 20-problem private subset was locally imported/validated outside
 Git. External runtime pack installation, live sync, analysis, online games and
-spaced repetition remain future work. The development bundle passes Cobalt
-format/signature verification but still needs trusted platform signing for
-stock-runtime installation. No reader test or Store publication has occurred.
+spaced repetition remain future work. The verification-only bundle still requires trusted package **and catalog**
+signing for stock-runtime installation. Cburnett graphics need SDK support; this
+build retains Cobalt's licensed vector pieces. Zen OS coexistence remains unverified. No reader test or Store publication has occurred.
 
 ## Verified upstream and tools
 

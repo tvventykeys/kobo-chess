@@ -11,7 +11,7 @@ solver. Lines alternate solver/opponent and end after a solver move. Castling
 uses king destinations (`e1g1`); promotions include the piece (`a7a8n`).
 
 Loading verifies standard-chess FEN validity, side, every move through shakmaty,
-odd nonzero line length, unique IDs, version, fields and bounds. v0.1 compares
+odd nonzero line length, unique IDs, version, fields and bounds. v0.2 compares
 against the supplied ordered line, so another legal winning move is reported
 as outside this solution. It does not claim engine verification of alternate wins.
 
@@ -46,6 +46,6 @@ sync adapter must convert book IDs back to numbers. Missing, repeated, illegal
 or self-assessed problems fail the import. No answer reconstruction is performed.
 
 Imported private packs belong outside the repository and public artifacts. Book
-ownership does not grant redistribution permission. The v0.1 application bundles
+ownership does not grant redistribution permission. The v0.2 application bundles
 one selected pack at build time; external shelf installation and a multi-pack
 catalog are future work. The collection screen lists only that functioning pack.

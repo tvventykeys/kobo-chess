@@ -75,4 +75,4 @@ retry. No reset/overwrite endpoint and no automatic migration of production data
 
 Stockfish/Fishy analysis, Lichess accounts/games and spaced repetition should be
 separate optional services consuming a position or immutable progress events.
-They must not add work to idle puzzle sessions. None is implemented in v0.1.
+They must not add work to idle puzzle sessions. None is implemented in v0.2.

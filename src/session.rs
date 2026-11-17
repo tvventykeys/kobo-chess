@@ -77,6 +77,19 @@ impl Session {
             self.cursor += 1;
         }
     }
+    pub fn solution_text(&self) -> String {
+        let mut position = rules::position(&self.puzzle.fen).expect("validated puzzle");
+        self.puzzle
+            .solution
+            .iter()
+            .map(|uci| {
+                let movement = rules::movement(&position, uci).expect("validated line");
+                shakmaty::san::SanPlus::from_move_and_play_unchecked(&mut position, &movement)
+                    .to_string()
+            })
+            .collect::<Vec<_>>()
+            .join(" ")
+    }
     pub fn retry(&mut self) {
         *self = Self::new(self.puzzle.clone());
     }

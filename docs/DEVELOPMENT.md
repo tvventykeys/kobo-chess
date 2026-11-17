@@ -69,3 +69,22 @@ restart and a partly played assisted attempt after restart. `clean` checks layou
 errors on each important screen. Ideal screenshots inspect readability; they
 are not physical panel captures. Physical buttons and suspend/resume remain
 hardware acceptance items even though their SDK callbacks are tested.
+
+## v0.2 lifecycle and recovery verification
+
+The source audit is in AUDIT-V02.md. Equal screens are not resubmitted. Home
+preserves study state; its Back/Exit waits for pending atomic writes. Explicit
+unsaved exit and sleep options handle permanent storage failure without pretending
+the write succeeded. Reattempting a write revokes the sleep waiver until ack.
+Storage retries return to Home before replacing an active session. Corrupt saved
+results are rejected consistently with their attempt history.
+
+`check-pocket-recovery-sim.py` additionally tests corrupted/missing state, denied
+writes, recovery, enlarged error layouts, repeated-hint paint suppression, process
+idle and a clean application exit. The upstream driver may acknowledge the final tap or report a terminating app
+as disconnected; only those outcomes are accepted alongside observed CLI/app
+exit status 0 and durable saved state. No other driver failure is accepted.
+
+`prepare-cobalt-contribution.py NEW_OUTPUT` prepares a separate review tree; it
+does not modify upstream, contact maintainers, install, sign or publish. The
+stock-device signing blocker and coexistence gates are documented separately.

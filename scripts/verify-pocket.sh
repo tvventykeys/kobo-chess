@@ -14,3 +14,4 @@ if arm-linux-gnueabihf-readelf -l "$CARGO_TARGET_DIR/armv7-unknown-linux-musleab
     exit 1
 fi
 python3 scripts/check-pocket-sim.py
+python3 scripts/check-pocket-recovery-sim.py

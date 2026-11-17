@@ -1,0 +1,6 @@
+# Match the verified upstream Cobalt revision.
+[toolchain]
+channel = "1.85.1"
+profile = "minimal"
+components = ["clippy", "rustfmt"]
+targets = ["armv7-unknown-linux-musleabihf"]

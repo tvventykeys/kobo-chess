@@ -12,10 +12,7 @@ use crate::{
     progress::Progress,
     session::{Played, Session},
 };
-use kobo_sdk::{
-    action_id, ActionId, BandAlign, Context, ControlState, KoboApp, Screen, ScreenBuilder,
-    SlotWidth, StoreResult,
-};
+use kobo_sdk::{action_id, ActionId, Context, KoboApp, Screen, ScreenBuilder, StoreResult};
 use shakmaty::{Position, Square};
 
 const KEY: &str = "pocket.progress.v1";
@@ -31,6 +28,10 @@ enum Leave {
     Index(usize),
     Home,
 }
+#[allow(
+    clippy::struct_excessive_bools,
+    reason = "UI selection and independent runtime storage acknowledgements are separate flags"
+)]
 struct Pocket {
     pack: Pack,
     progress: Progress,
@@ -42,6 +43,7 @@ struct Pocket {
     leave: Option<Leave>,
     feedback: String,
     storage_notice: Option<String>,
+    storage_open: bool,
     ready: bool,
     writable: bool,
     dirty: bool,
@@ -64,6 +66,7 @@ impl Pocket {
             leave: None,
             feedback: String::new(),
             storage_notice: None,
+            storage_open: false,
             ready: false,
             writable: true,
             dirty: false,
@@ -88,6 +91,10 @@ impl Pocket {
             self.flush(cx);
         }
     }
+    #[allow(
+        clippy::too_many_lines,
+        reason = "Keep one declarative screen description for the related study controls"
+    )]
     fn screen(&self) -> Screen {
         let mut b = ScreenBuilder::new("polgar-pocket")
             .top_bar("Polgár Pocket")
@@ -176,7 +183,14 @@ impl Pocket {
                     "Find the best move"
                 };
                 b = b
-                    .top_bar_action("coordinates", "Coords")
+                    .top_bar_action(
+                        if s.complete() {
+                            "previous"
+                        } else {
+                            "coordinates"
+                        },
+                        if s.complete() { "Prev" } else { "Coords" },
+                    )
                     .secondary(format!(
                         "{} · {} / {}",
                         self.pack.header.title,
@@ -228,30 +242,12 @@ impl Pocket {
                 if s.revealed {
                     b = b.secondary(format!("Line: {}", s.solution_text()));
                 }
-                b = b
-                    .band(
-                        BandAlign::Middle,
-                        [
-                            ("hint", "Hint", !s.complete()),
-                            ("retry", "Retry", true),
-                            ("reveal", "Reveal", !s.complete()),
-                        ]
-                        .into_iter()
-                        .map(|(name, label, enabled)| {
-                            (SlotWidth::Fill, move |slot: ScreenBuilder| {
-                                slot.button_with_state(
-                                    name,
-                                    label,
-                                    if enabled {
-                                        ControlState::Enabled
-                                    } else {
-                                        ControlState::Disabled
-                                    },
-                                )
-                            })
-                        }),
-                    )
-                    .buttons([("previous", "Prev"), ("home", "Home"), ("next", "Next")]);
+                b = if s.complete() {
+                    b.buttons([("retry", "Retry"), ("home", "Home"), ("next", "Next")])
+                } else {
+                    b.buttons([("hint", "Hint"), ("retry", "Retry"), ("reveal", "Reveal")])
+                        .buttons([("previous", "Prev"), ("home", "Home"), ("next", "Next")])
+                };
                 if let Some(base) = &self.promotion {
                     b = b.dialog("Promote pawn", "cancel", |d| {
                         d.text(format!("Choose a piece for {base}"))
@@ -263,14 +259,20 @@ impl Pocket {
             }
         }
         if let Some(text) = &self.storage_notice {
-            b = b.secondary(text);
-            if self.writable && !self.storage_waiver {
-                b = b.buttons([
-                    ("save-progress", "Retry save"),
-                    ("allow-sleep", "Allow sleep"),
-                ]);
-            } else {
-                b = b.button("save-progress", "Retry storage");
+            b = b.top_bar_action("storage-open", "Storage");
+            if self.storage_open && self.leave.is_none() && self.promotion.is_none() {
+                b = b.dialog("Storage needs attention", "storage-dismiss", |d| {
+                    let d = d.text(text);
+                    let d = if self.writable && !self.storage_waiver {
+                        d.text("Allowing sleep may lose unsaved changes.").buttons([
+                            ("save-progress", "Retry save"),
+                            ("allow-sleep", "Allow sleep"),
+                        ])
+                    } else {
+                        d.button("save-progress", "Retry storage")
+                    };
+                    d.button("storage-dismiss", "Keep studying")
+                });
             }
         }
         if self.leave.is_some() {
@@ -403,6 +405,10 @@ impl KoboApp for Pocket {
         cx.store().load(KEY);
         self.show(cx);
     }
+    #[allow(
+        clippy::too_many_lines,
+        reason = "Keep action routing and its modal guards together"
+    )]
     fn on_action(&mut self, cx: &mut Context, a: ActionId) {
         if !self.ready {
             if a == action_id("back") {
@@ -420,6 +426,16 @@ impl KoboApp for Pocket {
             } else if is("exit-unsaved") && self.storage_notice.is_some() && !self.saving {
                 cx.exit();
             }
+            self.show(cx);
+            return;
+        }
+        if is("storage-open") && self.storage_notice.is_some() {
+            self.storage_open = true;
+            self.show(cx);
+            return;
+        }
+        if is("storage-dismiss") || (is("back") && self.storage_open) {
+            self.storage_open = false;
             self.show(cx);
             return;
         }
@@ -450,9 +466,11 @@ impl KoboApp for Pocket {
         }
         if is("allow-sleep") && self.storage_notice.is_some() && !self.saving {
             self.storage_waiver = true;
+            self.storage_open = false;
         } else if is("exit") || (is("back") && self.page == Page::Home) {
             self.request_exit(cx);
         } else if is("save-progress") {
+            self.storage_open = false;
             if self.writable {
                 self.storage_notice = None;
                 self.flush(cx);
@@ -532,34 +550,28 @@ impl KoboApp for Pocket {
         if key != KEY {
             return;
         }
-        match result {
-            StoreResult::Loaded { value, .. } => {
-                let restored = value
-                    .map(|bytes| Progress::decode(&bytes, &self.pack))
-                    .transpose();
-                match restored {
-                    Ok(p) => {
-                        self.progress = p.unwrap_or_else(|| Progress::new(&self.pack));
-                        self.session = self.progress.restore(&self.pack).unwrap();
-                        self.writable = true;
-                        self.storage_notice = None;
-                    }
-                    Err(_) => {
-                        self.writable = false;
-                        self.storage_notice = Some(
-                            "Progress damaged. Original preserved; study is read-only.".into(),
-                        );
-                    }
-                }
-            }
-            _ => {
+        if let StoreResult::Loaded { value, .. } = result {
+            let restored = value
+                .map(|bytes| Progress::decode(&bytes, &self.pack))
+                .transpose();
+            if let Ok(p) = restored {
+                self.progress = p.unwrap_or_else(|| Progress::new(&self.pack));
+                self.session = self.progress.restore(&self.pack).unwrap();
+                self.writable = true;
+                self.storage_notice = None;
+            } else {
                 self.writable = false;
                 self.storage_notice =
-                    Some("Cannot read progress. Study is read-only; retry storage.".into());
+                    Some("Progress damaged. Original preserved; study is read-only.".into());
             }
+        } else {
+            self.writable = false;
+            self.storage_notice =
+                Some("Cannot read progress. Study is read-only; retry storage.".into());
         }
         // A storage retry can replace the active snapshot entirely. Always land
         // on Home, so a missing session cannot leave Study without a board.
+        self.storage_open = self.storage_notice.is_some();
         self.page = Page::Home;
         self.clear_selection();
         self.feedback.clear();
@@ -583,6 +595,7 @@ impl KoboApp for Pocket {
             }
         } else {
             self.dirty = true;
+            self.storage_open = true;
             self.storage_notice = Some("Progress not saved. Retry storage before leaving.".into());
             self.show(cx);
         }

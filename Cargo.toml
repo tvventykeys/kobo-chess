@@ -10,7 +10,16 @@ publish = false
 kobo-sdk = { path = "../deps/Cobalt/crates/kobo-sdk" }
 shakmaty = "=0.27.3"
 serde = { version = "=1.0.229", features = ["derive"] }
-serde_json = "=1.0.145"
+serde_json = "=1.0.151"
 
 [dev-dependencies]
+kobo-ui = { path = "../deps/Cobalt/crates/kobo-ui" }
+kobo-text = { path = "../deps/Cobalt/crates/kobo-text" }
 kobo-profile = { path = "../deps/Cobalt/crates/kobo-profile" }
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+all = "warn"
+pedantic = "warn"

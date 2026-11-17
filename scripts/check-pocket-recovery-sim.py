@@ -7,6 +7,7 @@ from pathlib import Path
 import tempfile
 import subprocess
 import time
+import tomllib
 
 spec = importlib.util.spec_from_file_location('pocket_sim', Path(__file__).with_name('check-pocket-sim.py'))
 sim = importlib.util.module_from_spec(spec)
@@ -20,7 +21,7 @@ def stored(root):
 def idle_metrics(proc, address, folder):
     # Locate this simulator's direct app child, never a reader or another run.
     children = subprocess.check_output(['ps','--ppid',str(proc.pid),'-o','pid=,comm='],text=True).splitlines()
-    pids = [row.split()[0] for row in children if row.split()[1] == 'polgar-pocket']
+    pids = [row.split()[0] for row in children if row.split()[1] == tomllib.loads((sim.repo/'Cargo.toml').read_text())['package']['name'][:15]]
     assert len(pids) == 1, children
     def ticks():
         fields = Path(f'/proc/{pids[0]}/stat').read_text().split(') ', 1)[1].split()
@@ -40,7 +41,7 @@ for scale in ['default', '170']:
     folder.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='pocket-recovery-') as temp:
         env = dict(os.environ, TMPDIR=temp, RUSTUP_TOOLCHAIN='1.85.1',
-                   KOBO_SIM_PROFILE='libra-colour-390', KOBO_SIM_OFFLINE='1',
+                   KOBO_SIM_PROFILE=sim.profile_id, KOBO_SIM_OFFLINE='1',
                    KOBO_SIM_DATA=temp+'/data', KOBO_TEXT_SCALE=scale)
         proc, log, address = sim.start(env, folder)
         try:
@@ -60,13 +61,13 @@ for scale in ['default', '170']:
         bad = folder/'corrupt';bad.mkdir(exist_ok=True)
         proc, log, address = sim.start(env, bad)
         try:
-            sim.drive(address, bad, ['expect Progress damaged.', 'clean', 'shot preserved',
+            sim.drive(address, bad, ['expect Progress damaged.', 'clean', 'shot preserved', 'tap-id storage-dismiss',
                 'tap-id continue','clean','shot readonly-board',
                 'tap-id home','tap-id exit','expect Exit without saving','expect-missing Retry save',
                 'clean','shot readonly-exit','tap-id cancel-exit','tap-id continue'])
             assert state.read_bytes() == b'{damaged fixture'
             state.unlink()
-            sim.drive(address, bad, ['tap-id save-progress','wait-for Continue studying','clean',
+            sim.drive(address, bad, ['tap-id storage-open','tap-id save-progress','wait-for Continue studying','clean',
                 'expect-missing Progress damaged.','shot recovered'])
             state.parent.chmod(0o500)
             sim.drive(address, bad, ['tap-id continue','wait-for Progress not saved.',
@@ -74,7 +75,7 @@ for scale in ['default', '170']:
                 'tap-id home','tap-id exit','expect Exit without saving','clean','shot exit-warning',
                 'tap-id cancel-exit'])
             state.parent.chmod(0o700)
-            sim.drive(address, bad, ['tap-id save-progress','wait-idle','expect-missing Progress not saved.',
+            sim.drive(address, bad, ['tap-id storage-open','tap-id save-progress','wait-idle','expect-missing Progress not saved.',
                 'clean','shot write-recovered'])
             result = subprocess.run([str(sim.cli),'drive','--address',address,'--step','tap-id exit'],
                                     cwd=sim.repo,text=True,capture_output=True,timeout=15)

@@ -1,0 +1,103 @@
+    Finished `dev` profile [unoptimized] target(s) in 0.07s
+    Finished `test` profile [unoptimized] target(s) in 0.10s
+     Running unittests src/main.rs (/workspace/build/cobalt/debug/deps/polgar_pocket-e301db3c43416b0c)
+
+running 59 tests
+test tests::back_cancels_navigation_confirmation ... ok
+test tests::app_makes_no_network_or_polling_commands ... ok
+test tests::castle_moves_king_and_rook ... ok
+test tests::castle_through_check_rejected ... ok
+test tests::board_orientation_and_hint_has_no_destinations ... ok
+test tests::castling_pack_requires_the_standard_uci_the_ui_can_play ... ok
+test tests::completion_only_after_player_line ... ok
+test tests::clean_home_back_exits_and_failed_exit_requires_explicit_loss_consent ... ok
+test tests::completion_timestamp_only_when_solved ... ok
+test tests::coordinates_toggle_persists_and_does_not_flip_actions ... ok
+test tests::corrupt_saved_cursor_and_missing_record_rejected ... ok
+test tests::en_passant_expiration ... ok
+test tests::en_passant_removes_captured_pawn ... ok
+test tests::exit_waits_for_all_coalesced_writes ... ok
+test tests::failed_storage_cannot_block_sleep_forever_after_acknowledgement ... ok
+test tests::fen_rejects_malformed ... ok
+test tests::fen_rejects_missing_king ... ok
+test tests::hint_only_identifies_source_once ... ok
+test tests::home_keeps_partial_attempt_without_leave_confirmation ... ok
+test tests::ignored_input_and_repeated_hint_do_not_redraw_or_write ... ok
+test tests::illegal_move_cannot_advance ... ok
+test tests::importer_rejects_corrupt_and_empty_exports ... ok
+test tests::legal_and_illegal_moves ... ok
+test tests::lichess_import_applies_setup_and_preserves_ids ... ok
+test tests::multistep_with_deterministic_reply ... ok
+test tests::pack_rejects_duplicates ... ok
+test tests::pack_rejects_even_line ... ok
+test tests::pack_rejects_illegal_line ... ok
+test tests::pack_rejects_mismatched_side ... ok
+test tests::pack_rejects_truncated_data ... ok
+test tests::pack_rejects_unknown_schema ... ok
+test tests::page_buttons_confirm_active_navigation ... ok
+test tests::pending_promotion_ignores_page_buttons_and_cancel_preserves_position ... ok
+test tests::pending_saves_coalesce_and_block_suspend ... ok
+test tests::pinned_piece_cannot_expose_king ... ok
+test tests::progress_rejects_corruption_without_overwriting ... ok
+test tests::progress_rejects_fabricated_completion_without_an_attempt ... ok
+test tests::progress_restores_completed_and_revealed ... ok
+test tests::progress_restores_incomplete_attempt ... ok
+test tests::promotion_dialog_requires_explicit_choice ... ok
+test tests::promotion_requires_piece_and_supports_underpromotion ... ok
+test tests::readonly_exit_does_not_offer_an_impossible_save_retry ... ok
+test tests::restored_app_keeps_attempt_count ... ok
+test tests::restored_completed_screen_has_completion_feedback ... ok
+test tests::restored_completed_session_requires_matching_history ... ok
+test tests::resume_redraws_once_without_writing_and_ordinary_idle_has_no_commands ... ok
+test tests::retry_resets_board_not_history ... ok
+test tests::revealed_is_never_clean ... ok
+test tests::save_failure_is_visible_and_retryable ... ok
+test tests::solution_uses_readable_san_including_checkmate_and_castling ... ok
+test tests::source_selection_is_not_a_storage_write ... ok
+test tests::storage_reload_while_studying_returns_to_valid_home ... ok
+test tests::trainer_import_preserves_collection_puzzle_and_explanation ... ok
+test tests::trainer_rejects_non_mating_published_line ... ok
+test tests::twenty_original_unique_puzzles_replay ... ok
+test tests::unbounded_import_stream_is_stopped_at_the_pack_limit ... ok
+test tests::contributor_clara_completion_and_storage_dialog_fit_at_170_percent ... ok
+test tests::wrong_legal_move_preserves_position ... ok
+test tests::v01_progress_fields_and_assistance_survive_the_upgrade ... ok
+
+test result: ok. 59 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+   Compiling polgar-pocket v0.2.0 (/workspace/kobo-chess)
+    Finished `dev` profile [unoptimized] target(s) in 2.45s
+Validated 20 puzzles in lichess-tactics
+   Compiling polgar-pocket v0.2.0 (/workspace/kobo-chess)
+    Finished `release` profile [optimized] target(s) in 3.97s
+/workspace/build/cobalt/armv7-unknown-linux-musleabihf/release/polgar-pocket: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), statically linked, not stripped
+
+Elf file type is EXEC (Executable file)
+Entry point 0x190d61
+There are 10 program headers, starting at offset 52
+
+Program Headers:
+  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+  PHDR           0x000034 0x00010034 0x00010034 0x00140 0x00140 R   0x4
+  LOAD           0x000000 0x00010000 0x00010000 0x170d60 0x170d60 R   0x10000
+  LOAD           0x170d60 0x00190d60 0x00190d60 0x10b546 0x10b546 R E 0x10000
+  LOAD           0x27c2a8 0x002ac2a8 0x002ac2a8 0x05660 0x05d58 RW  0x10000
+  LOAD           0x281908 0x002c1908 0x002c1908 0x000d0 0x009d0 RW  0x10000
+  TLS            0x27c2a8 0x002ac2a8 0x002ac2a8 0x00014 0x000fc R   0x8
+  GNU_RELRO      0x27c2a8 0x002ac2a8 0x002ac2a8 0x05660 0x05d58 R   0x1
+  GNU_EH_FRAME   0x170d50 0x00180d50 0x00180d50 0x0000c 0x0000c R   0x4
+  GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RW  0
+  ARM_EXIDX      0x000174 0x00010174 0x00010174 0x02e18 0x02e18 R   0x4
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     
+   01     .ARM.exidx .ARM.extab .rodata .eh_frame_hdr .eh_frame 
+   02     .text .init .fini 
+   03     .tdata .fini_array .init_array .data.rel.ro .got .relro_padding 
+   04     .data .bss 
+   05     .tdata .tbss 
+   06     .tdata .fini_array .init_array .data.rel.ro .got .relro_padding 
+   07     .eh_frame_hdr 
+   08     
+   09     .ARM.exidx 

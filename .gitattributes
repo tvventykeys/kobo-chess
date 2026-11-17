@@ -1,0 +1,3 @@
+# Preserve literal patch context and unedited verification tool output.
+submission/*.patch -whitespace
+submission/checks/*.log -whitespace

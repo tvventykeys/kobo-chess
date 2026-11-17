@@ -10,7 +10,7 @@ A large brown/paper chessboard, twenty genuine CC0 Lichess puzzles, touch moves,
 legal destination dots, capture/check outlines, promotion choice, castling and
 en passant through shakmaty. Your side is at the bottom; Settings flips it.
 Coords toggles square labels without cluttering the default board. Cobalt sets
-text size; normal and 170% Libra Colour layouts are simulator-tested.
+text size; normal and 170% Libra Colour and Clara BW layouts are simulator-tested.
 
 Choose the one installed collection, continue studying, and use Hint (source
 piece only), Retry, Reveal, Prev and Next. The supplied solution controls
@@ -45,6 +45,8 @@ in `src/`, packs in `packs/`; the existing setup scripts remain unchanged.
 * [Artifacts, packaging limitation and hardware test](docs/INSTALLATION.md)
 * [Private-trainer research and future sync design](docs/INTEGRATION.md)
 * [Application validation report](docs/VALIDATION.md)
+* [Complete prepared Beta Store submission](docs/COBALT-SUBMISSION.md)
+* [Submission build and simulator results](docs/SUBMISSION-VALIDATION.md)
 * [v0.2 source audit, UI and battery review](docs/AUDIT-V02.md)
 * [Exact Cobalt signing investigation](docs/COBALT-SIGNING.md)
 * [Safe hardware test and rollback guide for existing readers](docs/HARDWARE-TEST.md)

@@ -50,7 +50,7 @@ pub fn lichess(bytes: &[u8]) -> Result<String, String> {
                 "black"
             }
             .into(),
-            solution: line.iter().map(|m| m.to_string()).collect(),
+            solution: line.iter().copied().map(str::to_owned).collect(),
             explanation: String::new(),
             difficulty: Some(row.rating),
             tags: row.themes,

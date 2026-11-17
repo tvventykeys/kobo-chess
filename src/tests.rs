@@ -37,7 +37,7 @@ fn custom(fen: &str, line: &[&str]) -> Session {
             "black"
         }
         .into(),
-        solution: line.iter().map(|s| s.to_string()).collect(),
+        solution: line.iter().copied().map(str::to_owned).collect(),
         explanation: String::new(),
         difficulty: None,
         tags: vec![],
@@ -713,4 +713,48 @@ fn readonly_exit_does_not_offer_an_impossible_save_retry() {
         .take_commands()
         .iter()
         .any(|c| matches!(c, Command::Exit)));
+}
+
+#[test]
+fn contributor_clara_completion_and_storage_dialog_fit_at_170_percent() {
+    use kobo_ui::{DiagnosticSeverity, DisplayMetrics, TextScale, CLARA_BW_METRICS};
+    kobo_text::install(CLARA_BW_METRICS).unwrap();
+    let (mut app, mut context) = app();
+    app.start(&mut context, 0);
+    action(&mut app, &mut context, "reveal");
+    for text_scale in [TextScale::Default, TextScale::Largest] {
+        let metrics = DisplayMetrics {
+            text_scale,
+            ..CLARA_BW_METRICS
+        };
+        let errors: Vec<_> = app
+            .screen()
+            .validate(&metrics)
+            .into_iter()
+            .filter(|issue| issue.severity == DiagnosticSeverity::Error)
+            .collect();
+        assert!(errors.is_empty(), "revealed {text_scale:?}: {errors:?}");
+    }
+    app.on_save(
+        &mut context,
+        KEY,
+        StoreResult::Denied(StoreError::Unwritable),
+    );
+    assert!(app.storage_open);
+    for text_scale in [TextScale::Default, TextScale::Largest] {
+        let metrics = DisplayMetrics {
+            text_scale,
+            ..CLARA_BW_METRICS
+        };
+        let errors: Vec<_> = app
+            .screen()
+            .validate(&metrics)
+            .into_iter()
+            .filter(|issue| issue.severity == DiagnosticSeverity::Error)
+            .collect();
+        assert!(errors.is_empty(), "storage {text_scale:?}: {errors:?}");
+    }
+    action(&mut app, &mut context, "storage-dismiss");
+    assert!(app.storage_notice.is_some());
+    assert!(!app.storage_open);
 }

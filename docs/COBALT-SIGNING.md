@@ -1,5 +1,9 @@
 # Cobalt signing investigation — 17 November 2026
 
+Update: a complete isolated Beta contribution is now prepared and tested; see
+[COBALT-SUBMISSION.md](COBALT-SUBMISSION.md). The signing/installation trust gates
+below still apply. The old uncompiled review-tree description is v0.2 history.
+
 **Current blocker:** this standalone app has no supported personal install path
 in the inspected stock Cobalt revision. A development signature is valid only
 under its own test key; it grants no installation trust. No device-ready package
@@ -34,7 +38,7 @@ Sources:
 * [Publish workflow and secret isolation](https://github.com/BandarLabs/Cobalt/blob/5ac30a46efce23d7fa0d1cb12a499c9b57b816b0/.github/workflows/apps.yml)
 * [Bounded personal panel sessions and app allowlist](https://github.com/BandarLabs/Cobalt/blob/5ac30a46efce23d7fa0d1cb12a499c9b57b816b0/crates/kobo-cli/src/panel.rs)
 
-## Prepared without release credentials
+## v0.2 preparation without release credentials (historical)
 
 The independent app, manifest, tests and ARM binary are ready for review. Running
 `scripts/package-pocket.sh` produces a **verification-only** `.cobaltapp`, with

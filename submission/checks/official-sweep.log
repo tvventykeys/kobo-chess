@@ -1,0 +1,56 @@
+    Blocking waiting for file lock on build directory
+   Compiling libc v0.2.189
+   Compiling crypto-common v0.1.6
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling digest v0.10.7
+   Compiling toml_write v0.1.2
+   Compiling hmac v0.12.1
+   Compiling sha2 v0.10.9
+   Compiling winnow v0.7.15
+   Compiling hkdf v0.12.4
+   Compiling rfc6979 v0.4.0
+   Compiling toml_edit v0.22.27
+   Compiling getrandom v0.2.17
+   Compiling kobo-abi v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-abi)
+   Compiling parking_lot_core v0.9.12
+   Compiling ring v0.17.14
+   Compiling rand_core v0.6.4
+   Compiling ff v0.13.1
+   Compiling parking_lot v0.12.5
+   Compiling group v0.13.0
+   Compiling string_cache v0.11.0
+   Compiling crypto-bigint v0.5.5
+   Compiling web_atoms v0.3.0
+   Compiling rustls-webpki v0.103.16
+   Compiling markup5ever v0.40.0
+   Compiling rustls v0.23.46
+   Compiling elliptic-curve v0.13.8
+   Compiling signature v2.2.0
+   Compiling html5ever v0.40.1
+   Compiling kobo-wifi-trace v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-wifi-trace)
+   Compiling ecdsa v0.16.9
+   Compiling primeorder v0.13.6
+   Compiling p256 v0.13.2
+   Compiling dom_query v0.29.0
+   Compiling kobo-hal v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-hal)
+   Compiling nix v0.27.1
+   Compiling toml v0.8.23
+   Compiling dom_smoothie v0.19.0
+   Compiling command-group v5.0.1
+   Compiling kobo-net v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-net)
+   Compiling kobo-policy v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-policy)
+   Compiling kobo-stream v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-stream)
+   Compiling kobo-article v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-article)
+   Compiling kobo-opml v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-opml)
+   Compiling kobo-sidekickd v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-sidekickd)
+   Compiling kobo-shell v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-shell)
+   Compiling kobo-app-store v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-app-store)
+   Compiling kobod v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobod)
+   Compiling kobo-catalog v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-catalog)
+   Compiling kobo-sdk v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-sdk)
+   Compiling kobo-sim v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-sim)
+   Compiling kobo-cli v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-cli)
+    Finished `dev` profile [unoptimized] target(s) in 43.42s
+{"app": "polgar-pocket", "launched": true, "status": "pass", "route": "apps/polgar-pocket/drive.kobo", "exit_code": 0}
+1/1 runs passed across 1 apps; 1 committed routes; report: /workspace/verification/cobalt-submission/official-sweep/results.json

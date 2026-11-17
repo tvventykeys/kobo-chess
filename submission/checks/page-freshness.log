@@ -1,0 +1,1 @@
+The home page serves PNG for polgar-pocket.png; node tools/encode-app-thumbs.mjs writes their WebP copies.

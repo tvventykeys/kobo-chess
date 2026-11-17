@@ -1,0 +1,12 @@
+fixture app-verify: exit 0
+Verified package signature, manifest and binary.
+fixture app-catalog-verify: exit 0
+Verified catalog signature and package entry.
+fixture app-catalog-verify: exit 0
+Verified catalog signature and package entry.
+release app-verify: exit 1
+kobo: Package verification failed: manifest signature: Ed25519 signature verification failed
+release app-catalog-verify: exit 1
+kobo: Catalog signature verification failed: Ed25519 signature verification failed
+release app-catalog-verify: exit 1
+kobo: Catalog signature verification failed: Ed25519 signature verification failed

@@ -1,0 +1,34 @@
+drive: every step passed; screenshots in /workspace/verification/cobalt-submission/clara/recovery/default
+drive: every step passed; screenshots in /workspace/verification/cobalt-submission/clara/recovery/default
+layout warning: screen: 5 of the five inks on one screen; the panel does not resolve that many
+shot /workspace/verification/cobalt-submission/clara/recovery/default/corrupt/preserved.png
+shot /workspace/verification/cobalt-submission/clara/recovery/default/corrupt/readonly-board.png
+shot /workspace/verification/cobalt-submission/clara/recovery/default/corrupt/readonly-exit.png
+drive: every step passed; screenshots in /workspace/verification/cobalt-submission/clara/recovery/default/corrupt
+shot /workspace/verification/cobalt-submission/clara/recovery/default/corrupt/recovered.png
+drive: every step passed; screenshots in /workspace/verification/cobalt-submission/clara/recovery/default/corrupt
+shot /workspace/verification/cobalt-submission/clara/recovery/default/corrupt/failed-write.png
+shot /workspace/verification/cobalt-submission/clara/recovery/default/corrupt/sleep-allowed.png
+shot /workspace/verification/cobalt-submission/clara/recovery/default/corrupt/exit-warning.png
+drive: every step passed; screenshots in /workspace/verification/cobalt-submission/clara/recovery/default/corrupt
+layout warning: screen: 5 of the five inks on one screen; the panel does not resolve that many
+shot /workspace/verification/cobalt-submission/clara/recovery/default/corrupt/write-recovered.png
+drive: every step passed; screenshots in /workspace/verification/cobalt-submission/clara/recovery/default/corrupt
+PASS recovery default: corrupt data preserved, reload safe, write failure/retry, explicit loss warning, idle and exit
+drive: every step passed; screenshots in /workspace/verification/cobalt-submission/clara/recovery/170
+drive: every step passed; screenshots in /workspace/verification/cobalt-submission/clara/recovery/170
+layout warning: screen: 5 of the five inks on one screen; the panel does not resolve that many
+shot /workspace/verification/cobalt-submission/clara/recovery/170/corrupt/preserved.png
+shot /workspace/verification/cobalt-submission/clara/recovery/170/corrupt/readonly-board.png
+shot /workspace/verification/cobalt-submission/clara/recovery/170/corrupt/readonly-exit.png
+drive: every step passed; screenshots in /workspace/verification/cobalt-submission/clara/recovery/170/corrupt
+shot /workspace/verification/cobalt-submission/clara/recovery/170/corrupt/recovered.png
+drive: every step passed; screenshots in /workspace/verification/cobalt-submission/clara/recovery/170/corrupt
+shot /workspace/verification/cobalt-submission/clara/recovery/170/corrupt/failed-write.png
+shot /workspace/verification/cobalt-submission/clara/recovery/170/corrupt/sleep-allowed.png
+shot /workspace/verification/cobalt-submission/clara/recovery/170/corrupt/exit-warning.png
+drive: every step passed; screenshots in /workspace/verification/cobalt-submission/clara/recovery/170/corrupt
+layout warning: screen: 5 of the five inks on one screen; the panel does not resolve that many
+shot /workspace/verification/cobalt-submission/clara/recovery/170/corrupt/write-recovered.png
+drive: every step passed; screenshots in /workspace/verification/cobalt-submission/clara/recovery/170/corrupt
+PASS recovery 170: corrupt data preserved, reload safe, write failure/retry, explicit loss warning, idle and exit

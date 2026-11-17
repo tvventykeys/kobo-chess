@@ -2,10 +2,10 @@
   "id": "polgar-pocket",
   "display_name": "Polgár Trainer Pocket",
   "short_label": "Polgár Pocket",
-  "summary": "Study twenty chess puzzles offline with local progress.",
+  "summary": "Study twenty CC0 Lichess demo puzzles offline with saved progress.",
   "version": "0.2.0",
-  "release_notes": "Save-aware exit, safe storage recovery, clearer solution notation and quieter e-ink interaction.",
-  "glyph": "chess-white-knight",
+  "release_notes": "Initial Cobalt Beta submission: twenty CC0 Lichess demonstration puzzles, offline study and save-aware recovery.",
+  "glyph": "book",
   "capabilities": [],
   "setup": {
     "steps": [
@@ -14,5 +14,5 @@
       }
     ]
   },
-  "page_description": "A quiet native chess puzzle book for Kobo."
+  "page_description": "An offline chess puzzle book with twenty CC0 Lichess demonstration puzzles, legal touch moves, source-only hints, retry, reveal and local progress. The full Polgár book library is not included; no affiliation or endorsement is claimed."
 }

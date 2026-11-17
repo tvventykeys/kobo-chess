@@ -1,0 +1,16 @@
+[package]
+name = "polgar-pocket"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85.1"
+license = "AGPL-3.0-only"
+publish = false
+
+[dependencies]
+kobo-sdk = { path = "../deps/Cobalt/crates/kobo-sdk" }
+shakmaty = "=0.27.3"
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.145"
+
+[dev-dependencies]
+kobo-profile = { path = "../deps/Cobalt/crates/kobo-profile" }

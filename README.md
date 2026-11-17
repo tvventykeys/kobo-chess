@@ -1,8 +1,57 @@
 # kobo-chess
 
 Independent native Cobalt chess application workspace for Kobo Libra Colour
-(N428, code 390). This repository currently contains development setup and
-verification tooling; chess application implementation has not started.
+(N428, code 390). Polgár Trainer Pocket is a native offline chess puzzle book
+built with the pinned Cobalt SDK. The first application implementation is now available.
+
+## Polgár Trainer Pocket v0.1
+
+A large brown/paper chessboard, twenty genuine CC0 Lichess puzzles, touch moves,
+legal destination dots, capture/check outlines, promotion choice, castling and
+en passant through shakmaty. Your side is at the bottom; Settings flips it.
+Coords toggles square labels without cluttering the default board. Cobalt sets
+text size; normal and 170% Libra Colour layouts are simulator-tested.
+
+Choose the one installed collection, continue studying, and use Hint (source
+piece only), Retry, Reveal, Prev and Next. The supplied solution controls
+validation and deterministic opponent replies. A different legal winning move
+is outside this v0.1 line. Reveals do not complete puzzles or count as clean;
+a new retry is a distinct attempt and preserves earlier history. Explanations
+show theme labels immediately below the board at completion.
+
+Progress includes attempts, wrong moves, hints, reveal history, completion,
+clean solves, optional timestamp and the active line. Atomic Cobalt storage
+survives process restart, including partly played assisted attempts. Failed
+writes are visible and retryable; corrupt data is preserved with read-only study.
+Physical page callbacks support previous/next and confirm before leaving an
+active attempt. No network account, engine, polling or background task is used.
+
+```bash
+cd /workspace/kobo-chess
+source scripts/env.sh
+bash scripts/verify-pocket.sh
+KOBO_SIM_PROFILE=libra-colour-390 KOBO_SIM_OFFLINE=1 \
+  "$CARGO_TARGET_DIR/debug/kobo" dev 127.0.0.1:8787
+```
+
+The app's own verification is separate from the preserved environment/examples
+verification below. Builds use Cargo.lock and Rust 1.85.1. Source modules live
+in `src/`, packs in `packs/`; the existing setup scripts remain unchanged.
+
+* [Development and battery techniques](docs/DEVELOPMENT.md)
+* [Pack format and local import commands](docs/PUZZLE-PACKS.md)
+* [Exact public puzzle source and license](packs/SOURCE.md)
+* [Artifacts, packaging limitation and hardware test](docs/INSTALLATION.md)
+* [Private-trainer research and future sync design](docs/INTEGRATION.md)
+* [Application validation report](docs/VALIDATION.md)
+* [License and attribution](THIRD-PARTY.md)
+
+The private trainer was inspected read-only; public builds contain no private
+book data. A 20-problem private subset was locally imported/validated outside
+Git. External runtime pack installation, live sync, analysis, online games and
+spaced repetition remain future work. The development bundle passes Cobalt
+format/signature verification but still needs trusted platform signing for
+stock-runtime installation. No reader test or Store publication has occurred.
 
 ## Verified upstream and tools
 
@@ -165,7 +214,9 @@ include denied network tasks, and the 170% upstream run emits ink-count layout
 warnings; both functional suites still completed successfully. Those diagnostics
 were not suppressed or presented as clean hardware acceptance.
 
-No application source was developed, and the upstream checkout remains unchanged.
+During the earlier environment-only verification, no application source was
+developed. The new Pocket implementation is documented above; the upstream
+checkout remains unchanged.
 The entire upstream workspace suite, physical-reader execution and live online
 Lichess play were not tested. The environment was published, then restoration
 was verified in a fresh cloud instance: the documented toolchains, SDK and

@@ -5,3 +5,11 @@
 /cobalt-sim-state/
 __pycache__/
 *.pyc
+
+/work/
+/output/
+/private/
+*.seed
+*.cobaltapp
+packs/*.private.jsonl
+packs/*.local.jsonl

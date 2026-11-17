@@ -62,7 +62,10 @@ impl Progress {
             return Err("Incompatible progress".into());
         }
         for (id, r) in &value.records {
-            if !(0..pack.len()).any(|i| pack.puzzle(i).id == *id)
+            if !pack.contains_id(id)
+                || (r.attempts == 0
+                    && (r.completed || r.revealed || r.hints_used > 0 || r.incorrect_attempts > 0))
+                || (r.completion_timestamp.is_some() && !r.completed)
                 || r.clean_solves > r.attempts
                 || (r.clean_solves > 0 && !r.completed)
                 || r.completion_timestamp.is_some_and(|t| t < 1577836800)
@@ -95,6 +98,13 @@ impl Progress {
         session.wrong = saved.wrong;
         session.hints = saved.hints;
         session.revealed = saved.revealed;
+        let record = &self.records[&saved.puzzle_id];
+        if (session.complete() && !session.revealed && !record.completed)
+            || (session.revealed && !record.revealed)
+            || (session.clean() && record.clean_solves == 0)
+        {
+            return Err("Saved result does not match history".into());
+        }
         Ok(Some(session))
     }
     pub fn capture(&mut self, session: Option<&Session>) {

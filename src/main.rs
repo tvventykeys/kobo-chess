@@ -12,7 +12,10 @@ use crate::{
     progress::Progress,
     session::{Played, Session},
 };
-use kobo_sdk::{action_id, ActionId, Context, KoboApp, Screen, ScreenBuilder, StoreResult};
+use kobo_sdk::{
+    action_id, ActionId, BandAlign, Context, ControlState, KoboApp, Screen, ScreenBuilder,
+    SlotWidth, StoreResult,
+};
 use shakmaty::{Position, Square};
 
 const KEY: &str = "pocket.progress.v1";
@@ -43,6 +46,9 @@ struct Pocket {
     writable: bool,
     dirty: bool,
     saving: bool,
+    storage_waiver: bool,
+    exit_requested: bool,
+    last_screen: Option<Screen>,
 }
 impl Pocket {
     fn new(pack: Pack) -> Self {
@@ -62,17 +68,46 @@ impl Pocket {
             writable: true,
             dirty: false,
             saving: false,
+            storage_waiver: false,
+            exit_requested: false,
+            last_screen: None,
         }
     }
-    fn show(&self, cx: &mut Context) {
-        cx.set_screen(self.screen());
+    fn show(&mut self, cx: &mut Context) {
+        let screen = self.screen();
+        if self.last_screen.as_ref() != Some(&screen) {
+            self.last_screen = Some(screen.clone());
+            cx.set_screen(screen);
+        }
+    }
+    fn request_exit(&mut self, cx: &mut Context) {
+        if !self.dirty && !self.saving {
+            cx.exit();
+        } else {
+            self.exit_requested = true;
+            self.flush(cx);
+        }
     }
     fn screen(&self) -> Screen {
         let mut b = ScreenBuilder::new("polgar-pocket")
             .top_bar("Polgár Pocket")
-            .owns_back(self.page != Page::Home);
+            .owns_back(true);
         if !self.ready {
             return b.heading("Opening your study book…").build();
+        }
+        if self.exit_requested {
+            let mut exit = b.heading("Leaving your study book");
+            if self.storage_notice.is_some() {
+                exit =
+                    exit.text("Progress could not be saved. Exit loses changes from this session.");
+                if self.writable {
+                    exit = exit.button("save-progress", "Retry save");
+                }
+                exit = exit.button("exit-unsaved", "Exit without saving");
+            } else {
+                exit = exit.text("Saving progress before exit…");
+            }
+            return exit.button("cancel-exit", "Keep studying").build();
         }
         match self.page {
             Page::Home => {
@@ -98,7 +133,8 @@ impl Pocket {
                         self.pack.len()
                     ))
                     .primary_button("continue", "Continue studying")
-                    .button("settings", "Settings");
+                    .button("settings", "Settings")
+                    .button("exit", "Exit to launcher");
             }
             Page::Collections => {
                 b = b
@@ -147,7 +183,18 @@ impl Pocket {
                         self.progress.current + 1,
                         self.pack.len()
                     ))
-                    .secondary(format!("{turn} to move · {state}"))
+                    .secondary(if s.complete() {
+                        format!(
+                            "{} exercise · {state}",
+                            if s.puzzle.side_to_move == "white" {
+                                "White"
+                            } else {
+                                "Black"
+                            }
+                        )
+                    } else {
+                        format!("{turn} to move · {state}")
+                    })
                     .board_with_selection(
                         8,
                         board::cells(
@@ -160,7 +207,17 @@ impl Pocket {
                     );
                 // Coordinate display is optional to keep the board quiet.
                 let message = if self.feedback.is_empty() {
-                    "Tap a piece, then its destination."
+                    if s.complete() {
+                        if s.revealed {
+                            "Solution shown. Retry to practice."
+                        } else if s.clean() {
+                            "Solved independently."
+                        } else {
+                            "Solved with assistance."
+                        }
+                    } else {
+                        "Tap a piece, then its destination."
+                    }
                 } else {
                     &self.feedback
                 };
@@ -169,10 +226,31 @@ impl Pocket {
                     b = b.secondary(&s.puzzle.explanation);
                 }
                 if s.revealed {
-                    b = b.secondary(format!("Line: {}", s.puzzle.solution.join(" ")));
+                    b = b.secondary(format!("Line: {}", s.solution_text()));
                 }
                 b = b
-                    .buttons([("hint", "Hint"), ("retry", "Retry"), ("reveal", "Reveal")])
+                    .band(
+                        BandAlign::Middle,
+                        [
+                            ("hint", "Hint", !s.complete()),
+                            ("retry", "Retry", true),
+                            ("reveal", "Reveal", !s.complete()),
+                        ]
+                        .into_iter()
+                        .map(|(name, label, enabled)| {
+                            (SlotWidth::Fill, move |slot: ScreenBuilder| {
+                                slot.button_with_state(
+                                    name,
+                                    label,
+                                    if enabled {
+                                        ControlState::Enabled
+                                    } else {
+                                        ControlState::Disabled
+                                    },
+                                )
+                            })
+                        }),
+                    )
                     .buttons([("previous", "Prev"), ("home", "Home"), ("next", "Next")]);
                 if let Some(base) = &self.promotion {
                     b = b.dialog("Promote pawn", "cancel", |d| {
@@ -185,7 +263,15 @@ impl Pocket {
             }
         }
         if let Some(text) = &self.storage_notice {
-            b = b.secondary(text).button("save-progress", "Retry storage");
+            b = b.secondary(text);
+            if self.writable && !self.storage_waiver {
+                b = b.buttons([
+                    ("save-progress", "Retry save"),
+                    ("allow-sleep", "Allow sleep"),
+                ]);
+            } else {
+                b = b.button("save-progress", "Retry storage");
+            }
         }
         if self.leave.is_some() {
             b = b.dialog("Leave this attempt?", "cancel", |d| {
@@ -210,6 +296,7 @@ impl Pocket {
             let bytes = serde_json::to_vec(&self.progress).expect("serializable progress");
             cx.store().save(KEY, bytes);
             self.saving = true;
+            self.storage_waiver = false;
             self.dirty = false;
         }
     }
@@ -229,7 +316,7 @@ impl Pocket {
         self.promotion = None;
     }
     fn request_leave(&mut self, cx: &mut Context, target: Leave) {
-        if self.session.as_ref().is_some_and(Session::active) {
+        if matches!(target, Leave::Index(_)) && self.session.as_ref().is_some_and(Session::active) {
             self.leave = Some(target);
         } else {
             self.navigate(cx, target);
@@ -318,21 +405,36 @@ impl KoboApp for Pocket {
     }
     fn on_action(&mut self, cx: &mut Context, a: ActionId) {
         if !self.ready {
+            if a == action_id("back") {
+                cx.exit();
+            }
             return;
         }
         let is = |name: &str| a == action_id(name);
+        if self.exit_requested {
+            if is("cancel-exit") || is("back") {
+                self.exit_requested = false;
+            } else if is("save-progress") && self.storage_notice.is_some() && self.writable {
+                self.storage_notice = None;
+                self.flush(cx);
+            } else if is("exit-unsaved") && self.storage_notice.is_some() && !self.saving {
+                cx.exit();
+            }
+            self.show(cx);
+            return;
+        }
         if self.leave.is_some() {
             if is("confirm-leave") {
                 let target = self.leave.take().unwrap();
                 self.navigate(cx, target);
-            } else if is("cancel") {
+            } else if is("cancel") || is("back") {
                 self.leave = None;
             }
             self.show(cx);
             return;
         }
         if self.promotion.is_some() {
-            if is("cancel") {
+            if is("cancel") || is("back") {
                 self.promotion = None;
             } else {
                 for role in ['q', 'r', 'b', 'n'] {
@@ -346,7 +448,11 @@ impl KoboApp for Pocket {
             self.show(cx);
             return;
         }
-        if is("save-progress") {
+        if is("allow-sleep") && self.storage_notice.is_some() && !self.saving {
+            self.storage_waiver = true;
+        } else if is("exit") || (is("back") && self.page == Page::Home) {
+            self.request_exit(cx);
+        } else if is("save-progress") {
             if self.writable {
                 self.storage_notice = None;
                 self.flush(cx);
@@ -452,6 +558,15 @@ impl KoboApp for Pocket {
                     Some("Cannot read progress. Study is read-only; retry storage.".into());
             }
         }
+        // A storage retry can replace the active snapshot entirely. Always land
+        // on Home, so a missing session cannot leave Study without a board.
+        self.page = Page::Home;
+        self.clear_selection();
+        self.feedback.clear();
+        self.dirty = false;
+        self.saving = false;
+        self.storage_waiver = false;
+        self.exit_requested = false;
         self.ready = true;
         self.show(cx);
     }
@@ -461,7 +576,11 @@ impl KoboApp for Pocket {
         }
         self.saving = false;
         if matches!(result, StoreResult::Saved { .. }) {
+            self.storage_waiver = false;
             self.flush(cx);
+            if self.exit_requested && !self.saving && !self.dirty {
+                cx.exit();
+            }
         } else {
             self.dirty = true;
             self.storage_notice = Some("Progress not saved. Retry storage before leaving.".into());
@@ -469,9 +588,10 @@ impl KoboApp for Pocket {
         }
     }
     fn can_suspend(&self) -> bool {
-        self.ready && (!self.writable || (!self.saving && !self.dirty))
+        self.ready && (!self.writable || self.storage_waiver || (!self.saving && !self.dirty))
     }
     fn on_resume(&mut self, cx: &mut Context) {
+        self.last_screen = None;
         self.show(cx);
     }
 }
@@ -483,8 +603,9 @@ fn main() -> std::process::ExitCode {
             .map(|s| s.parse::<u32>().map_err(|e| e.to_string()))
             .collect::<Result<Vec<_>, _>>()
             .and_then(|ids| {
-                std::fs::read(&args[2])
+                std::fs::File::open(&args[2])
                     .map_err(|e| e.to_string())
+                    .and_then(pack::read_input)
                     .and_then(|bytes| import::trainer(&bytes, &ids))
             })
             .and_then(|pack| std::fs::write(&args[3], pack).map_err(|e| e.to_string()));
@@ -500,8 +621,9 @@ fn main() -> std::process::ExitCode {
         };
     }
     if args.len() == 4 && args[1] == "--import-lichess" {
-        let result = std::fs::read(&args[2])
+        let result = std::fs::File::open(&args[2])
             .map_err(|e| e.to_string())
+            .and_then(pack::read_input)
             .and_then(|bytes| import::lichess(&bytes))
             .and_then(|pack| std::fs::write(&args[3], pack).map_err(|e| e.to_string()));
         return match result {
@@ -516,8 +638,10 @@ fn main() -> std::process::ExitCode {
         };
     }
     if args.len() == 3 && args[1] == "--validate-pack" {
-        return match std::fs::read_to_string(&args[2])
+        return match std::fs::File::open(&args[2])
             .map_err(|e| e.to_string())
+            .and_then(pack::read_input)
+            .and_then(|bytes| String::from_utf8(bytes).map_err(|e| e.to_string()))
             .and_then(Pack::parse)
         {
             Ok(pack) => {

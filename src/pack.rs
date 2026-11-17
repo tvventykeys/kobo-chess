@@ -39,6 +39,7 @@ pub struct Pack {
     pub header: Header,
     data: String,
     records: Vec<Range<usize>>,
+    ids: BTreeSet<String>,
 }
 
 fn identifier(s: &str) -> bool {
@@ -71,7 +72,15 @@ impl Puzzle {
             return Err("Side does not match FEN".into());
         }
         for uci in &self.solution {
-            rules::play(&mut pos, uci)?;
+            let movement = rules::movement(&pos, uci)?;
+            if movement
+                .to_uci(shakmaty::CastlingMode::Standard)
+                .to_string()
+                != *uci
+            {
+                return Err("Solution must use canonical standard UCI".into());
+            }
+            pos.play_unchecked(&movement);
         }
         Ok(())
     }
@@ -120,7 +129,11 @@ impl Pack {
             header,
             data,
             records,
+            ids,
         })
+    }
+    pub fn contains_id(&self, id: &str) -> bool {
+        self.ids.contains(id)
     }
     pub fn len(&self) -> usize {
         self.records.len()
@@ -129,4 +142,18 @@ impl Pack {
         // Bytes and offsets are immutable after full validation.
         serde_json::from_str(&self.data[self.records[index].clone()]).expect("validated pack")
     }
+}
+
+/// Bound host import reads before allocation; a whole database is never needed.
+pub fn read_input(reader: impl std::io::Read) -> Result<Vec<u8>, String> {
+    use std::io::Read;
+    let mut bytes = Vec::new();
+    reader
+        .take((MAX_PACK + 1) as u64)
+        .read_to_end(&mut bytes)
+        .map_err(|e| e.to_string())?;
+    if bytes.len() > MAX_PACK {
+        return Err("Input exceeds 4 MiB; select a subset".into());
+    }
+    Ok(bytes)
 }

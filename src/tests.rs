@@ -455,3 +455,262 @@ fn trainer_rejects_non_mating_published_line() {
     let input=br#"{"bookId":"test","bookTitle":"Test","problems":[{"problemid":1,"fen":"7k/5Q2/6K1/8/8/8/8/8 w - - 0 1","moves":"f7-e7"}]}"#;
     assert!(import::trainer(input, &[1]).is_err());
 }
+
+// v0.2 regressions found by auditing the real lifecycle and storage paths.
+#[test]
+fn storage_reload_while_studying_returns_to_valid_home() {
+    let (mut p, mut cx) = app();
+    p.writable = false;
+    p.start(&mut cx, 0);
+    action(&mut p, &mut cx, "save-progress");
+    p.on_load(
+        &mut cx,
+        KEY,
+        StoreResult::Loaded {
+            key: KEY.into(),
+            value: None,
+        },
+    );
+    assert!(p.page == Page::Home);
+    assert!(p.session.is_none());
+}
+#[test]
+fn home_keeps_partial_attempt_without_leave_confirmation() {
+    let (mut p, mut cx) = app();
+    p.start(&mut cx, 0);
+    action(&mut p, &mut cx, "hint");
+    action(&mut p, &mut cx, "home");
+    assert!(p.page == Page::Home);
+    assert!(p.leave.is_none());
+    action(&mut p, &mut cx, "continue");
+    assert_eq!(p.session.as_ref().unwrap().hints, 1);
+}
+#[test]
+fn castling_pack_requires_the_standard_uci_the_ui_can_play() {
+    let mut puzzle = pack().puzzle(0);
+    puzzle.fen = "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1".into();
+    puzzle.side_to_move = "white".into();
+    puzzle.solution = vec!["e1h1".into()];
+    assert!(puzzle.validate().is_err());
+    puzzle.solution = vec!["e1g1".into()];
+    assert!(puzzle.validate().is_ok());
+}
+#[test]
+fn progress_rejects_fabricated_completion_without_an_attempt() {
+    let mut p = Progress::new(&pack());
+    let r = progress::Record {
+        completed: true,
+        ..Default::default()
+    };
+    p.records.insert(pack().puzzle(0).id, r);
+    assert!(Progress::decode(&serde_json::to_vec(&p).unwrap(), &pack()).is_err());
+}
+#[test]
+fn restored_completed_session_requires_matching_history() {
+    let (mut p, mut cx) = app();
+    p.start(&mut cx, 0);
+    let id = p.session.as_ref().unwrap().puzzle.id.clone();
+    p.progress.session.as_mut().unwrap().cursor = p.session.as_ref().unwrap().puzzle.solution.len();
+    p.progress.records.get_mut(&id).unwrap().completed = false;
+    assert!(Progress::decode(&serde_json::to_vec(&p.progress).unwrap(), &p.pack).is_err());
+}
+#[test]
+fn ignored_input_and_repeated_hint_do_not_redraw_or_write() {
+    let (mut p, mut cx) = app();
+    p.start(&mut cx, 0);
+    action(&mut p, &mut cx, "hint");
+    let _ = cx.take_commands();
+    action(&mut p, &mut cx, "hint");
+    action(&mut p, &mut cx, "unrecognized-input");
+    assert!(cx.take_commands().is_empty());
+}
+
+#[test]
+fn exit_waits_for_all_coalesced_writes() {
+    let (mut p, mut cx) = app();
+    p.start(&mut cx, 0);
+    action(&mut p, &mut cx, "hint");
+    let _ = cx.take_commands();
+    action(&mut p, &mut cx, "home");
+    action(&mut p, &mut cx, "back");
+    assert!(p.exit_requested);
+    assert!(!cx
+        .take_commands()
+        .iter()
+        .any(|c| matches!(c, Command::Exit)));
+    p.on_save(&mut cx, KEY, StoreResult::Saved { key: KEY.into() });
+    assert!(!cx
+        .take_commands()
+        .iter()
+        .any(|c| matches!(c, Command::Exit)));
+    p.on_save(&mut cx, KEY, StoreResult::Saved { key: KEY.into() });
+    assert!(cx
+        .take_commands()
+        .iter()
+        .any(|c| matches!(c, Command::Exit)));
+}
+#[test]
+fn clean_home_back_exits_and_failed_exit_requires_explicit_loss_consent() {
+    let (mut p, mut cx) = app();
+    action(&mut p, &mut cx, "back");
+    assert!(cx
+        .take_commands()
+        .iter()
+        .any(|c| matches!(c, Command::Exit)));
+    p.start(&mut cx, 0);
+    p.on_save(&mut cx, KEY, StoreResult::Denied(StoreError::Unwritable));
+    action(&mut p, &mut cx, "home");
+    action(&mut p, &mut cx, "exit");
+    assert!(p.exit_requested);
+    assert!(!cx
+        .take_commands()
+        .iter()
+        .any(|c| matches!(c, Command::Exit)));
+    action(&mut p, &mut cx, "exit-unsaved");
+    assert!(cx
+        .take_commands()
+        .iter()
+        .any(|c| matches!(c, Command::Exit)));
+}
+#[test]
+fn failed_storage_cannot_block_sleep_forever_after_acknowledgement() {
+    let (mut p, mut cx) = app();
+    p.start(&mut cx, 0);
+    p.on_save(&mut cx, KEY, StoreResult::Denied(StoreError::NoRoom));
+    assert!(!p.can_suspend());
+    action(&mut p, &mut cx, "allow-sleep");
+    assert!(p.can_suspend());
+    assert!(p.dirty);
+    assert!(p.storage_notice.is_some());
+    action(&mut p, &mut cx, "save-progress");
+    assert!(!p.can_suspend());
+    p.on_save(&mut cx, KEY, StoreResult::Saved { key: KEY.into() });
+    assert!(p.can_suspend());
+    assert!(!p.storage_waiver);
+}
+#[test]
+fn restored_completed_screen_has_completion_feedback() {
+    let (mut p, mut cx) = app();
+    p.start(&mut cx, 0);
+    while !p.session.as_ref().unwrap().complete() {
+        let s = p.session.as_ref().unwrap();
+        let uci = s.puzzle.solution[s.cursor].clone();
+        p.move_piece(&mut cx, &uci);
+    }
+    let bytes = serde_json::to_vec(&p.progress).unwrap();
+    let mut restored = Pocket::new(pack());
+    restored.on_load(
+        &mut cx,
+        KEY,
+        StoreResult::Loaded {
+            key: KEY.into(),
+            value: Some(bytes),
+        },
+    );
+    let _ = cx.take_commands();
+    action(&mut restored, &mut cx, "continue");
+    let rendered = format!("{:?}", cx.take_commands());
+    assert!(rendered.contains("Solved independently."));
+    assert!(!rendered.contains("Tap a piece, then its destination."));
+}
+#[test]
+fn solution_uses_readable_san_including_checkmate_and_castling() {
+    assert_eq!(
+        custom("7k/5Q2/6K1/8/8/8/8/8 w - - 0 1", &["f7g7"]).solution_text(),
+        "Qg7#"
+    );
+    assert_eq!(
+        custom("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1", &["e1g1"]).solution_text(),
+        "O-O"
+    );
+}
+#[test]
+fn pending_promotion_ignores_page_buttons_and_cancel_preserves_position() {
+    let (mut p, mut cx) = app();
+    let s = custom("7k/P7/8/8/8/8/8/7K w - - 0 1", &["a7a8n"]);
+    p.progress.begin(&s);
+    p.session = Some(s);
+    p.page = Page::Study;
+    action(&mut p, &mut cx, "square-a7");
+    action(&mut p, &mut cx, "square-a8");
+    p.on_page_turn(&mut cx, true);
+    assert_eq!(p.progress.current, 0);
+    assert!(p.promotion.is_some());
+    action(&mut p, &mut cx, "cancel");
+    assert_eq!(p.session.as_ref().unwrap().cursor, 0);
+}
+#[test]
+fn resume_redraws_once_without_writing_and_ordinary_idle_has_no_commands() {
+    let (mut p, mut cx) = app();
+    p.on_resume(&mut cx);
+    assert!(cx
+        .take_commands()
+        .iter()
+        .all(|c| matches!(c, Command::SetScreen(_))));
+    assert!(cx.take_commands().is_empty());
+}
+#[test]
+fn back_cancels_navigation_confirmation() {
+    let (mut p, mut cx) = app();
+    p.start(&mut cx, 0);
+    action(&mut p, &mut cx, "hint");
+    action(&mut p, &mut cx, "next");
+    assert!(p.leave.is_some());
+    action(&mut p, &mut cx, "back");
+    assert!(p.leave.is_none());
+    assert_eq!(p.session.as_ref().unwrap().hints, 1);
+}
+#[test]
+fn unbounded_import_stream_is_stopped_at_the_pack_limit() {
+    assert!(pack::read_input(std::io::repeat(b'x')).is_err());
+    assert_eq!(
+        pack::read_input(std::io::Cursor::new(b"small")).unwrap(),
+        b"small"
+    );
+}
+#[test]
+fn v01_progress_fields_and_assistance_survive_the_upgrade() {
+    let pack = pack();
+    let id = pack.puzzle(0).id;
+    let mut records = serde_json::Map::new();
+    records.insert(id.clone(),serde_json::json!({"attempts":3,"incorrect_attempts":2,
+        "hints_used":1,"revealed":true,"completed":false,"clean_solves":0,"completion_timestamp":null}));
+    let old = serde_json::json!({"schema_version":1,"collection_id":"lichess-tactics","revision":9,
+        "current":0,"flipped":true,"records":records,
+        "session":{"puzzle_id":id,"cursor":0,"wrong":1,"hints":1,"revealed":false}});
+    let restored = Progress::decode(&serde_json::to_vec(&old).unwrap(), &pack).unwrap();
+    assert!(restored.flipped);
+    assert!(!restored.coordinates);
+    assert_eq!(restored.revision, 9);
+    assert_eq!(restored.records[&id].attempts, 3);
+    assert!(restored.records[&id].revealed);
+    let session = restored.restore(&pack).unwrap().unwrap();
+    assert_eq!(session.wrong, 1);
+    assert_eq!(session.hints, 1);
+    assert!(!session.clean());
+}
+#[test]
+fn readonly_exit_does_not_offer_an_impossible_save_retry() {
+    let (mut p, mut cx) = app();
+    p.on_load(
+        &mut cx,
+        KEY,
+        StoreResult::Loaded {
+            key: KEY.into(),
+            value: Some(b"corrupt".to_vec()),
+        },
+    );
+    p.start(&mut cx, 0);
+    action(&mut p, &mut cx, "home");
+    action(&mut p, &mut cx, "exit");
+    assert!(p.exit_requested);
+    let _ = cx.take_commands();
+    assert!(!format!("{:?}", p.screen()).contains("Retry save"));
+    action(&mut p, &mut cx, "save-progress");
+    assert!(p.storage_notice.is_some());
+    action(&mut p, &mut cx, "exit-unsaved");
+    assert!(cx
+        .take_commands()
+        .iter()
+        .any(|c| matches!(c, Command::Exit)));
+}

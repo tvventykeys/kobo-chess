@@ -1,4 +1,8 @@
-# Application validation — v0.2, 17 November 2026
+# Application validation — merged v0.2 baseline
+
+Current Beta-submission compatibility changes and their fresh results are in
+[SUBMISSION-VALIDATION.md](SUBMISSION-VALIDATION.md). The results below describe
+the previously merged v0.2 baseline, not additional test totals.
 
 Branch `feat/polgar-pocket-v0.2`, based on merged main `85be813`. Rust 1.85.1;
 Cobalt 0.3.37 at `5ac30a46efce23d7fa0d1cb12a499c9b57b816b0`. Remote upstream

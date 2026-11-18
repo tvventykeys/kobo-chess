@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Prepare an owner-reviewable contribution tree outside the upstream checkout.
+"""Legacy app-only scaffold; use prepare-cobalt-beta.py for the complete packet.
+Prepare an owner-reviewable contribution tree outside the upstream checkout.
 No upstream edits, device access, signing, contact or publication are performed.
 """
 import argparse
@@ -37,10 +38,15 @@ publish = false
 kobo-sdk = { path = "../../crates/kobo-sdk" }
 shakmaty = "=0.27.3"
 serde = { version = "=1.0.229", features = ["derive"] }
-serde_json = "=1.0.145"
+serde_json = "=1.0.151"
 
 [dev-dependencies]
+kobo-ui = { path = "../../crates/kobo-ui" }
+kobo-text = { path = "../../crates/kobo-text" }
 kobo-profile = { path = "../../crates/kobo-profile" }
+
+[lints]
+workspace = true
 ''')
 (output/'REVIEW-BEFORE-SUBMISSION.md').write_text('''# Prepared source contribution — not submitted
 

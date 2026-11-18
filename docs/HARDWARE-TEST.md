@@ -1,5 +1,8 @@
 # First physical test: Kobo Libra Colour with existing readers
 
+The current Beta submission and its remaining approval/signing gates are in
+[COBALT-SUBMISSION.md](COBALT-SUBMISSION.md).
+
 **Status: preparation only. Do not install this build yet.** No Kobo has been
 connected, probed, changed or tested in this task. A source/ARM build and a
 verification-only bundle exist; trusted installation is externally blocked.

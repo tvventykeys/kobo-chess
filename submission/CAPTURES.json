@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "authentic_simulator_output": true,
+  "personal_history_included": false,
+  "captures": [
+    {
+      "file": "clara-home.png",
+      "caption": "Clara BW simulator — home and CC0 demonstration collection",
+      "primary": false,
+      "sha256": "8fef1f1e24862096c3ec64994c6a78b4b7becc97dbb1fb004b2464aae4cc79fb",
+      "width": 1072,
+      "height": 1448,
+      "profile": "clara-bw-391",
+      "interface_scale_percent": 100,
+      "frame_view": "ideal",
+      "metadata_file": "capture-metadata/clara-home.png.json",
+      "capture_source": {
+        "binarySha256": "cb75e51c25941122237bdfc4a49b99bddacc3f221595228d69d4d2c8549bdce7",
+        "dirty": true,
+        "fixture": null,
+        "requestedSeed": null,
+        "revision": "1cc5b6412c4229b85e9960dd956c3d26c4ffd66e"
+      }
+    },
+    {
+      "file": "clara-board.png",
+      "caption": "Clara BW simulator — offline chessboard, normal text",
+      "primary": true,
+      "sha256": "29eaeb57c151e67c6a514e61f9011afc92c12ff3767e13a7386f2a618e1b3153",
+      "width": 1072,
+      "height": 1448,
+      "profile": "clara-bw-391",
+      "interface_scale_percent": 100,
+      "frame_view": "ideal",
+      "metadata_file": "capture-metadata/clara-board.png.json",
+      "capture_source": {
+        "binarySha256": "cb75e51c25941122237bdfc4a49b99bddacc3f221595228d69d4d2c8549bdce7",
+        "dirty": true,
+        "fixture": null,
+        "requestedSeed": null,
+        "revision": "1cc5b6412c4229b85e9960dd956c3d26c4ffd66e"
+      }
+    },
+    {
+      "file": "clara-board-170.png",
+      "caption": "Clara BW simulator — chessboard at 170% text",
+      "primary": false,
+      "sha256": "7d612c434c3fdd5547292d28ecbf701ebcd5ebcce36064e732b6eaad0984cb51",
+      "width": 1072,
+      "height": 1448,
+      "profile": "clara-bw-391",
+      "interface_scale_percent": 170,
+      "frame_view": "ideal",
+      "metadata_file": "capture-metadata/clara-board-170.png.json",
+      "capture_source": {
+        "binarySha256": "cb75e51c25941122237bdfc4a49b99bddacc3f221595228d69d4d2c8549bdce7",
+        "dirty": true,
+        "fixture": null,
+        "requestedSeed": null,
+        "revision": "1cc5b6412c4229b85e9960dd956c3d26c4ffd66e"
+      }
+    },
+    {
+      "file": "clara-revealed-170.png",
+      "caption": "Clara BW simulator — revealed demonstration solution at 170% text",
+      "primary": false,
+      "sha256": "dbfb9b3acd9c84115d0bf8b159ce6592173aca0b287d7d38fd6f9ecf5d4b5070",
+      "width": 1072,
+      "height": 1448,
+      "profile": "clara-bw-391",
+      "interface_scale_percent": 170,
+      "frame_view": "ideal",
+      "metadata_file": "capture-metadata/clara-revealed-170.png.json",
+      "capture_source": {
+        "binarySha256": "cb75e51c25941122237bdfc4a49b99bddacc3f221595228d69d4d2c8549bdce7",
+        "dirty": true,
+        "fixture": null,
+        "requestedSeed": null,
+        "revision": "1cc5b6412c4229b85e9960dd956c3d26c4ffd66e"
+      }
+    },
+    {
+      "file": "libra-board.png",
+      "caption": "Libra Colour simulator — brown board, normal text",
+      "primary": false,
+      "sha256": "539d62bb4fb969bf393d6df3c4157be49026e26bee66eaf396ed2d13501f320a",
+      "width": 1264,
+      "height": 1680,
+      "profile": "libra-colour-390",
+      "interface_scale_percent": 100,
+      "frame_view": "ideal",
+      "metadata_file": "capture-metadata/libra-board.png.json",
+      "capture_source": {
+        "binarySha256": "cb75e51c25941122237bdfc4a49b99bddacc3f221595228d69d4d2c8549bdce7",
+        "dirty": true,
+        "fixture": null,
+        "requestedSeed": null,
+        "revision": "1cc5b6412c4229b85e9960dd956c3d26c4ffd66e"
+      }
+    },
+    {
+      "file": "libra-revealed-170.png",
+      "caption": "Libra Colour simulator — revealed solution at 170% text",
+      "primary": false,
+      "sha256": "7f60de09a69ed2079c218afbc82e217360f03b8e8e33b8d15e26242b22a987ce",
+      "width": 1264,
+      "height": 1680,
+      "profile": "libra-colour-390",
+      "interface_scale_percent": 170,
+      "frame_view": "ideal",
+      "metadata_file": "capture-metadata/libra-revealed-170.png.json",
+      "capture_source": {
+        "binarySha256": "cb75e51c25941122237bdfc4a49b99bddacc3f221595228d69d4d2c8549bdce7",
+        "dirty": true,
+        "fixture": null,
+        "requestedSeed": null,
+        "revision": "1cc5b6412c4229b85e9960dd956c3d26c4ffd66e"
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+expect Polgár Pocket
+expect Continue studying
+clean
+shot home
+tap-id continue
+clean
+shot board
+tap-id hint
+expect Hint: move the piece on
+clean
+shot hint
+tap-id retry
+tap-id reveal
+expect Revealed.
+clean
+shot revealed
+tap-id home
+expect 0 / 20 solved
+clean

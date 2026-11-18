@@ -10,9 +10,10 @@ import tempfile
 import time
 import urllib.request
 
-repo = Path(__file__).resolve().parents[1]
-cli = Path(os.environ.get('CARGO_TARGET_DIR', '/workspace/build/cobalt')) / 'debug/kobo'
+repo = Path(os.environ.get('POCKET_APP_DIR', Path(__file__).resolve().parents[1]))
+cli = Path(os.environ.get('POCKET_CLI', str(Path(os.environ.get('CARGO_TARGET_DIR', '/workspace/build/cobalt')) / 'debug/kobo')))
 out = Path(os.environ.get('POCKET_EVIDENCE', '/workspace/verification/pocket-v02'))
+profile_id = os.environ.get('POCKET_PROFILE', 'libra-colour-390')
 pack = [json.loads(line) for line in (repo / 'packs/lichess-20.jsonl').read_text().splitlines()]
 puzzles = pack[1:]
 
@@ -71,14 +72,14 @@ def main():
         folder.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory(prefix='pocket-sim-') as temp:
             env = dict(os.environ, TMPDIR=temp, RUSTUP_TOOLCHAIN='1.85.1',
-                       KOBO_SIM_PROFILE='libra-colour-390', KOBO_SIM_OFFLINE='1',
+                       KOBO_SIM_PROFILE=profile_id, KOBO_SIM_OFFLINE='1',
                        KOBO_SIM_DATA=str(Path(temp) / 'data'), KOBO_TEXT_SCALE=scale)
             proc, log, address = start(env, folder)
             try:
                 simulation = get(address, '/simulation')
                 profile = simulation['profile']
-                assert profile['id'] == 'libra-colour-390'
-                assert (profile['width'], profile['height'], profile['colourPanel']) == (1264, 1680, True)
+                assert profile['id'] == profile_id
+                assert (profile['width'], profile['height'], profile['colourPanel']) == {'libra-colour-390': (1264, 1680, True), 'clara-bw-391': (1072, 1448, False)}[profile_id]
                 (folder / 'simulation.json').write_text(json.dumps(simulation, indent=2))
                 drive(address, folder, ['clean', 'shot home', 'tap-id collections', 'clean',
                     'expect 20 verified puzzles', 'shot collections', 'tap-id select-pack',
@@ -161,8 +162,8 @@ def main():
                     'expect Solved with assistance.', 'clean', 'shot finished-restored-partial'])
             finally:
                 stop(proc, log)
-            print(f'PASS Libra Colour {scale}: all 20 puzzles via touch, controls, page events, completed and partial restarts', flush=True)
-    print('PASS: normal and 170% Libra Colour, 42 puzzle solves, 4 process restarts; no reader touched')
+            print(f'PASS {profile_id} {scale}: all 20 puzzles via touch, controls, page events, completed and partial restarts', flush=True)
+    print('PASS: normal and 170% selected profile, 42 puzzle solves, 4 process restarts; no reader touched')
 
 
 if __name__ == "__main__":

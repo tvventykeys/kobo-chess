@@ -68,7 +68,7 @@ impl Progress {
                 || (r.completion_timestamp.is_some() && !r.completed)
                 || r.clean_solves > r.attempts
                 || (r.clean_solves > 0 && !r.completed)
-                || r.completion_timestamp.is_some_and(|t| t < 1577836800)
+                || r.completion_timestamp.is_some_and(|t| t < 1_577_836_800)
             {
                 return Err("Invalid progress record".into());
             }
@@ -130,7 +130,7 @@ impl Progress {
                 .duration_since(std::time::UNIX_EPOCH)
                 .ok()
                 .map(|d| d.as_secs())
-                .filter(|t| *t >= 1577836800);
+                .filter(|t| *t >= 1_577_836_800);
         }
         r.revealed |= session.revealed;
     }

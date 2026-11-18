@@ -12,7 +12,7 @@ en passant through shakmaty. Your side is at the bottom; Settings flips it.
 Coords toggles square labels without cluttering the default board. Cobalt sets
 text size; normal and 170% Libra Colour and Clara BW layouts are simulator-tested.
 
-Choose the one installed collection, continue studying, and use Hint (source
+Choose the demo collection, continue studying, and use Hint (source
 piece only), Retry, Reveal, Prev and Next. The supplied solution controls
 validation and deterministic opponent replies. A different legal winning move
 is outside this supplied line. Reveals do not complete puzzles or count as clean;
@@ -43,7 +43,8 @@ in `src/`, packs in `packs/`; the existing setup scripts remain unchanged.
 * [Pack format and local import commands](docs/PUZZLE-PACKS.md)
 * [Exact public puzzle source and license](packs/SOURCE.md)
 * [Artifacts, packaging limitation and hardware test](docs/INSTALLATION.md)
-* [Private-trainer research and future sync design](docs/INTEGRATION.md)
+* [CC0 Lichess roadmap and Cobalt constraints](docs/ROADMAP.md)
+* [20,000-puzzle preview validation and benchmarks](docs/LICHESS-STARTER-VALIDATION.md)
 * [Application validation report](docs/VALIDATION.md)
 * [Complete prepared Beta Store submission](docs/COBALT-SUBMISSION.md)
 * [Submission build and simulator results](docs/SUBMISSION-VALIDATION.md)
@@ -52,12 +53,14 @@ in `src/`, packs in `packs/`; the existing setup scripts remain unchanged.
 * [Safe hardware test and rollback guide for existing readers](docs/HARDWARE-TEST.md)
 * [License and attribution](THIRD-PARTY.md)
 
-The private trainer was inspected read-only; public builds contain no private
-book data. A 20-problem private subset was locally imported/validated outside
-Git. External runtime pack installation, live sync, analysis, online games and
-spaced repetition remain future work. The verification-only bundle still requires trusted package **and catalog**
-signing for stock-runtime installation. Cburnett graphics need SDK support; this
-build retains Cobalt's licensed vector pieces. Zen OS coexistence remains unverified. No reader test or Store publication has occurred.
+The default build still ships Pocket Twenty. A host-generated, build-time
+preview adds 20,000 Lichess puzzles rated 80–1500, for both solver colours,
+with rating and theme filtering.
+It uses a separate progress key so the demo history remains available in the
+default build. The roadmap sources public puzzles from Lichess under CC0 and
+excludes copyrighted book studies and private trainer material. The preview
+has been exercised on host simulators. Trusted delivery and hardware testing
+remain separate from this work.
 
 ## Verified upstream and tools
 

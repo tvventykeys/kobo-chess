@@ -77,7 +77,7 @@ impl Session {
             self.cursor += 1;
         }
     }
-    pub fn solution_text(&self) -> String {
+    pub fn solution_moves(&self) -> Vec<String> {
         let mut position = rules::position(&self.puzzle.fen).expect("validated puzzle");
         self.puzzle
             .solution
@@ -87,8 +87,10 @@ impl Session {
                 shakmaty::san::SanPlus::from_move_and_play_unchecked(&mut position, &movement)
                     .to_string()
             })
-            .collect::<Vec<_>>()
-            .join(" ")
+            .collect()
+    }
+    pub fn solution_text(&self) -> String {
+        self.solution_moves().join(" ")
     }
     pub fn retry(&mut self) {
         *self = Self::new(self.puzzle.clone());

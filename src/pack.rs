@@ -1,5 +1,5 @@
 //! JSON Lines: bounded header plus one independently decoded puzzle per line.
-use crate::rules;
+use crate::{index::Index, rules};
 use serde::{Deserialize, Serialize};
 use shakmaty::Position;
 use std::{collections::BTreeSet, ops::Range};
@@ -40,6 +40,7 @@ pub struct Pack {
     data: String,
     records: Vec<Range<usize>>,
     ids: BTreeSet<String>,
+    starter: Option<Index<'static>>,
 }
 
 fn identifier(s: &str) -> bool {
@@ -130,16 +131,42 @@ impl Pack {
             data,
             records,
             ids,
+            starter: None,
         })
     }
-    pub fn contains_id(&self, id: &str) -> bool {
-        self.ids.contains(id)
+    pub fn with_starter(mut self, bytes: &'static [u8]) -> Result<Self, String> {
+        let starter = Index::parse(bytes)?;
+        if self.ids.iter().any(|id| starter.contains(id)) {
+            return Err("Starter repeats a demo puzzle ID".into());
+        }
+        self.starter = Some(starter);
+        Ok(self)
     }
-    pub fn len(&self) -> usize {
+    pub fn contains_id(&self, id: &str) -> bool {
+        self.ids.contains(id) || self.starter.as_ref().is_some_and(|pack| pack.contains(id))
+    }
+    pub fn demo_len(&self) -> usize {
         self.records.len()
     }
+    pub fn len(&self) -> usize {
+        self.demo_len() + self.starter.as_ref().map_or(0, Index::len)
+    }
+    pub fn facets(&self, index: usize) -> (u16, u8) {
+        self.starter
+            .as_ref()
+            .expect("starter index")
+            .facets(index - self.demo_len())
+    }
+    pub fn id(&self, index: usize) -> &str {
+        self.starter
+            .as_ref()
+            .expect("starter index")
+            .id(index - self.demo_len())
+    }
     pub fn puzzle(&self, index: usize) -> Puzzle {
-        // Bytes and offsets are immutable after full validation.
+        if let Some(starter) = self.starter.as_ref().filter(|_| index >= self.demo_len()) {
+            return starter.puzzle(index - self.demo_len());
+        }
         serde_json::from_str(&self.data[self.records[index].clone()]).expect("validated pack")
     }
 }

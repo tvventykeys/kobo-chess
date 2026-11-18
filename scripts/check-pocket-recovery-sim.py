@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Test startup recovery, failed writes, quiet idle and clean exit on the host only."""
+from http.client import RemoteDisconnected
 import importlib.util
 import json
 import os
@@ -8,6 +9,7 @@ import tempfile
 import subprocess
 import time
 import tomllib
+import urllib.request
 
 spec = importlib.util.spec_from_file_location('pocket_sim', Path(__file__).with_name('check-pocket-sim.py'))
 sim = importlib.util.module_from_spec(spec)
@@ -77,13 +79,22 @@ for scale in ['default', '170']:
             state.parent.chmod(0o700)
             sim.drive(address, bad, ['tap-id storage-open','tap-id save-progress','wait-idle','expect-missing Progress not saved.',
                 'clean','shot write-recovered'])
-            result = subprocess.run([str(sim.cli),'drive','--address',address,'--step','tap-id exit'],
-                                    cwd=sim.repo,text=True,capture_output=True,timeout=15)
-            (bad/'exit-driver.log').write_text(result.stdout+result.stderr)
-            # Depending on the final response race, the upstream driver either
-            # acknowledges the tap or reports disconnection. Accept only those
-            # outcomes, followed by an independently observed clean CLI exit.
-            assert result.returncode == 0 or (result.returncode == 1 and 'the app disconnected while handling the tap' in result.stderr)
+            # Post the actual exit tap without the drive client's follow-up
+            # activity read. On successful exit that listener may already be gone.
+            layout = sim.get(address, '/layout')
+            exits = [node for node in layout['nodes'] if node['lines'] == ['Exit to launcher']]
+            assert len(exits) == 1, exits
+            point = exits[0]['centre']
+            request = urllib.request.Request(
+                f'http://{address}/touch', data=f"x={point['x']}&y={point['y']}".encode()
+            )
+            try:
+                with urllib.request.urlopen(request, timeout=5) as response:
+                    response.read()
+                outcome = 'Exit touch acknowledged'
+            except (RemoteDisconnected, ConnectionResetError):
+                outcome = 'Simulator closed its established exit touch connection'
+            (bad/'exit-driver.log').write_text(outcome + '\n')
             # A normal successful app exit must be observed, not assumed from a tap.
             deadline = time.monotonic()+10
             while proc.poll() is None and time.monotonic()<deadline:

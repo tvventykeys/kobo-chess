@@ -3,6 +3,8 @@ use crate::{pack::Pack, rules, session::Session};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
+pub const PREVIEW_RECORD_LIMIT: usize = 1000;
+
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Record {
@@ -50,7 +52,13 @@ impl Progress {
         }
     }
     pub fn decode(bytes: &[u8], pack: &Pack) -> Result<Self, String> {
-        if bytes.len() > 60000 {
+        let preview = pack.len() > pack.demo_len();
+        let limit = if preview {
+            kobo_sdk::MAX_STORE_VALUE
+        } else {
+            60_000
+        };
+        if bytes.len() > limit {
             return Err("Progress too large".into());
         }
         let value: Self = serde_json::from_slice(bytes).map_err(|e| e.to_string())?;
@@ -58,6 +66,7 @@ impl Progress {
             || value.collection_id != pack.header.collection_id
             || value.current >= pack.len()
             || value.records.len() > pack.len()
+            || (preview && value.records.len() > PREVIEW_RECORD_LIMIT)
         {
             return Err("Incompatible progress".into());
         }

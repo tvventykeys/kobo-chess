@@ -29,7 +29,7 @@
   "frame": {
     "colourAppearance": "luminance",
     "format": "grey8",
-    "sha256": "c901a819caa080d057f939e4cb66cc350e2fb41cdd9a038391549be65291ae84",
+    "sha256": "8206e311db4e028eee4f6f4de7c4940681cefb34348cac2e47f7185835dfc52e",
     "view": "ideal"
   },
   "interfaceScalePercent": 100,
@@ -62,13 +62,13 @@
       "profile": "clara-bw-391"
     },
     "clock": {
-      "date": "2026-11-17",
+      "date": "2026-11-18",
       "mode": "real",
-      "monotonicMillis": "718",
-      "unixMillis": "1794940895832",
-      "utcOffsetMinutes": -420
+      "monotonicMillis": "1485",
+      "unixMillis": "1794989509363",
+      "utcOffsetMinutes": 0
     },
-    "dirtyPixelsSinceClean": 175275,
+    "dirtyPixelsSinceClean": 175279,
     "hardware": {
       "batteryPercent": 72,
       "charging": false,
@@ -103,14 +103,14 @@
       "contentsKnown": true,
       "dueAtFixtureMillis": null,
       "failures": "0",
-      "finishedAtMillis": "216",
+      "finishedAtMillis": "395",
       "fixtureClockMillis": "0",
       "mode": "automatic",
       "queued": false,
       "status": "idle",
       "submissionMarker": null,
       "submitted": "2",
-      "submittedAtMillis": "161",
+      "submittedAtMillis": "344",
       "syntheticDelayMillis": "0",
       "timing": "host control observations; not hardware calibration",
       "visibleFrame": "last confirmed completion with approximate residue"
@@ -137,7 +137,7 @@
     "scenario": "offline",
     "touch": null,
     "transition": {
-      "dirty": 175275,
+      "dirty": 175279,
       "full": false,
       "refresh": 2,
       "region": {
@@ -212,7 +212,7 @@
     }
   },
   "source": {
-    "binarySha256": "cb75e51c25941122237bdfc4a49b99bddacc3f221595228d69d4d2c8549bdce7",
+    "binarySha256": "b66878082ab184e9b7e9fabb36d45bb72874deaabdb7d0a15d9e7124f79b0e38",
     "dirty": true,
     "fixture": null,
     "requestedSeed": null,

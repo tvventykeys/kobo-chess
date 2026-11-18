@@ -1,1 +1,2 @@
 The home page serves PNG for polgar-pocket.png; node tools/encode-app-thumbs.mjs writes their WebP copies.
+Generated pages match the committed candidate. Working tree is clean.

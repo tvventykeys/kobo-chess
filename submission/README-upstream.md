@@ -1,4 +1,4 @@
-# Polgár Trainer Pocket
+# Pocket Chess Studies
 
 An offline chess puzzle book for Cobalt, version **0.2.0**. The initial
 **demonstration collection contains twenty CC0 Lichess puzzles**. No Polgár book

@@ -3,7 +3,7 @@
 
 ## The app
 
-App id: `polgar-pocket` (display name Polgár Trainer Pocket, version 0.2.0)
+App id: `polgar-pocket` (display name Pocket Chess Studies, version 0.2.0)
 
 What it lets a Kobo owner do: practise twenty genuine CC0 Lichess demonstration
 puzzles offline on a large chessboard, with legal touch moves, deterministic
@@ -21,13 +21,13 @@ book collection is included.
   twenty public CC0-1.0 Lichess records with exact public rows/provenance. No
   private trainer, chess-book library, credential, custom piece art or personal
   history. Uses Cobalt's existing book glyph, vectors and fonts. Root attribution
-  is updated. The name may imply an association; no endorsement is claimed and
-  owner/maintainer naming review is necessary before publication. Recommended
-  alternative: Pocket Chess Studies, preserving internal progress identity.
+  is updated. The proposed public name is Pocket Chess Studies, with the existing internal
+  app identity retained. Public naming approval is pending.
 - Capabilities it declares, and why it needs each: `[]`. No network, engine,
   polling, account, Wi-Fi hold or background task. Progress uses app-local store.
 - Accounts or self-hosted services it needs, as `setup.steps` describes them:
-  none; `setup.steps` is empty. Choose the bundled demo collection and Continue.
+  none. The setup note explains that the bundled puzzles work offline. Choose
+  the bundled demo collection and Continue.
 - Screenshots, from a Clara BW or its simulator: unedited actual simulator images
   in `apps/polgar-pocket/screenshots/clara-home.png`, `clara-board.png`,
   `clara-board-170.png`, `clara-revealed-170.png`, with explicit captions in the
@@ -48,16 +48,16 @@ The final lines of
 
 ```
 verified polgar-pocket (kobo-polgar-pocket)
-created /workspace/work/cobalt-beta-submission/target/app-contribute/polgar-pocket/preview/polgar-pocket-0.2.0.cobalt-app
-created /workspace/work/cobalt-beta-submission/target/app-contribute/polgar-pocket/preview/cobalt-app-catalog-v2.json
-created /workspace/work/cobalt-beta-submission/target/app-contribute/polgar-pocket/preview/cobalt-app-catalog-v2.json.sig
-created /workspace/work/cobalt-beta-submission/target/app-contribute/polgar-pocket/preview/cobalt-app-catalog.json
-created /workspace/work/cobalt-beta-submission/target/app-contribute/polgar-pocket/preview/cobalt-app-catalog.json.sig
+created /workspace/work/cobalt-beta-refresh/target/app-contribute/polgar-pocket/preview/polgar-pocket-0.2.0.cobalt-app
+created /workspace/work/cobalt-beta-refresh/target/app-contribute/polgar-pocket/preview/cobalt-app-catalog-v2.json
+created /workspace/work/cobalt-beta-refresh/target/app-contribute/polgar-pocket/preview/cobalt-app-catalog-v2.json.sig
+created /workspace/work/cobalt-beta-refresh/target/app-contribute/polgar-pocket/preview/cobalt-app-catalog.json
+created /workspace/work/cobalt-beta-refresh/target/app-contribute/polgar-pocket/preview/cobalt-app-catalog.json.sig
 contribution check passed for polgar-pocket; local Beta-parity preview: target/app-contribute/polgar-pocket/preview
 ```
 
 Prepared against Beta `1cc5b6412c4229b85e9960dd956c3d26c4ffd66e`, local candidate
-`b8da05efa0495a26ec36fa6ead71c4946b65864c`. Rust 1.85.1; app tests 59/59,
+`f6de88deccb620b625d2480cf4e8b171077cae8d`. Rust 1.85.1; app tests 59/59,
 0 failed/ignored; strict all-target/all-feature Clippy and formatting passed;
 host and static ARM release passed. All 129 Node tools tests passed. Official
 all-routes simulator runner passed for this app. Broader offline input suites

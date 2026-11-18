@@ -2,20 +2,14 @@
 
 ## Name decision before publication
 
-Requested display name: **Polgár Trainer Pocket**, version 0.2.0. This name can
-suggest an association with László Polgár, his family or published collections.
-No permission, trademark clearance or endorsement evidence has been supplied;
-none is inferred from the puzzle-data license. This is a naming review concern,
-not a finding that a particular trademark is registered or infringed. No
-exhaustive trademark search or legal clearance is claimed.
+The draft proposes **Pocket Chess Studies** (short label **Pocket Chess**) at
+version 0.2.0. Confirm the public name before upstream submission or publication.
+The previous display name could suggest an association with László Polgár or
+his published collections. The CC0 puzzle license does not grant naming rights.
+No exhaustive trademark search or legal clearance is claimed.
 
-Recommended alternative before publication: **Pocket Chess Studies** (short
-label **Pocket Chess**), subject to the owner's own naming check. Keep the
-internal `polgar-pocket` app/collection storage identity if renaming so upgrades
-do not reset progress. The current prepared files retain the expressly requested
-name and clearly disclose the twenty-puzzle CC0 demo and absence of affiliation.
-Owner and maintainer acceptance of the name, or authorization to rename it,
-remains required before an upstream/publication step. No name is asserted cleared.
+The internal app ID remains `polgar-pocket` and the collection ID remains
+`lichess-tactics`. Both identities and the progress format are preserved.
 
 ## Redistributed material
 

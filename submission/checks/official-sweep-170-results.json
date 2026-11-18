@@ -1,0 +1,13 @@
+{
+  "source_sha": "f6de88deccb620b625d2480cf4e8b171077cae8d",
+  "dirty": false,
+  "results": [
+    {
+      "app": "polgar-pocket",
+      "launched": true,
+      "status": "pass",
+      "route": "apps/polgar-pocket/drive.kobo",
+      "exit_code": 0
+    }
+  ]
+}

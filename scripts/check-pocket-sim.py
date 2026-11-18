@@ -94,9 +94,9 @@ def main():
                     'clean', 'shot settings', 'tap-id flip', 'tap-id home', 'tap-id continue',
                     'tap-id retry'])
                 page(address, 'next')
-                drive(address, folder, ['expect 2 / 20', 'clean'])
+                drive(address, folder, ['wait-for 2 / 20', 'clean'])
                 page(address, 'back')
-                drive(address, folder, ['expect 1 / 20', 'clean'])
+                drive(address, folder, ['wait-for 1 / 20', 'clean'])
                 # Solve every authentic line by tapping source and destination through
                 # renderer hit testing. Opponent moves must happen automatically.
                 for i, puzzle in enumerate(puzzles):

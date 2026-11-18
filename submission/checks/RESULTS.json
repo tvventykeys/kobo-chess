@@ -1,92 +1,130 @@
 {
-  "base_commit": "1cc5b6412c4229b85e9960dd956c3d26c4ffd66e",
-  "prepared_commit": "b8da05efa0495a26ec36fa6ead71c4946b65864c",
+  "app_repository_base": "417ad5e18dc9f9083c748300d9ad21e3819305db",
+  "cobalt_beta_base": "1cc5b6412c4229b85e9960dd956c3d26c4ffd66e",
+  "standalone_sdk": "5ac30a46efce23d7fa0d1cb12a499c9b57b816b0",
+  "prepared_commit": "f6de88deccb620b625d2480cf4e8b171077cae8d",
   "app_version": "0.2.0",
   "rust": "1.85.1",
-  "unit_tests_per_context": 59,
-  "unit_contexts": [
-    "standalone pinned SDK",
-    "Beta workspace"
-  ],
-  "unit_failed": 0,
-  "unit_ignored": 0,
-  "node_tests_passed": 129,
-  "node_tests_failed": 0,
-  "node_tests_skipped": 0,
-  "simulator_puzzle_solves": 84,
-  "simulator_progress_restarts": 8,
-  "profiles": [
-    "libra-colour-390",
-    "clara-bw-391"
-  ],
-  "text_scale_percent": [
-    100,
-    170
-  ],
-  "recovery_scenarios_passed": true,
-  "official_contributor_check": "passed",
-  "official_ci_app_route": "passed",
-  "reproduced_files_byte_identical": 47,
-  "fixture_package_verifies": true,
-  "fixture_catalogs_verify": 2,
-  "release_key_rejects_fixture_package": true,
-  "release_key_rejects_fixture_catalogs": 2,
-  "physical_device_tested": false,
-  "trusted_release_signed": false,
-  "published": false,
-  "idle_host_samples": [
-    {
-      "profile": "clara",
-      "text_scale": "170",
-      "interval_seconds": 2,
-      "cpu_ticks": 0,
-      "paints_before": 4,
-      "paints_after": 4,
-      "rss_kib": 9180,
-      "threads": 1
+  "cobalt": "0.3.37",
+  "standalone": {
+    "format": "passed",
+    "clippy": "passed",
+    "host_build": "passed",
+    "pack_records": 20,
+    "tests": {
+      "passed": 59,
+      "failed": 0,
+      "ignored": 0
     },
-    {
-      "profile": "clara",
-      "text_scale": "default",
-      "interval_seconds": 2,
-      "cpu_ticks": 0,
-      "paints_before": 4,
-      "paints_after": 4,
-      "rss_kib": 9228,
-      "threads": 1
-    },
-    {
-      "profile": "libra",
-      "text_scale": "170",
-      "interval_seconds": 2,
-      "cpu_ticks": 0,
-      "paints_before": 4,
-      "paints_after": 4,
-      "rss_kib": 9168,
-      "threads": 1
-    },
-    {
-      "profile": "libra",
-      "text_scale": "default",
-      "interval_seconds": 2,
-      "cpu_ticks": 0,
-      "paints_before": 4,
-      "paints_after": 4,
-      "rss_kib": 9028,
-      "threads": 1
+    "arm": {
+      "static": true,
+      "hard_float": true,
+      "elf_interpreter": false,
+      "bytes": 3108460,
+      "sha256": "9688b7a360a8067cfa85c5bf4bf14639ec64740b70fc1da2b6f895b7db63c809"
     }
-  ],
-  "logs_sha256": {
-    "standalone-final.log": "652cd3c4bbf40d1eb307cf5f691a37793a5b25b9e25b2252a0089077af124326",
-    "official-contributor-final.log": "ec75318aef1c2935933d91a0744af5b72bedddfb2f0336ef83e60cfd0760117b",
-    "upstream-node-final.log": "b5a12906f1250f75b87f6d831f8ecc4996c8317c8c57186c8df418e73d3dc690",
-    "package-verification.log": "7ca705eb1dd3848c6c4178a130892044ef5693b55f9812389173831f8395058e",
-    "reproduction-final.log": "231bd2633ac2e8ff03c5d1ff25b23c32adc06048896759d4da02af794a7647a1",
-    "page-freshness.log": "f20260ee3c545f287089754aef83b39892e693014719abdf940a09fc8fec0fa4",
-    "official-sweep.log": "4258d36564055812c19b5e9061da8c22b181010da5be1d572ec8c91ea39dc6d1",
-    "libra-sim.log": "724e9e7668a22090c73119372500c22e699af5fec66b66fd693dd328d1555f6b",
-    "clara-sim.log": "56dd74d479c8e43be84070c68ab0d0468c9c8920d88c6b34d19530c39b5ae4ee",
-    "libra-recovery.log": "ccb9194af775bc1295e402bc8ae839fe05b8bda48528dcad5a65d9feb73aef49",
-    "clara-recovery.log": "d56119e6d3b6ff3956effa154b326364626824ed1fc301cac5ebb9ef5e6f8255"
-  }
+  },
+  "beta": {
+    "host_app_cli_build": "passed",
+    "contributor_dry_run": "passed",
+    "formatting": "passed",
+    "tests": {
+      "passed": 59,
+      "failed": 0,
+      "ignored": 0
+    },
+    "strict_clippy": "passed",
+    "protocol": 18,
+    "protocol_minimum": "0.3.34",
+    "app_minimum": "0.3.37",
+    "arm": {
+      "static_verification": "passed",
+      "bytes": 2473556,
+      "sha256": "04e4056c0fcd283296d1339f74300f7e522f61a8ab7a23c8b99e9b27ea2d776f"
+    },
+    "node_tests": {
+      "passed": 129,
+      "failed": 0,
+      "skipped": 0
+    },
+    "page_freshness": "passed",
+    "exact_reproduction_file_count": 47
+  },
+  "simulator": {
+    "profiles": [
+      "libra-colour-390",
+      "clara-bw-391"
+    ],
+    "text_scale_percent": [
+      100,
+      170
+    ],
+    "puzzle_solves": 84,
+    "progress_restarts": 8,
+    "recovery_passed": 4,
+    "recovery_failed": 0,
+    "official_route_report": "official-sweep-results.json",
+    "public_capture_count": 6,
+    "idle_samples": [
+      {
+        "profile": "clara-bw-391",
+        "interface_scale_percent": 100,
+        "interval_seconds": 2,
+        "cpu_ticks": 0,
+        "paints_before": 4,
+        "paints_after": 4,
+        "threads": 1,
+        "rss_kib": 9240
+      },
+      {
+        "profile": "clara-bw-391",
+        "interface_scale_percent": 170,
+        "interval_seconds": 2,
+        "cpu_ticks": 0,
+        "paints_before": 4,
+        "paints_after": 4,
+        "threads": 1,
+        "rss_kib": 9140
+      },
+      {
+        "profile": "libra-colour-390",
+        "interface_scale_percent": 100,
+        "interval_seconds": 2,
+        "cpu_ticks": 0,
+        "paints_before": 4,
+        "paints_after": 4,
+        "threads": 1,
+        "rss_kib": 9196
+      },
+      {
+        "profile": "libra-colour-390",
+        "interface_scale_percent": 170,
+        "interval_seconds": 2,
+        "cpu_ticks": 0,
+        "paints_before": 4,
+        "paints_after": 4,
+        "threads": 1,
+        "rss_kib": 9016
+      }
+    ],
+    "official_route_clara_170_report": "official-sweep-170-results.json"
+  },
+  "published_beta": {
+    "source_sha": "716edd9d25b17a0cb056e87069dc2182d7e5106a",
+    "catalog_v2_sha256": "497e267f6f30f3fe8f7af444493f33e600ed90dd1ce9a305ab453967fced55ba",
+    "earlier_catalog_sha256": "13e68a36457d63b35e7f2dd1bd744a16c4b88e9da0aee6e9a46f6fe75fc5e262",
+    "catalog_signatures_verified": 2,
+    "polgar_pocket_listed": false
+  },
+  "fixture": {
+    "bytes": 2474012,
+    "sha256": "8b56f794352bb99982f67093ce3150caf92ff483be30740f75209654c4d52d03",
+    "fixture_key_verified": 3,
+    "release_key_rejected": 3
+  },
+  "unrun": [
+    "unrelated Cobalt Rust workspace matrix",
+    "other apps simulator routes",
+    "physical Kobo acceptance"
+  ]
 }

@@ -1,4 +1,4 @@
-## Polgár Trainer Pocket demonstration puzzles
+## Pocket Chess Studies demonstration puzzles
 
 `apps/polgar-pocket` is AGPL-3.0-only and bundles twenty CC0-1.0 Lichess puzzle
 records, not a Polgár book collection. Source and exact subset provenance are in

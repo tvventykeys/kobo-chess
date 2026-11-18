@@ -1,0 +1,3 @@
+    Finished `dev` profile [unoptimized] target(s) in 0.24s
+{"app": "polgar-pocket", "launched": true, "status": "pass", "route": "apps/polgar-pocket/drive.kobo", "exit_code": 0}
+1/1 runs passed across 1 apps; 1 committed routes; report: /workspace/verification/pocket-refresh/official-sweep-170/results.json

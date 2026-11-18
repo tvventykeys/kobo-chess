@@ -1,12 +1,16 @@
-fixture app-verify: exit 0
 Verified package signature, manifest and binary.
-fixture app-catalog-verify: exit 0
+fixture app-verify exit 0
 Verified catalog signature and package entry.
-fixture app-catalog-verify: exit 0
+fixture app-catalog-verify cobalt-app-catalog-v2.json exit 0
 Verified catalog signature and package entry.
-release app-verify: exit 1
+fixture app-catalog-verify cobalt-app-catalog.json exit 0
 kobo: Package verification failed: manifest signature: Ed25519 signature verification failed
-release app-catalog-verify: exit 1
+release app-verify exit 1
 kobo: Catalog signature verification failed: Ed25519 signature verification failed
-release app-catalog-verify: exit 1
+release app-catalog-verify cobalt-app-catalog-v2.json exit 1
 kobo: Catalog signature verification failed: Ed25519 signature verification failed
+release app-catalog-verify cobalt-app-catalog.json exit 1
+04e4056c0fcd283296d1339f74300f7e522f61a8ab7a23c8b99e9b27ea2d776f  /workspace/work/cobalt-beta-refresh/target/app-contribute/polgar-pocket/binary/kobo-polgar-pocket
+8b56f794352bb99982f67093ce3150caf92ff483be30740f75209654c4d52d03  /workspace/work/cobalt-beta-refresh/target/app-contribute/polgar-pocket/preview/polgar-pocket-0.2.0.cobalt-app
+2473556 /workspace/work/cobalt-beta-refresh/target/app-contribute/polgar-pocket/binary/kobo-polgar-pocket
+2474012 /workspace/work/cobalt-beta-refresh/target/app-contribute/polgar-pocket/preview/polgar-pocket-0.2.0.cobalt-app

@@ -1,6 +1,6 @@
 {
   "base_commit": "1cc5b6412c4229b85e9960dd956c3d26c4ffd66e",
-  "prepared_commit": "b8da05efa0495a26ec36fa6ead71c4946b65864c",
+  "prepared_commit": "ba5ad80d0e2f2151ec29e610f81867a4b3bb763a",
   "app_version": "0.2.0",
   "rust": "1.85.1",
   "unit_tests_per_context": 59,
@@ -42,7 +42,7 @@
       "cpu_ticks": 0,
       "paints_before": 4,
       "paints_after": 4,
-      "rss_kib": 9180,
+      "rss_kib": 9076,
       "threads": 1
     },
     {
@@ -52,7 +52,7 @@
       "cpu_ticks": 0,
       "paints_before": 4,
       "paints_after": 4,
-      "rss_kib": 9228,
+      "rss_kib": 9208,
       "threads": 1
     },
     {
@@ -62,7 +62,7 @@
       "cpu_ticks": 0,
       "paints_before": 4,
       "paints_after": 4,
-      "rss_kib": 9168,
+      "rss_kib": 9096,
       "threads": 1
     },
     {
@@ -72,21 +72,24 @@
       "cpu_ticks": 0,
       "paints_before": 4,
       "paints_after": 4,
-      "rss_kib": 9028,
+      "rss_kib": 9172,
       "threads": 1
     }
   ],
   "logs_sha256": {
-    "standalone-final.log": "652cd3c4bbf40d1eb307cf5f691a37793a5b25b9e25b2252a0089077af124326",
-    "official-contributor-final.log": "ec75318aef1c2935933d91a0744af5b72bedddfb2f0336ef83e60cfd0760117b",
-    "upstream-node-final.log": "b5a12906f1250f75b87f6d831f8ecc4996c8317c8c57186c8df418e73d3dc690",
+    "standalone-final.log": "7031b3281d76c8c3258c0963228f7e963e3dcef54da09b0a2f4df5f190ca71c8",
+    "official-contributor-final.log": "a80540da20f9fbdfba7042c21cd7e0cfe4ae8bc741b667a782a2bc2f3dad7778",
+    "upstream-node-final.log": "d70ac53a805ef6f376ee9bc17d2373b6a03dfcff13789a23be58d2916c535d90",
     "package-verification.log": "7ca705eb1dd3848c6c4178a130892044ef5693b55f9812389173831f8395058e",
-    "reproduction-final.log": "231bd2633ac2e8ff03c5d1ff25b23c32adc06048896759d4da02af794a7647a1",
+    "reproduction-final.log": "1fc9135e086ebd602d3a57b1061b352a0c6d4c18c400a2de7abb67416a9b85ce",
     "page-freshness.log": "f20260ee3c545f287089754aef83b39892e693014719abdf940a09fc8fec0fa4",
-    "official-sweep.log": "4258d36564055812c19b5e9061da8c22b181010da5be1d572ec8c91ea39dc6d1",
-    "libra-sim.log": "724e9e7668a22090c73119372500c22e699af5fec66b66fd693dd328d1555f6b",
-    "clara-sim.log": "56dd74d479c8e43be84070c68ab0d0468c9c8920d88c6b34d19530c39b5ae4ee",
-    "libra-recovery.log": "ccb9194af775bc1295e402bc8ae839fe05b8bda48528dcad5a65d9feb73aef49",
-    "clara-recovery.log": "d56119e6d3b6ff3956effa154b326364626824ed1fc301cac5ebb9ef5e6f8255"
-  }
+    "official-sweep.log": "26af875822c73aaa60883aa3950473ba36a81ffacefd1ed5c15ae737779515e5",
+    "libra-sim.log": "927a1949da4a9edf8424fa48ddba03a12a9abc3cbdd75475b1667d233f4bceae",
+    "clara-sim.log": "9cfab19a79dc029f8279c7f3707420b007b973294a09792a0141f865669fd33d",
+    "libra-recovery.log": "4e231ec3570278e5f251f6d542964f60fde3bd653af30ef38fd203cd8d3c60c6",
+    "clara-recovery.log": "6e8a7146295905591820599d9e3e52f311f01680f51d572aad222157cf704fcf"
+  },
+  "display_name": "Pocket Chess Studies",
+  "short_label": "Pocket Chess",
+  "owner_name_approved": true
 }

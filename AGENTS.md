@@ -1,7 +1,7 @@
 # kobo-chess agent instructions
 
 This is an independent native Cobalt chess application repository targeting the
-Kobo Libra Colour (N428 / code 390). Polgár Trainer Pocket is implemented in
+Kobo Libra Colour (N428 / code 390). Pocket Chess Studies is implemented in
 `src/`; the bundled CC0 pack is in `packs/`. Run `bash scripts/verify-pocket.sh` for application validation.
 `scripts/verify-cloud.sh` validates the preserved environment and official examples.
 Keep this repository separate from BandarLabs/Cobalt. Do not add it to the

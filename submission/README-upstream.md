@@ -1,4 +1,4 @@
-# Polgár Trainer Pocket
+# Pocket Chess Studies
 
 An offline chess puzzle book for Cobalt, version **0.2.0**. The initial
 **demonstration collection contains twenty CC0 Lichess puzzles**. No Polgár book
@@ -56,9 +56,10 @@ IDs, FENs, source rows, ratings and moves are preserved in `packs/`. The publish
 setup move is applied exactly once before study. `packs/SOURCE.md` identifies
 the exact public mirror revision and subset hash. Theme labels are not book
 annotations. Legality and execution are tested; no new engine uniqueness claim
-is made. The product name remains subject to owner/maintainer naming review.
-"Pocket Chess Studies" is a proposed alternative before publication; retaining
-the internal `polgar-pocket` identity would preserve the existing progress key.
+is made. The owner selected Pocket Chess Studies for the display name and
+Pocket Chess for the compact label. The internal `polgar-pocket` identity and
+`pocket.progress.v1` key are retained so existing progress remains available.
+This naming choice is not a claim of exhaustive trademark clearance.
 
 ## Development
 

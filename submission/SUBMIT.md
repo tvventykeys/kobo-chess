@@ -6,9 +6,9 @@ performed. The application version is 0.2.0; the monorepo Cargo crate inherits
 Cobalt's workspace version, as its contributor contract requires.
 
 1. Review NAMING-LICENSE-PRIVACY.md and the actual screenshots/CAPTURES.json.
-   Decide whether to retain the requested name or authorize the recommended
-   **Pocket Chess Studies** alternative. No name clearance is asserted. A display
-   rename can keep the internal `polgar-pocket` app ID/progress namespace.
+   The owner has selected **Pocket Chess Studies**, short label **Pocket Chess**.
+   The materials use that name while retaining `polgar-pocket` and the existing
+   progress namespace. No exhaustive trademark clearance is asserted.
 2. Review the complete patch `cobalt-beta.patch` and its pinned upstream base in
    upstream.json. It adds one app, workspace/lock registration, an app-specific
    root attribution notice, the active protocol lockfile review hash (only the

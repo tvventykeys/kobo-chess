@@ -1,13 +1,16 @@
-# Beta submission validation — 17 November 2026
+# Beta submission validation — Pocket Chess Studies
 
 **Ready for owner review and a later approved upstream contribution. Not published
 or stock-runtime installable.** These are new runs of the final submission source,
 not the historical v0.1/v0.2 totals. Version remains 0.2.0 as requested.
+The owner selected Pocket Chess Studies, short label Pocket Chess. Only display
+strings and submission material change; app/package IDs, collection identity,
+storage schema and `pocket.progress.v1` are unchanged.
 
-Base: own main `a4cd875`; Cobalt Beta
+Base: own main `417ad5e` (merged submission PR #4); Cobalt Beta
 `1cc5b6412c4229b85e9960dd956c3d26c4ffd66e`.
 Prepared isolated branch `feat/polgar-pocket-beta`, commit
-`b8da05efa0495a26ec36fa6ead71c4946b65864c`. Its upstream push URL is disabled.
+`ba5ad80d0e2f2151ec29e610f81867a4b3bb763a`. Its upstream push URL is disabled.
 The original pinned SDK/main at `5ac30a46efce23d7fa0d1cb12a499c9b57b816b0`
 remains clean. Both contexts use Rust/Cargo 1.85.1 and Cobalt 0.3.37.
 
@@ -47,16 +50,16 @@ recovery-suite restarts are not added to that count. Recovery also covers missin
 corrupt/preserved and denied data, read-only study, retry, failed save, explicit
 unsaved exit/sleep acknowledgement, clean shutdown and Home/Continue.
 
-The new test `contributor_clara_completion_and_storage_dialog_fit_at_170_percent`
+The retained test `contributor_clara_completion_and_storage_dialog_fit_at_170_percent`
 validates both normal and largest Clara metrics and retains all original 58 tests.
-Two genuine smaller-panel layout failures were fixed: completion control rows
+The previously fixed smaller-panel layout failures remain covered: completion control rows
 and storage notices. Final captures were visually inspected for clipped text,
 overlapping controls and piece contrast; completion and storage actions fit.
-The recovery 170% runs emit the upstream **five-ink warning**; no layout error is
+The recovery routes emit the upstream **five-ink warning** at normal and 170%; no layout error is
 suppressed, and the routes pass. Optional WebP thumbnails are absent: the official
 generator reports its supported PNG fallback. No warning-free claim is made.
 
-The first broader policy run passed 107/108 tests, failing the active protocol's
+During the initial pre-rename preparation, the broader policy run passed 107/108 tests, failing the active protocol's
 exact lockfile inventory assertion for the newly added workspace app. The final
 patch refreshes only that record's Cargo.lock output hash and explanatory reason;
 it leaves its reviewed base, every SDK blob, test and enforcement code unchanged.
@@ -65,6 +68,12 @@ package identity, dependency edge or third-party version changes. This proposed
 review-record refresh is visible for maintainer approval. Final 129/129 includes
 all Node tools tests, not just that initial subset.
 
+The name-change recovery run first encountered a driver disconnect while polling
+GET /activity after Exit: “Connection reset by peer”. The harness now accepts
+that specific shutdown-race diagnostic as well as its previous disconnect form;
+it still independently requires a zero-status app/CLI exit and valid persisted
+progress. Recovery reruns passed; no application shutdown behavior was changed.
+
 ## Rendering, storage and host idle evidence
 
 Six unedited real simulator PNGs, their sidecars and SHA-256 values are in
@@ -72,21 +81,22 @@ Six unedited real simulator PNGs, their sidecars and SHA-256 values are in
 BW board. Additional captures show normal/170% Clara and Libra Colour. These are
 ideal simulator frames with fresh public-demo state, not photographs or proof of
 physical contrast, ghosting or refresh behavior. Capture metadata honestly records
-the dirty Beta-base checkout used at capture time; the compiled source matches
+the dirty local prepared-branch checkout used at capture time; the compiled source matches
 the final candidate. It has not been rewritten to pretend an earlier capture was
 made from the later commit.
 
 Four two-second host idle samples recorded **0 CPU ticks, 4→4 paints, one app
-thread and 9,028–9,228 KiB RSS**. Unit tests still reject networking/polling commands.
+thread and 9,076–9,208 KiB RSS**. Unit tests still reject networking/polling
+commands.
 Writes remain event-driven, atomic and acknowledgement-based; no background task
 or idle refresh was added. These short host observations do not measure Kobo
 power, whole-runtime CPU, or battery-life improvement.
 
-Standalone ARM binary: 3,108,448 bytes, SHA-256
-`922a37f4a9224d0bada01a222c64e79bb69d37f45bc9789f3597d5d96ba794d1`.
+Standalone ARM binary: 3,108,460 bytes, SHA-256
+`9688b7a360a8067cfa85c5bf4bf14639ec64740b70fc1da2b6f895b7db63c809`.
 Beta package binary SHA-256:
-`4ff1c79f2849a88a22d2b8662bff66068a865e1b763decdd179d83449697fe2b`.
-The local fixture `.cobalt-app` is 2,474,008 bytes and uses `example.invalid`
+`8dad14e937e48c5b46ecc18ecff39bc572c68d243b61305d96f62f52b015c96e`.
+The local fixture `.cobalt-app` is 2,474,012 bytes and uses `example.invalid`
 download URLs. It is kept outside Git and explicitly labelled LOCAL-ONLY.
 
 The downloaded published Beta baseline was cryptographically bound to its
@@ -100,7 +110,7 @@ Future submissions must recheck the current upstream ref and published baseline.
 [Machine results and recorded logs](../submission/checks/RESULTS.json) accompany
 the packet. The full selected command logs, baseline/provenance and CI route
 result are in `submission/checks/`; raw simulator state and binaries remain under
-`/workspace/verification/cobalt-submission` and `/workspace/build/cobalt-beta`.
+`/workspace/verification/pocket-name-change` and `/workspace/build/cobalt-beta`.
 The six reviewed Store captures are the only screenshots redistributed here.
 No signing seed, personal database or raw progress snapshot is included.
 
@@ -112,8 +122,8 @@ responsible for its full workspace matrix after an authorized upstream PR.
 No fork, upstream PR, Store publication, maintainer credential, trust change,
 firmware change, SSH activation or device write occurred.
 
-Code/data have no identified redistribution-license blocker. Naming review and
-explicit permission for upstream submission/publication remain outstanding;
+Code/data have no identified redistribution-license blocker. The owner has selected Pocket Chess Studies;
+explicit permission for upstream submission/publication remains outstanding;
 trusted signing is exclusively a later protected maintainer workflow. See
 [NAMING-LICENSE-PRIVACY.md](../submission/NAMING-LICENSE-PRIVACY.md),
 [submission steps](../submission/SUBMIT.md) and

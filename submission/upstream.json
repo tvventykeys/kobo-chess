@@ -11,5 +11,8 @@
   "submission_status": "prepared-only",
   "upstream_pr_authorized": false,
   "publication_authorized": false,
-  "device_installation_authorized": false
+  "device_installation_authorized": false,
+  "display_name": "Pocket Chess Studies",
+  "short_label": "Pocket Chess",
+  "owner_name_approved": true
 }

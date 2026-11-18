@@ -1,10 +1,10 @@
 # kobo-chess
 
 Independent native Cobalt chess application workspace for Kobo Libra Colour
-(N428, code 390). Polgár Trainer Pocket is a native offline chess puzzle book
+(N428, code 390). Pocket Chess Studies is a native offline chess puzzle book
 built with the pinned Cobalt SDK. Version 0.2 audits and polishes the merged offline implementation.
 
-## Polgár Trainer Pocket v0.2
+## Pocket Chess Studies v0.2
 
 A large brown/paper chessboard, twenty genuine CC0 Lichess puzzles, touch moves,
 legal destination dots, capture/check outlines, promotion choice, castling and

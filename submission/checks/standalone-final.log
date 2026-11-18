@@ -1,5 +1,7 @@
-    Finished `dev` profile [unoptimized] target(s) in 0.07s
-    Finished `test` profile [unoptimized] target(s) in 0.10s
+    Checking polgar-pocket v0.2.0 (/workspace/kobo-chess)
+    Finished `dev` profile [unoptimized] target(s) in 1.19s
+   Compiling polgar-pocket v0.2.0 (/workspace/kobo-chess)
+    Finished `test` profile [unoptimized] target(s) in 2.07s
      Running unittests src/main.rs (/workspace/build/cobalt/debug/deps/polgar_pocket-e301db3c43416b0c)
 
 running 59 tests
@@ -9,8 +11,8 @@ test tests::castle_moves_king_and_rook ... ok
 test tests::castle_through_check_rejected ... ok
 test tests::board_orientation_and_hint_has_no_destinations ... ok
 test tests::castling_pack_requires_the_standard_uci_the_ui_can_play ... ok
-test tests::completion_only_after_player_line ... ok
 test tests::clean_home_back_exits_and_failed_exit_requires_explicit_loss_consent ... ok
+test tests::completion_only_after_player_line ... ok
 test tests::completion_timestamp_only_when_solved ... ok
 test tests::coordinates_toggle_persists_and_does_not_flip_actions ... ok
 test tests::corrupt_saved_cursor_and_missing_record_rejected ... ok
@@ -49,27 +51,26 @@ test tests::restored_app_keeps_attempt_count ... ok
 test tests::restored_completed_screen_has_completion_feedback ... ok
 test tests::restored_completed_session_requires_matching_history ... ok
 test tests::resume_redraws_once_without_writing_and_ordinary_idle_has_no_commands ... ok
-test tests::retry_resets_board_not_history ... ok
+test tests::contributor_clara_completion_and_storage_dialog_fit_at_170_percent ... ok
 test tests::revealed_is_never_clean ... ok
-test tests::save_failure_is_visible_and_retryable ... ok
+test tests::retry_resets_board_not_history ... ok
 test tests::solution_uses_readable_san_including_checkmate_and_castling ... ok
 test tests::source_selection_is_not_a_storage_write ... ok
-test tests::storage_reload_while_studying_returns_to_valid_home ... ok
+test tests::save_failure_is_visible_and_retryable ... ok
 test tests::trainer_import_preserves_collection_puzzle_and_explanation ... ok
 test tests::trainer_rejects_non_mating_published_line ... ok
 test tests::twenty_original_unique_puzzles_replay ... ok
-test tests::unbounded_import_stream_is_stopped_at_the_pack_limit ... ok
-test tests::contributor_clara_completion_and_storage_dialog_fit_at_170_percent ... ok
-test tests::wrong_legal_move_preserves_position ... ok
+test tests::storage_reload_while_studying_returns_to_valid_home ... ok
 test tests::v01_progress_fields_and_assistance_survive_the_upgrade ... ok
+test tests::wrong_legal_move_preserves_position ... ok
+test tests::unbounded_import_stream_is_stopped_at_the_pack_limit ... ok
 
-test result: ok. 59 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+test result: ok. 59 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
 
    Compiling polgar-pocket v0.2.0 (/workspace/kobo-chess)
-    Finished `dev` profile [unoptimized] target(s) in 2.45s
-Validated 20 puzzles in lichess-tactics
+    Finished `dev` profile [unoptimized] target(s) in 1.23s
    Compiling polgar-pocket v0.2.0 (/workspace/kobo-chess)
-    Finished `release` profile [optimized] target(s) in 3.97s
+    Finished `release` profile [optimized] target(s) in 4.45s
 /workspace/build/cobalt/armv7-unknown-linux-musleabihf/release/polgar-pocket: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), statically linked, not stripped
 
 Elf file type is EXEC (Executable file)
@@ -101,3 +102,4 @@ Program Headers:
    07     .eh_frame_hdr 
    08     
    09     .ARM.exidx 
+Validated 20 puzzles in lichess-tactics

@@ -1,8 +1,8 @@
 # Cobalt Beta Store submission preparation
 
 This is a **local, reviewable submission packet**, not an upstream submission or
-Store release. The application stays at version **0.2.0**. The owner must approve
-naming and an upstream PR/publication step separately; no fork was created,
+Store release. The application stays at version **0.2.0**. The owner selected Pocket Chess Studies (short label Pocket Chess).
+An upstream PR/publication step still requires separate approval; no fork was created,
 upstream branch pushed, maintainer contacted, release published or device touched.
 
 ## Current upstream authority
@@ -66,7 +66,7 @@ successful real-input runs. See SUBMISSION-VALIDATION.md for exact results.
   images and hashes/profiles/text scales, not images drawn for the listing.
 * `icon.md`: the canonical runtime-rendered `book` glyph specification; no custom
   icon file or unsupported manifest field is required.
-* `NAMING-LICENSE-PRIVACY.md`: code/data/art audit and unresolved name decision.
+* `NAMING-LICENSE-PRIVACY.md`: code/data/art audit and owner-approved name and its compatibility identity.
 * `UPSTREAM-PR.md`: filled official PR template for owner review only.
 * `SUBMIT.md`: exact future submission/acceptance/signing/hardware approval steps.
 
@@ -101,13 +101,14 @@ No signing credential is needed or available to a contributor. A local fixture
 signature must not be enrolled on a reader. No documented stock-runtime private
 owner-key/sideload route was found. Stable promotion is separate.
 
-The requested product name may imply association with László Polgár or his books;
-no permission/endorsement/trademark clearance is supplied. The packet explicitly
-contains only twenty CC0 Lichess demonstration puzzles and recommends **Pocket
-Chess Studies** as an alternative, subject to an owner naming check. This is a
-policy decision before publication, not a fabricated legal conclusion or a
-license claim over the name. Code/data redistribution has no identified blocker
-under the documented licenses.
+The owner selected **Pocket Chess Studies**, short label **Pocket Chess**, in
+place of the former Polgár Trainer Pocket display name. The manifest, runtime
+headings, Store descriptions, screenshots, attribution and PR template use the
+selected name. Internal `polgar-pocket`/Cargo identities and `pocket.progress.v1`
+remain unchanged so existing progress is preserved. No exhaustive trademark
+clearance is claimed. The app contains only twenty CC0 Lichess demonstration
+puzzles. Code/data redistribution has no identified blocker under the documented
+licenses. This naming decision does not authorize upstream publication.
 
 Opening the owner's app-repository PR is authorized by this task. Opening the
 public upstream PR, creating/pushing a fork, triggering Beta Store publication,

@@ -30,8 +30,8 @@ app = root/'apps'/policy['app_id']
 if app.exists():
     parser.error('an app already occupies this identity')
 manifest = json.loads((repo/'cobalt-app.json').read_text())
-if (manifest['version'], manifest['id'], manifest['glyph'], manifest['capabilities']) != (
-        policy['version'], policy['app_id'], policy['glyph'], policy['capabilities']):
+if (manifest['version'], manifest['id'], manifest['glyph'], manifest['capabilities'], manifest['display_name'], manifest['short_label']) != (
+        policy['version'], policy['app_id'], policy['glyph'], policy['capabilities'], policy['display_name'], policy['short_label']):
     parser.error('manifest and reviewed submission policy disagree')
 lines = [json.loads(line) for line in (repo/'packs/lichess-20.jsonl').read_text().splitlines()]
 if len(lines) != 21 or lines[0]['license'] != 'CC0-1.0' or lines[0]['collection_id'] != 'lichess-tactics':
@@ -107,7 +107,7 @@ text = path.read_text()
 for expected in ['const screenshots = {', 'const categories = {']:
     if expected not in text:
         raise SystemExit('website generator changed; review required')
-text = text.replace('const screenshots = {', 'const screenshots = {\n  "polgar-pocket": ["polgar-pocket.png", "Actual Clara BW simulator capture of Polgár Trainer Pocket with a large chessboard and its offline study controls."],', 1)
+text = text.replace('const screenshots = {', 'const screenshots = {\n  "polgar-pocket": ["polgar-pocket.png", "Actual Clara BW simulator capture of Pocket Chess Studies with a large chessboard and its offline study controls."],', 1)
 text = text.replace('const categories = {', 'const categories = {\n  "polgar-pocket": "Games",', 1)
 path.write_text(text)
 path = root/'THIRD-PARTY.md'
@@ -135,7 +135,7 @@ entry = next(f for f in active[0]['files'] if f['path'] == 'Cargo.lock')
 old_blob = entry['compatible_blob']
 new_blob = git('hash-object', 'Cargo.lock')
 reason = active[0]['reason']
-addition = ' Proposed Polgár Trainer Pocket registration subsequently adds only the kobo-polgar-pocket workspace package and its edges to already-resolved dependencies; no existing package identity, dependency edge, third-party version or SDK blob changes. The Cargo.lock output hash is refreshed for this app-only inventory addition and requires maintainer review with this contribution.'
+addition = ' Proposed Pocket Chess Studies registration subsequently adds only the kobo-polgar-pocket workspace package and its edges to already-resolved dependencies; no existing package identity, dependency edge, third-party version or SDK blob changes. The Cargo.lock output hash is refreshed for this app-only inventory addition and requires maintainer review with this contribution.'
 original = original.replace(json.dumps(reason), json.dumps(reason+addition, ensure_ascii=False), 1)
 # Restrict replacement to the one active entry rather than historical exemptions.
 marker = '\"protocol_version\": 18'

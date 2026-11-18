@@ -1,21 +1,18 @@
 # Naming, licensing and privacy review
 
-## Name decision before publication
+## Owner-approved name
 
-Requested display name: **Polgár Trainer Pocket**, version 0.2.0. This name can
-suggest an association with László Polgár, his family or published collections.
-No permission, trademark clearance or endorsement evidence has been supplied;
-none is inferred from the puzzle-data license. This is a naming review concern,
-not a finding that a particular trademark is registered or infringed. No
-exhaustive trademark search or legal clearance is claimed.
+The owner selected **Pocket Chess Studies**, with short label **Pocket Chess**,
+for version 0.2.0. This replaces the former display name “Polgár Trainer Pocket”,
+which could suggest an association with László Polgár or his published books.
+The manifest, in-app titles, Store materials and fresh simulator screenshots now
+use the selected name. No author/publisher endorsement is claimed, and no
+exhaustive trademark search or legal clearance is asserted for the new name.
 
-Recommended alternative before publication: **Pocket Chess Studies** (short
-label **Pocket Chess**), subject to the owner's own naming check. Keep the
-internal `polgar-pocket` app/collection storage identity if renaming so upgrades
-do not reset progress. The current prepared files retain the expressly requested
-name and clearly disclose the twenty-puzzle CC0 demo and absence of affiliation.
-Owner and maintainer acceptance of the name, or authorization to rename it,
-remains required before an upstream/publication step. No name is asserted cleared.
+The internal app ID `polgar-pocket`, Rust package names, collection identity and
+`pocket.progress.v1` storage key remain unchanged to preserve existing progress.
+The owner's naming decision is settled; upstream submission/publication and
+physical installation remain separate, unapproved steps.
 
 ## Redistributed material
 
@@ -51,5 +48,5 @@ or installable stock-runtime artifacts. The reviewed patch does not alter the
 release key, seed handling, workflow, network policy or other applications.
 
 Code and data have no identified redistribution-license blocker under these
-licenses. Naming approval is unresolved. This report is an evidence inventory,
+licenses. The owner-approved name is applied; maintainer acceptance is still required. This report is an evidence inventory,
 not a warranty of trademark clearance or a claim of hardware compatibility.

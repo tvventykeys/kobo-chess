@@ -1,9 +1,9 @@
 <!-- Prepared template only. No upstream PR has been opened. Target beta only
-     after owner approval of naming, upstream contribution and publication. -->
+     after owner approval of upstream contribution and publication. -->
 
 ## The app
 
-App id: `polgar-pocket` (display name Polgár Trainer Pocket, version 0.2.0)
+App id: `polgar-pocket` (display name Pocket Chess Studies, version 0.2.0)
 
 What it lets a Kobo owner do: practise twenty genuine CC0 Lichess demonstration
 puzzles offline on a large chessboard, with legal touch moves, deterministic
@@ -21,13 +21,14 @@ book collection is included.
   twenty public CC0-1.0 Lichess records with exact public rows/provenance. No
   private trainer, chess-book library, credential, custom piece art or personal
   history. Uses Cobalt's existing book glyph, vectors and fonts. Root attribution
-  is updated. The name may imply an association; no endorsement is claimed and
-  owner/maintainer naming review is necessary before publication. Recommended
-  alternative: Pocket Chess Studies, preserving internal progress identity.
+  is updated. The owner selected Pocket Chess Studies, short label Pocket Chess. The
+  former app ID/progress identity is retained for compatibility. No endorsement
+  or exhaustive trademark clearance is claimed.
 - Capabilities it declares, and why it needs each: `[]`. No network, engine,
   polling, account, Wi-Fi hold or background task. Progress uses app-local store.
 - Accounts or self-hosted services it needs, as `setup.steps` describes them:
-  none; `setup.steps` is empty. Choose the bundled demo collection and Continue.
+  none; `setup.steps` contains only a no-account/Wi-Fi demonstration notice.
+  Choose the bundled demo collection and Continue.
 - Screenshots, from a Clara BW or its simulator: unedited actual simulator images
   in `apps/polgar-pocket/screenshots/clara-home.png`, `clara-board.png`,
   `clara-board-170.png`, `clara-revealed-170.png`, with explicit captions in the
@@ -57,13 +58,13 @@ contribution check passed for polgar-pocket; local Beta-parity preview: target/a
 ```
 
 Prepared against Beta `1cc5b6412c4229b85e9960dd956c3d26c4ffd66e`, local candidate
-`b8da05efa0495a26ec36fa6ead71c4946b65864c`. Rust 1.85.1; app tests 59/59,
+`ba5ad80d0e2f2151ec29e610f81867a4b3bb763a`. Rust 1.85.1; app tests 59/59,
 0 failed/ignored; strict all-target/all-feature Clippy and formatting passed;
 host and static ARM release passed. All 129 Node tools tests passed. Official
 all-routes simulator runner passed for this app. Broader offline input suites
 passed on Clara BW and Libra Colour at normal/170%, completing 84 puzzle lines
 with 8 complete/partial progress restarts plus corruption/write-failure recovery.
-The recovery routes report the existing five-ink layout warning at 170%; no
+The recovery routes report the existing five-ink layout warning; no
 layout errors were ignored. The full unrelated Rust workspace matrix has not
 been run locally.
 

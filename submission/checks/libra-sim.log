@@ -1,93 +1,93 @@
-shot /workspace/verification/cobalt-submission/libra/default/home.png
-shot /workspace/verification/cobalt-submission/libra/default/collections.png
-shot /workspace/verification/cobalt-submission/libra/default/board.png
-shot /workspace/verification/cobalt-submission/libra/default/coordinates.png
-shot /workspace/verification/cobalt-submission/libra/default/wrong-move.png
-shot /workspace/verification/cobalt-submission/libra/default/hint.png
-shot /workspace/verification/cobalt-submission/libra/default/leave-confirmation.png
-shot /workspace/verification/cobalt-submission/libra/default/revealed.png
-shot /workspace/verification/cobalt-submission/libra/default/settings.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-shot /workspace/verification/cobalt-submission/libra/default/solved-1.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-shot /workspace/verification/cobalt-submission/libra/default/solved-20.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-shot /workspace/verification/cobalt-submission/libra/default/progress.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default
-shot /workspace/verification/cobalt-submission/libra/default/restart/restored-home.png
-shot /workspace/verification/cobalt-submission/libra/default/restart/restored-board.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default/restart
-shot /workspace/verification/cobalt-submission/libra/default/restart/partial-attempt.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default/restart
-shot /workspace/verification/cobalt-submission/libra/default/partial-restart/restored-partial.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default/partial-restart
-shot /workspace/verification/cobalt-submission/libra/default/partial-restart/finished-restored-partial.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/default/partial-restart
+shot /workspace/verification/pocket-name-change/libra/default/home.png
+shot /workspace/verification/pocket-name-change/libra/default/collections.png
+shot /workspace/verification/pocket-name-change/libra/default/board.png
+shot /workspace/verification/pocket-name-change/libra/default/coordinates.png
+shot /workspace/verification/pocket-name-change/libra/default/wrong-move.png
+shot /workspace/verification/pocket-name-change/libra/default/hint.png
+shot /workspace/verification/pocket-name-change/libra/default/leave-confirmation.png
+shot /workspace/verification/pocket-name-change/libra/default/revealed.png
+shot /workspace/verification/pocket-name-change/libra/default/settings.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+shot /workspace/verification/pocket-name-change/libra/default/solved-1.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+shot /workspace/verification/pocket-name-change/libra/default/solved-20.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+shot /workspace/verification/pocket-name-change/libra/default/progress.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default
+shot /workspace/verification/pocket-name-change/libra/default/restart/restored-home.png
+shot /workspace/verification/pocket-name-change/libra/default/restart/restored-board.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default/restart
+shot /workspace/verification/pocket-name-change/libra/default/restart/partial-attempt.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default/restart
+shot /workspace/verification/pocket-name-change/libra/default/partial-restart/restored-partial.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default/partial-restart
+shot /workspace/verification/pocket-name-change/libra/default/partial-restart/finished-restored-partial.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/default/partial-restart
 PASS libra-colour-390 default: all 20 puzzles via touch, controls, page events, completed and partial restarts
-shot /workspace/verification/cobalt-submission/libra/170/home.png
-shot /workspace/verification/cobalt-submission/libra/170/collections.png
-shot /workspace/verification/cobalt-submission/libra/170/board.png
-shot /workspace/verification/cobalt-submission/libra/170/coordinates.png
-shot /workspace/verification/cobalt-submission/libra/170/wrong-move.png
-shot /workspace/verification/cobalt-submission/libra/170/hint.png
-shot /workspace/verification/cobalt-submission/libra/170/leave-confirmation.png
-shot /workspace/verification/cobalt-submission/libra/170/revealed.png
-shot /workspace/verification/cobalt-submission/libra/170/settings.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-shot /workspace/verification/cobalt-submission/libra/170/solved-1.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-shot /workspace/verification/cobalt-submission/libra/170/solved-20.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-shot /workspace/verification/cobalt-submission/libra/170/progress.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170
-shot /workspace/verification/cobalt-submission/libra/170/restart/restored-home.png
-shot /workspace/verification/cobalt-submission/libra/170/restart/restored-board.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170/restart
-shot /workspace/verification/cobalt-submission/libra/170/restart/partial-attempt.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170/restart
-shot /workspace/verification/cobalt-submission/libra/170/partial-restart/restored-partial.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170/partial-restart
-shot /workspace/verification/cobalt-submission/libra/170/partial-restart/finished-restored-partial.png
-drive: every step passed; screenshots in /workspace/verification/cobalt-submission/libra/170/partial-restart
+shot /workspace/verification/pocket-name-change/libra/170/home.png
+shot /workspace/verification/pocket-name-change/libra/170/collections.png
+shot /workspace/verification/pocket-name-change/libra/170/board.png
+shot /workspace/verification/pocket-name-change/libra/170/coordinates.png
+shot /workspace/verification/pocket-name-change/libra/170/wrong-move.png
+shot /workspace/verification/pocket-name-change/libra/170/hint.png
+shot /workspace/verification/pocket-name-change/libra/170/leave-confirmation.png
+shot /workspace/verification/pocket-name-change/libra/170/revealed.png
+shot /workspace/verification/pocket-name-change/libra/170/settings.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+shot /workspace/verification/pocket-name-change/libra/170/solved-1.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+shot /workspace/verification/pocket-name-change/libra/170/solved-20.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+shot /workspace/verification/pocket-name-change/libra/170/progress.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170
+shot /workspace/verification/pocket-name-change/libra/170/restart/restored-home.png
+shot /workspace/verification/pocket-name-change/libra/170/restart/restored-board.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170/restart
+shot /workspace/verification/pocket-name-change/libra/170/restart/partial-attempt.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170/restart
+shot /workspace/verification/pocket-name-change/libra/170/partial-restart/restored-partial.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170/partial-restart
+shot /workspace/verification/pocket-name-change/libra/170/partial-restart/finished-restored-partial.png
+drive: every step passed; screenshots in /workspace/verification/pocket-name-change/libra/170/partial-restart
 PASS libra-colour-390 170: all 20 puzzles via touch, controls, page events, completed and partial restarts
 PASS: normal and 170% selected profile, 42 puzzle solves, 4 process restarts; no reader touched

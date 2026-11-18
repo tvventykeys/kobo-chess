@@ -16,7 +16,7 @@ published to its Store, and no Kobo has been modified.**
   [recorded check results/logs](checks/RESULTS.json)
 
 The complete local branch is `feat/polgar-pocket-beta` at
-`b8da05efa0495a26ec36fa6ead71c4946b65864c` in the separate Cobalt clone.
+`ba5ad80d0e2f2151ec29e610f81867a4b3bb763a` in the separate Cobalt clone.
 The binary patch applies to `1cc5b6412c4229b85e9960dd956c3d26c4ffd66e`:
 
 ```bash

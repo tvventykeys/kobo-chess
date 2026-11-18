@@ -1,23 +1,8 @@
 Every changed app package has a new version.
 The home page serves PNG for polgar-pocket.png; node tools/encode-app-thumbs.mjs writes their WebP copies.
-   Compiling kobo-ui v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-ui)
-   Compiling kobo-json v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-json)
-   Compiling kobo-html v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-html)
-   Compiling kobo-dict v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-dict)
-   Compiling kobo-abi v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-abi)
-   Compiling kobo-doc v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-doc)
-   Compiling kobo-state v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-state)
-   Compiling serde_json v1.0.151
-   Compiling serde v1.0.229
-   Compiling kobo-profile v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-profile)
-   Compiling kobo-protocol v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-protocol)
-   Compiling kobo-text v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-text)
-   Compiling kobo-net v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-net)
-   Compiling kobo-policy v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-policy)
-   Compiling kobo-sdk v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-sdk)
    Compiling kobo-polgar-pocket v0.3.37 (/workspace/work/cobalt-beta-submission/apps/polgar-pocket)
-    Finished `test` profile [unoptimized] target(s) in 8.39s
-     Running unittests src/main.rs (/workspace/build/cobalt/debug/deps/kobo_polgar_pocket-606cac85592f9483)
+    Finished `test` profile [unoptimized] target(s) in 1.51s
+     Running unittests src/main.rs (/workspace/build/cobalt-beta/debug/deps/kobo_polgar_pocket-606cac85592f9483)
 
 running 59 tests
 test tests::back_cancels_navigation_confirmation ... ok
@@ -80,16 +65,17 @@ test tests::v01_progress_fields_and_assistance_survive_the_upgrade ... ok
 test tests::wrong_legal_move_preserves_position ... ok
 test tests::contributor_clara_completion_and_storage_dialog_fit_at_170_percent ... ok
 
-test result: ok. 59 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+test result: ok. 59 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
 
     Checking kobo-polgar-pocket v0.3.37 (/workspace/work/cobalt-beta-submission/apps/polgar-pocket)
-    Finished `dev` profile [unoptimized] target(s) in 1.10s
+    Finished `dev` profile [unoptimized] target(s) in 0.74s
    Compiling kobo-catalog v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-catalog)
    Compiling kobo-sim v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-sim)
    Compiling kobo-cli v0.3.37 (/workspace/work/cobalt-beta-submission/crates/kobo-cli)
-    Finished `dev` profile [unoptimized] target(s) in 9.94s
+    Finished `dev` profile [unoptimized] target(s) in 9.52s
      Running `target/debug/kobo app-check --registry /workspace/work/cobalt-beta-submission/target/app-contribute/polgar-pocket/registry.json --package kobo-polgar-pocket --out /workspace/work/cobalt-beta-submission/target/app-contribute/polgar-pocket/binary`
-    Finished `release` profile [optimized] target(s) in 0.27s
+   Compiling kobo-polgar-pocket v0.3.37 (/workspace/work/cobalt-beta-submission/apps/polgar-pocket)
+    Finished `release` profile [optimized] target(s) in 10.27s
 verified polgar-pocket (kobo-polgar-pocket)
 created /workspace/work/cobalt-beta-submission/target/app-contribute/polgar-pocket/preview/polgar-pocket-0.2.0.cobalt-app
 created /workspace/work/cobalt-beta-submission/target/app-contribute/polgar-pocket/preview/cobalt-app-catalog-v2.json

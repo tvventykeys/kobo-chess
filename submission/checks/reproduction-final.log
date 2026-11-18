@@ -1,2 +1,4 @@
 The home page serves PNG for polgar-pocket.png; node tools/encode-app-thumbs.mjs writes their WebP copies.
-Prepared local Beta contribution in /workspace/work/cobalt-beta-reproduction-final; run locked checks and official --dry-run next
+Prepared local Beta contribution in /workspace/work/cobalt-beta-repro-refresh; run locked checks and official --dry-run next
+Reproduction tree c829c2502b2b120c54996c1efa540224cafcf215 matches candidate (47 files changed).
+Binary patch applies cleanly and reproduces the candidate tree.

@@ -1,6 +1,6 @@
 # Licensing and attribution
 
-Polgár Trainer Pocket is AGPL-3.0-only; see LICENSE. Cobalt requires this license
+Pocket Chess Studies is AGPL-3.0-only; see LICENSE. Cobalt requires this license
 for linked apps (no linking exception).
 
 * Cobalt 0.3.37, BandarLabs and contributors, AGPL-3.0-only:

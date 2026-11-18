@@ -7,12 +7,11 @@ upstream branch pushed, maintainer contacted, release published or device touche
 
 ## Current upstream authority
 
-The official destination is `BandarLabs/Cobalt:beta`, inspected at
+The official destination is `BandarLabs/Cobalt:beta`, verified again on 18 November 2026 at
 `1cc5b6412c4229b85e9960dd956c3d26c4ffd66e`. Main/pinned SDK remains
 `5ac30a46efce23d7fa0d1cb12a499c9b57b816b0`. Both use Rust 1.85.1 and workspace
 0.3.37, but Beta is the actual contribution base. The original SDK checkout is
-unchanged. An isolated clone lives at `/workspace/work/cobalt-beta-submission`,
-branch `feat/polgar-pocket-beta`, with upstream pushes disabled.
+unchanged. An isolated clone lives at `/workspace/work/cobalt-beta-refresh`, with upstream pushes disabled.
 
 The actual [contributor guide](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/docs/CONTRIBUTING_APPS.md), registry normalizer, page generator,
 package verification code, public fixture seed and app PR template were read.
@@ -72,7 +71,7 @@ successful real-input runs. See SUBMISSION-VALIDATION.md for exact results.
 
 `scripts/prepare-cobalt-beta.py CLEAN_CHECKOUT` recreates the complete contribution
 locally in a separate clean checkout at the pinned base. It refuses the pinned
-SDK, wrong revision, dirty checkout, occupied app identity, altered asset digests
+SDK, wrong revision, dirty checkout, occupied app identity, altered PNG hashes or mismatched capture metadata
 or an unapproved pack. It copies explicit public file allowlists and calls only
 the local page generator. It does not fetch, push, sign, publish or install.
 
@@ -101,13 +100,11 @@ No signing credential is needed or available to a contributor. A local fixture
 signature must not be enrolled on a reader. No documented stock-runtime private
 owner-key/sideload route was found. Stable promotion is separate.
 
-The requested product name may imply association with László Polgár or his books;
-no permission/endorsement/trademark clearance is supplied. The packet explicitly
-contains only twenty CC0 Lichess demonstration puzzles and recommends **Pocket
-Chess Studies** as an alternative, subject to an owner naming check. This is a
-policy decision before publication, not a fabricated legal conclusion or a
-license claim over the name. Code/data redistribution has no identified blocker
-under the documented licenses.
+The proposed public name is **Pocket Chess Studies**, with **Pocket Chess** as
+the short label. The owner should confirm the name before public submission.
+The existing `polgar-pocket` runtime/Store ID, collection ID and progress format
+are preserved. The packet contains twenty CC0 Lichess demonstration puzzles.
+See the [naming and licensing review](../submission/NAMING-LICENSE-PRIVACY.md).
 
 Opening the owner's app-repository PR is authorized by this task. Opening the
 public upstream PR, creating/pushing a fork, triggering Beta Store publication,

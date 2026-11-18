@@ -1,18 +1,13 @@
-# Cobalt signing investigation — 17 November 2026
+# Cobalt signing investigation — refreshed 18 November 2026
 
-Update: a complete isolated Beta contribution is now prepared and tested; see
-[COBALT-SUBMISSION.md](COBALT-SUBMISSION.md). The signing/installation trust gates
-below still apply. The old uncompiled review-tree description is v0.2 history.
-
-**Current blocker:** this standalone app has no supported personal install path
-in the inspected stock Cobalt revision. A development signature is valid only
-under its own test key; it grants no installation trust. No device-ready package
-is claimed or supplied. No Store publication or maintainer contact was performed.
-
-The pinned SDK and public upstream `main` both resolve to
-`5ac30a46efce23d7fa0d1cb12a499c9b57b816b0` (0.3.37), verified with remote refs.
-The following evidence is from actual source, not an assumption about signing.
-All links pin that exact revision.
+Cobalt Beta still resolves to
+`1cc5b6412c4229b85e9960dd956c3d26c4ffd66e` and main to
+`5ac30a46efce23d7fa0d1cb12a499c9b57b816b0`, verified via remote refs.
+The current Beta contributor, install, development and release instructions
+describe host simulation and protected Store delivery. The Beta device install
+entry point uses the compiled-in release key and a signed channel catalog.
+I found no documented, supported non-Store private installation route for this
+standalone app. Local fixture signing remains useful for package validation.
 
 ## Requirements and evidence
 
@@ -30,40 +25,19 @@ All links pin that exact revision.
 
 Sources:
 
-* [Contributor route, licensing and automated Beta/Stable signing](https://github.com/BandarLabs/Cobalt/blob/5ac30a46efce23d7fa0d1cb12a499c9b57b816b0/docs/CONTRIBUTING_APPS.md)
-* [Bundle format and signature verification](https://github.com/BandarLabs/Cobalt/blob/5ac30a46efce23d7fa0d1cb12a499c9b57b816b0/crates/kobo-app-store/src/bundle.rs)
-* [Compiled-in release key](https://github.com/BandarLabs/Cobalt/blob/5ac30a46efce23d7fa0d1cb12a499c9b57b816b0/crates/kobo-app-store/src/lib.rs)
-* [Runtime catalog, install, launch verification and transactions](https://github.com/BandarLabs/Cobalt/blob/5ac30a46efce23d7fa0d1cb12a499c9b57b816b0/crates/kobod/src/app_store.rs)
-* [CLI local bundle commands and release key check](https://github.com/BandarLabs/Cobalt/blob/5ac30a46efce23d7fa0d1cb12a499c9b57b816b0/crates/kobo-cli/src/main.rs)
-* [Publish workflow and secret isolation](https://github.com/BandarLabs/Cobalt/blob/5ac30a46efce23d7fa0d1cb12a499c9b57b816b0/.github/workflows/apps.yml)
-* [Bounded personal panel sessions and app allowlist](https://github.com/BandarLabs/Cobalt/blob/5ac30a46efce23d7fa0d1cb12a499c9b57b816b0/crates/kobo-cli/src/panel.rs)
+* [Contributor route, licensing and automated Beta/Stable signing](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/docs/CONTRIBUTING_APPS.md)
+* [Bundle format and signature verification](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/crates/kobo-app-store/src/bundle.rs)
+* [Compiled-in release key](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/crates/kobo-app-store/src/lib.rs)
+* [Runtime catalog, install, launch verification and transactions](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/crates/kobod/src/app_store.rs)
+* [CLI local bundle commands and release key check](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/crates/kobo-cli/src/main.rs)
+* [Publish workflow and secret isolation](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/.github/workflows/apps.yml)
+* [Bounded personal panel sessions and app allowlist](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/crates/kobo-cli/src/panel.rs)
 
-## v0.2 preparation without release credentials (historical)
+## Future hardware test
 
-The independent app, manifest, tests and ARM binary are ready for review. Running
-`scripts/package-pocket.sh` produces a **verification-only** `.cobaltapp`, with
-its own local fixture key and exact binary digest; this is not a release package.
-The packaging evidence includes a negative test: the fixture must be refused
-when verified under Cobalt's actual release public key. No trust bypass is used.
-
-`scripts/prepare-cobalt-contribution.py OUTPUT` creates a review tree outside both
-repositories, adapting only the package manifest to Cobalt's documented workspace
-conventions. The tree contains public code/puzzles and licenses, with no private
-book fixtures or signing seed. Its README lists remaining workspace registration,
-generated registry/pages, contributor check, review and release steps. It has not
-been compiled as an upstream member, submitted, signed or published.
-
-Questions prepared for a future owner-authorized maintainer discussion:
-
-1. Is there a supported, owner-attended **non-Store** third-party test route for
-   an independent app at this revision? What exact commands and trust policy
-   apply without replacing installed apps or changing the release trust root?
-2. If not, is maintainer-approved Beta publication the only supported route?
-   The owner must approve that publication separately before any upstream PR.
-3. Which runtime/firmware and reader handoff are supported alongside KOReader,
-   NickelMenu, Zen OS and Focus Reader? Zen OS coexistence is not documented in
-   the inspected support matrix, so the ordinary Nickel return path is unproven.
-
-No signing credential, unreviewed key enrollment, private catalog or pretend
-installable release is needed to continue host development. The first physical
-test remains gated on those external answers and owner review of the guide.
+The supported delivery route identified in the reviewed documentation requires
+maintainer review, a Beta merge and protected signing/publication. The owner
+must explicitly approve upstream submission, publication and the attended device
+test. A future private route would need explicit maintainer documentation that
+preserves the stock verification policy. See the
+[submission packet](COBALT-SUBMISSION.md) and [hardware gates](HARDWARE-TEST.md).

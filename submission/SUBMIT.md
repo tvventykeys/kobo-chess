@@ -6,9 +6,8 @@ performed. The application version is 0.2.0; the monorepo Cargo crate inherits
 Cobalt's workspace version, as its contributor contract requires.
 
 1. Review NAMING-LICENSE-PRIVACY.md and the actual screenshots/CAPTURES.json.
-   Decide whether to retain the requested name or authorize the recommended
-   **Pocket Chess Studies** alternative. No name clearance is asserted. A display
-   rename can keep the internal `polgar-pocket` app ID/progress namespace.
+   Confirm **Pocket Chess Studies** as the public name. The app ID and progress
+   namespace remain `polgar-pocket`. No name clearance is asserted.
 2. Review the complete patch `cobalt-beta.patch` and its pinned upstream base in
    upstream.json. It adds one app, workspace/lock registration, an app-specific
    root attribution notice, the active protocol lockfile review hash (only the
@@ -21,7 +20,7 @@ Cobalt's workspace version, as its contributor contract requires.
    changed. If it moved, rebase the local contribution and rerun official checks,
    including registry/page freshness and current published Beta provenance.
 4. A complete local branch is prepared outside the pinned SDK at
-   `/workspace/work/cobalt-beta-submission`, `feat/polgar-pocket-beta`. It has no
+   `/workspace/work/cobalt-beta-refresh`. It has no
    enabled push destination. Apply the patch to a separate clean clone of its
    pinned base, or use `scripts/prepare-cobalt-beta.py CLEAN_CHECKOUT` from the
    application repository, then run the documented contributor command. Neither

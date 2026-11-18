@@ -1,7 +1,7 @@
 {
   "id": "polgar-pocket",
-  "display_name": "Polgár Trainer Pocket",
-  "short_label": "Polgár Pocket",
+  "display_name": "Pocket Chess Studies",
+  "short_label": "Pocket Chess",
   "summary": "Study twenty CC0 Lichess demo puzzles offline with saved progress.",
   "version": "0.2.0",
   "release_notes": "Initial Cobalt Beta submission: twenty CC0 Lichess demonstration puzzles, offline study and save-aware recovery.",
@@ -14,5 +14,5 @@
       }
     ]
   },
-  "page_description": "An offline chess puzzle book with twenty CC0 Lichess demonstration puzzles, legal touch moves, source-only hints, retry, reveal and local progress. The full Polgár book library is not included; no affiliation or endorsement is claimed."
+  "page_description": "An offline chess puzzle book with twenty CC0 Lichess demonstration puzzles, legal touch moves, source-only hints, retry, reveal and local progress."
 }

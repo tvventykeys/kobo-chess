@@ -1,16 +1,131 @@
-    Finished `dev` profile [unoptimized] target(s) in 0.07s
-    Finished `test` profile [unoptimized] target(s) in 0.10s
++ cargo +1.85.1 fmt --check
++ cargo +1.85.1 clippy --locked --all-targets --all-features -- -D warnings
+ Downloading crates ...
+  Downloaded rustls-pki-types v1.16.0
+  Downloaded pulldown-cmark v0.13.6
+  Downloaded find-msvc-tools v0.1.15
+  Downloaded bitflags v2.13.2
+  Downloaded cc v1.11.2
+  Downloaded libc v0.2.191
+  Downloaded itoa v1.0.19
+  Downloaded unicase v2.10.0
+  Downloaded cfg-if v1.0.5
+  Downloaded zeroize v1.9.1
+  Downloaded unicode-ident v1.0.27
+  Downloaded tinyvec v1.13.3
+  Downloaded smallvec v1.16.5
+  Downloaded rustls-webpki v0.103.17
+  Downloaded equivalent v1.0.3
+  Downloaded unicode-normalization v0.1.26
+  Downloaded webpki-roots v1.0.12
+  Downloaded unicode-width v0.2.3
+  Downloaded syn v3.0.10
+   Compiling find-msvc-tools v0.1.15
+   Compiling libc v0.2.191
+    Checking equivalent v1.0.3
+    Checking cfg-if v1.0.5
+    Checking zeroize v1.9.1
+    Checking hashbrown v0.15.5
+   Compiling cc v1.11.2
+    Checking rustls-pki-types v1.16.0
+    Checking bitflags v2.13.2
+   Compiling proc-macro2 v1.0.107
+    Checking unicode-width v0.2.3
+    Checking kobo-ui v0.3.37 (/workspace/deps/Cobalt/crates/kobo-ui)
+    Checking itoa v1.0.19
+   Compiling quote v1.0.47
+    Checking getrandom v0.2.17
+   Compiling pulldown-cmark v0.13.6
+   Compiling unicode-ident v1.0.27
+    Checking kobo-json v0.3.37 (/workspace/deps/Cobalt/crates/kobo-json)
+    Checking unicase v2.10.0
+   Compiling serde_core v1.0.229
+    Checking tinyvec v1.13.3
+   Compiling ring v0.17.14
+   Compiling libsqlite3-sys v0.35.0
+    Checking unicode-normalization v0.1.26
+    Checking kobo-protocol v0.3.37 (/workspace/deps/Cobalt/crates/kobo-protocol)
+    Checking http v1.5.0
+    Checking hashlink v0.10.0
+    Checking webpki-roots v1.0.12
+   Compiling rustls v0.23.46
+    Checking smallvec v1.16.5
+    Checking kobo-html v0.3.37 (/workspace/deps/Cobalt/crates/kobo-html)
+    Checking fontdue v0.9.3
+    Checking kobo-doc v0.3.37 (/workspace/deps/Cobalt/crates/kobo-doc)
+   Compiling syn v3.0.10
+    Checking rustls-webpki v0.103.17
+    Checking kobo-dict v0.3.37 (/workspace/deps/Cobalt/crates/kobo-dict)
+    Checking kobo-abi v0.3.37 (/workspace/deps/Cobalt/crates/kobo-abi)
+   Compiling serde v1.0.229
+    Checking kobo-text v0.3.37 (/workspace/deps/Cobalt/crates/kobo-text)
+   Compiling serde_derive v1.0.229
+    Checking zmij v1.0.23
+    Checking kobo-state v0.3.37 (/workspace/deps/Cobalt/crates/kobo-state)
+    Checking shakmaty v0.27.3
+    Checking kobo-net v0.3.37 (/workspace/deps/Cobalt/crates/kobo-net)
+    Checking serde_json v1.0.151
+    Checking kobo-profile v0.3.37 (/workspace/deps/Cobalt/crates/kobo-profile)
+    Checking rusqlite v0.37.0
+    Checking kobo-policy v0.3.37 (/workspace/deps/Cobalt/crates/kobo-policy)
+    Checking kobo-sdk v0.3.37 (/workspace/deps/Cobalt/crates/kobo-sdk)
+    Checking polgar-pocket v0.2.0 (/workspace/kobo-chess)
+    Finished `dev` profile [unoptimized] target(s) in 1m 06s
++ cargo +1.85.1 test --locked
+   Compiling libc v0.2.191
+   Compiling equivalent v1.0.3
+   Compiling cfg-if v1.0.5
+   Compiling zeroize v1.9.1
+   Compiling hashbrown v0.15.5
+   Compiling unicode-width v0.2.3
+   Compiling bitflags v2.13.2
+   Compiling rustls-pki-types v1.16.0
+   Compiling kobo-ui v0.3.37 (/workspace/deps/Cobalt/crates/kobo-ui)
+   Compiling itoa v1.0.19
+   Compiling unicase v2.10.0
+   Compiling tinyvec v1.13.3
+   Compiling kobo-json v0.3.37 (/workspace/deps/Cobalt/crates/kobo-json)
+   Compiling http v1.5.0
+   Compiling unicode-normalization v0.1.26
+   Compiling getrandom v0.2.17
+   Compiling ring v0.17.14
+   Compiling pulldown-cmark v0.13.6
+   Compiling kobo-protocol v0.3.37 (/workspace/deps/Cobalt/crates/kobo-protocol)
+   Compiling libsqlite3-sys v0.35.0
+   Compiling webpki-roots v1.0.12
+   Compiling hashlink v0.10.0
+   Compiling rustls-webpki v0.103.17
+   Compiling kobo-html v0.3.37 (/workspace/deps/Cobalt/crates/kobo-html)
+   Compiling rustls v0.23.46
+   Compiling smallvec v1.16.5
+   Compiling fontdue v0.9.3
+   Compiling kobo-doc v0.3.37 (/workspace/deps/Cobalt/crates/kobo-doc)
+   Compiling rusqlite v0.37.0
+   Compiling kobo-dict v0.3.37 (/workspace/deps/Cobalt/crates/kobo-dict)
+   Compiling kobo-abi v0.3.37 (/workspace/deps/Cobalt/crates/kobo-abi)
+   Compiling serde_core v1.0.229
+   Compiling kobo-text v0.3.37 (/workspace/deps/Cobalt/crates/kobo-text)
+   Compiling kobo-state v0.3.37 (/workspace/deps/Cobalt/crates/kobo-state)
+   Compiling shakmaty v0.27.3
+   Compiling kobo-profile v0.3.37 (/workspace/deps/Cobalt/crates/kobo-profile)
+   Compiling kobo-net v0.3.37 (/workspace/deps/Cobalt/crates/kobo-net)
+   Compiling serde_json v1.0.151
+   Compiling kobo-policy v0.3.37 (/workspace/deps/Cobalt/crates/kobo-policy)
+   Compiling serde v1.0.229
+   Compiling kobo-sdk v0.3.37 (/workspace/deps/Cobalt/crates/kobo-sdk)
+   Compiling polgar-pocket v0.2.0 (/workspace/kobo-chess)
+    Finished `test` profile [unoptimized] target(s) in 50.51s
      Running unittests src/main.rs (/workspace/build/cobalt/debug/deps/polgar_pocket-e301db3c43416b0c)
 
 running 59 tests
-test tests::back_cancels_navigation_confirmation ... ok
 test tests::app_makes_no_network_or_polling_commands ... ok
+test tests::board_orientation_and_hint_has_no_destinations ... ok
 test tests::castle_moves_king_and_rook ... ok
 test tests::castle_through_check_rejected ... ok
-test tests::board_orientation_and_hint_has_no_destinations ... ok
+test tests::back_cancels_navigation_confirmation ... ok
 test tests::castling_pack_requires_the_standard_uci_the_ui_can_play ... ok
-test tests::completion_only_after_player_line ... ok
 test tests::clean_home_back_exits_and_failed_exit_requires_explicit_loss_consent ... ok
+test tests::completion_only_after_player_line ... ok
 test tests::completion_timestamp_only_when_solved ... ok
 test tests::coordinates_toggle_persists_and_does_not_flip_actions ... ok
 test tests::corrupt_saved_cursor_and_missing_record_rejected ... ok
@@ -38,39 +153,119 @@ test tests::page_buttons_confirm_active_navigation ... ok
 test tests::pending_promotion_ignores_page_buttons_and_cancel_preserves_position ... ok
 test tests::pending_saves_coalesce_and_block_suspend ... ok
 test tests::pinned_piece_cannot_expose_king ... ok
+test tests::contributor_clara_completion_and_storage_dialog_fit_at_170_percent ... ok
 test tests::progress_rejects_corruption_without_overwriting ... ok
 test tests::progress_rejects_fabricated_completion_without_an_attempt ... ok
 test tests::progress_restores_completed_and_revealed ... ok
 test tests::progress_restores_incomplete_attempt ... ok
-test tests::promotion_dialog_requires_explicit_choice ... ok
 test tests::promotion_requires_piece_and_supports_underpromotion ... ok
-test tests::readonly_exit_does_not_offer_an_impossible_save_retry ... ok
+test tests::promotion_dialog_requires_explicit_choice ... ok
 test tests::restored_app_keeps_attempt_count ... ok
-test tests::restored_completed_screen_has_completion_feedback ... ok
+test tests::readonly_exit_does_not_offer_an_impossible_save_retry ... ok
 test tests::restored_completed_session_requires_matching_history ... ok
+test tests::restored_completed_screen_has_completion_feedback ... ok
 test tests::resume_redraws_once_without_writing_and_ordinary_idle_has_no_commands ... ok
 test tests::retry_resets_board_not_history ... ok
 test tests::revealed_is_never_clean ... ok
-test tests::save_failure_is_visible_and_retryable ... ok
 test tests::solution_uses_readable_san_including_checkmate_and_castling ... ok
-test tests::source_selection_is_not_a_storage_write ... ok
+test tests::save_failure_is_visible_and_retryable ... ok
 test tests::storage_reload_while_studying_returns_to_valid_home ... ok
 test tests::trainer_import_preserves_collection_puzzle_and_explanation ... ok
+test tests::source_selection_is_not_a_storage_write ... ok
 test tests::trainer_rejects_non_mating_published_line ... ok
 test tests::twenty_original_unique_puzzles_replay ... ok
 test tests::unbounded_import_stream_is_stopped_at_the_pack_limit ... ok
-test tests::contributor_clara_completion_and_storage_dialog_fit_at_170_percent ... ok
-test tests::wrong_legal_move_preserves_position ... ok
 test tests::v01_progress_fields_and_assistance_survive_the_upgrade ... ok
+test tests::wrong_legal_move_preserves_position ... ok
 
-test result: ok. 59 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+test result: ok. 59 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
 
++ cargo +1.85.1 build --locked
    Compiling polgar-pocket v0.2.0 (/workspace/kobo-chess)
-    Finished `dev` profile [unoptimized] target(s) in 2.45s
+    Finished `dev` profile [unoptimized] target(s) in 4.98s
++ /workspace/build/cobalt/debug/polgar-pocket --validate-pack packs/lichess-20.jsonl
 Validated 20 puzzles in lichess-tactics
++ cargo +1.85.1 build --locked --release --target armv7-unknown-linux-musleabihf
+   Compiling find-msvc-tools v0.1.15
+   Compiling shlex v2.0.1
+   Compiling libc v0.2.191
+   Compiling zeroize v1.9.1
+   Compiling equivalent v1.0.3
+   Compiling foldhash v0.1.5
+   Compiling cfg-if v1.0.5
+   Compiling allocator-api2 v0.2.21
+   Compiling cc v1.11.2
+   Compiling rustls-pki-types v1.16.0
+   Compiling hashbrown v0.15.5
+   Compiling getrandom v0.2.17
+   Compiling unicode-width v0.2.3
+   Compiling untrusted v0.9.0
+   Compiling bitflags v2.13.2
+   Compiling unicode-segmentation v1.13.3
+   Compiling proc-macro2 v1.0.107
+   Compiling pkg-config v0.3.34
+   Compiling vcpkg v0.2.15
+   Compiling ring v0.17.14
+   Compiling qrcodegen v1.8.0
+   Compiling quote v1.0.47
+   Compiling pulldown-cmark v0.13.6
+   Compiling libsqlite3-sys v0.35.0
+   Compiling kobo-ui v0.3.37 (/workspace/deps/Cobalt/crates/kobo-ui)
+   Compiling adler2 v2.0.1
+   Compiling rustls v0.23.46
+   Compiling memchr v2.8.3
+   Compiling unicode-ident v1.0.27
+   Compiling httparse v1.10.1
+   Compiling itoa v1.0.19
+   Compiling autocfg v1.5.1
+   Compiling num-traits v0.2.19
+   Compiling miniz_oxide v0.9.1
+   Compiling bytes v1.12.1
+   Compiling subtle v2.6.1
+   Compiling serde_core v1.0.229
+   Compiling unicase v2.10.0
+   Compiling once_cell v1.21.4
+   Compiling tinyvec v1.13.3
+   Compiling unicode-normalization v0.1.26
+   Compiling rustls-webpki v0.103.17
+   Compiling http v1.5.0
+   Compiling kobo-protocol v0.3.37 (/workspace/deps/Cobalt/crates/kobo-protocol)
+   Compiling hashlink v0.10.0
+   Compiling webpki-roots v1.0.12
+   Compiling httpdate v1.0.3
+   Compiling smallvec v1.16.5
+   Compiling kobo-json v0.3.37 (/workspace/deps/Cobalt/crates/kobo-json)
+   Compiling fallible-streaming-iterator v0.1.9
+   Compiling fallible-iterator v0.3.0
+   Compiling ttf-parser v0.21.1
+   Compiling kobo-html v0.3.37 (/workspace/deps/Cobalt/crates/kobo-html)
+   Compiling zmij v1.0.23
+   Compiling kobo-doc v0.3.37 (/workspace/deps/Cobalt/crates/kobo-doc)
+   Compiling fontdue v0.9.3
+   Compiling kobo-net v0.3.37 (/workspace/deps/Cobalt/crates/kobo-net)
+   Compiling syn v3.0.10
+   Compiling kobo-dict v0.3.37 (/workspace/deps/Cobalt/crates/kobo-dict)
+   Compiling kobo-abi v0.3.37 (/workspace/deps/Cobalt/crates/kobo-abi)
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling unicode-linebreak v0.1.5
+   Compiling serde_derive v1.0.229
+   Compiling kobo-text v0.3.37 (/workspace/deps/Cobalt/crates/kobo-text)
+   Compiling btoi v0.4.3
+   Compiling kobo-state v0.3.37 (/workspace/deps/Cobalt/crates/kobo-state)
+   Compiling arrayvec v0.7.8
+   Compiling shakmaty v0.27.3
+   Compiling rusqlite v0.37.0
+   Compiling kobo-policy v0.3.37 (/workspace/deps/Cobalt/crates/kobo-policy)
+   Compiling kobo-sdk v0.3.37 (/workspace/deps/Cobalt/crates/kobo-sdk)
    Compiling polgar-pocket v0.2.0 (/workspace/kobo-chess)
-    Finished `release` profile [optimized] target(s) in 3.97s
+    Finished `release` profile [optimized] target(s) in 4m 49s
++ binary=/workspace/build/cobalt/armv7-unknown-linux-musleabihf/release/polgar-pocket
++ file /workspace/build/cobalt/armv7-unknown-linux-musleabihf/release/polgar-pocket
 /workspace/build/cobalt/armv7-unknown-linux-musleabihf/release/polgar-pocket: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), statically linked, not stripped
++ sha256sum /workspace/build/cobalt/armv7-unknown-linux-musleabihf/release/polgar-pocket
+9688b7a360a8067cfa85c5bf4bf14639ec64740b70fc1da2b6f895b7db63c809  /workspace/build/cobalt/armv7-unknown-linux-musleabihf/release/polgar-pocket
++ arm-linux-gnueabihf-readelf -l /workspace/build/cobalt/armv7-unknown-linux-musleabihf/release/polgar-pocket
 
 Elf file type is EXEC (Executable file)
 Entry point 0x190d61
@@ -101,3 +296,25 @@ Program Headers:
    07     .eh_frame_hdr 
    08     
    09     .ARM.exidx 
++ rg INTERP
++ arm-linux-gnueabihf-readelf -l /workspace/build/cobalt/armv7-unknown-linux-musleabihf/release/polgar-pocket
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           ARM
+  Version:                           0x1
+  Entry point address:               0x190d61
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          3107540 (bytes into file)
+  Flags:                             0x5000400, Version5 EABI, hard-float ABI
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         10
+  Size of section headers:           40 (bytes)
+  Number of section headers:         23
+  Section header string table index: 21

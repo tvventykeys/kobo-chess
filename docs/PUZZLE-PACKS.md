@@ -23,18 +23,21 @@ POCKET_STARTER_PACK=/path/to/starter.idx KOBO_SIM_PROFILE=libra-colour-390 \
   KOBO_SIM_OFFLINE=1 "$CARGO_TARGET_DIR/debug/kobo" dev 127.0.0.1:8787
 ```
 
-The default importer requires 5,000 rows per rating band. Use
-`--per-band N` for smaller test packs. The importer selects in input order,
-excludes the demo IDs, then emits entries in ascending ASCII puzzle-ID order.
-The same input bytes and options produce identical output. A malformed selected
-row, illegal move, duplicate selected ID or shortage in any band fails the
-import. Final replacement is atomic on the output filesystem. Provenance
-includes the official source URL, CC0 identifier, SHA-256 of the exact input CSV
-and selection policy. Obtain that CSV from Lichess or a traceable public source.
-The provenance fields describe the input and do not independently authenticate
-it. The build flag embeds the file's contents, so review them before using
-the flag. Build without the variable for the demo and for default submission
-preparation. Neither host command implies a supported Kobo install procedure.
+The default importer selects the first 20,000 eligible rows in source order.
+Use `--count N` for a smaller test pack. Ratings 80 and 1500 are both included,
+with no solver-colour restriction. Demo IDs are excluded. The output sorts
+selected records by ASCII puzzle ID. The importer reads the CSV once and
+stops at the requested count. A malformed selected row, illegal move, duplicate
+selected ID or shortage fails the import. Final replacement is atomic on the
+output filesystem.
+
+The provenance header records the official source URL, CC0 identifier, policy
+and SHA-256 of the original CSV bytes consumed through the selected row that
+completed the quota. A complete source snapshot digest can be kept separately
+if it is already available. Obtain input from Lichess or a traceable public
+source. The build flag embeds the reviewed file and the app rejects indexed
+rows outside 80–1500. Build without the variable for the demo and for default
+submission preparation. See the [roadmap](ROADMAP.md) for delivery constraints.
 
 Local demo reproduction still uses
 `python3 scripts/import-lichess-csv.py packs/lichess-20-source.csv /path/to/demo.jsonl`.

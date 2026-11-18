@@ -54,7 +54,8 @@ in `src/`, packs in `packs/`; the existing setup scripts remain unchanged.
 * [License and attribution](THIRD-PARTY.md)
 
 The default build still ships Pocket Twenty. A host-generated, build-time
-preview adds a 20,000-puzzle Lichess collection with rating and theme filtering.
+preview adds 20,000 Lichess puzzles rated 80–1500, for both solver colours,
+with rating and theme filtering.
 It uses a separate progress key so the demo history remains available in the
 default build. The roadmap sources public puzzles from Lichess under CC0 and
 excludes copyrighted book studies and private trainer material. The preview

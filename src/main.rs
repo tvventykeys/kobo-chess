@@ -18,7 +18,7 @@ use kobo_sdk::{action_id, ActionId, Context, KoboApp, Screen, ScreenBuilder, Sto
 use shakmaty::{Position, Square};
 
 const KEY: &str = "pocket.progress.v1";
-const PREVIEW_KEY: &str = "pocket.preview.v1";
+const PREVIEW_KEY: &str = "pocket.preview.80-1500.v1";
 const STARTER: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/pocket-starter.idx"));
 #[derive(Clone, Copy, PartialEq)]
 enum Page {

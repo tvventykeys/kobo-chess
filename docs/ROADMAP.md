@@ -1,66 +1,112 @@
 # Pocket Chess Studies roadmap
 
-The public library uses the official [CC0 Lichess puzzle database](https://database.lichess.org/#puzzles).
-Keep the game-derived puzzles and the Lichess IDs. Copyrighted book studies,
-private trainer material and book import/sync are outside the public roadmap.
+The public library uses [CC0 Lichess puzzles](https://database.lichess.org/#puzzles)
+rated **80–1500 inclusive**, for White and Black. The collection target is
+approximately **1.95 million** puzzles. The owner reports 1,947,528 rows in
+their previously filtered snapshot. Counts may vary by snapshot. Copyrighted
+book studies and private trainer data are outside the public library.
 
 | Stage | Delivery and acceptance |
 | --- | --- |
-| Pocket Twenty | Default offline build. The 20 demo records, numbering, app ID and existing progress key remain available. |
-| 20,000-puzzle starter preview | Generate an indexed collection on a host from a local Lichess CSV. Opt in at build time. Browse by rating and theme, open a result, and navigate matching puzzles by touch or page key. Test both Kobo simulator profiles, progress recovery, binary size and startup memory. |
-| Starter release | Verify and pin a direct official CSV snapshot, agree on the distribution route, and design a durable progress migration and capacity plan. Review startup, saves, suspend/exit and memory on owner-approved hardware. Any Cobalt contribution or publishing decision is separate. |
-| Full database research | Treat the roughly 6.2M-puzzle scale as a planning input. Measure a compact partitioned format with bounded reads, filters and transactional updates. Evaluate storage reservations, offline delivery, ARM read/decode latency and interrupted imports before proposing a size or release date. |
+| Pocket Twenty | Default offline build. Original records, ordering and progress key stay available. |
+| 20,000-puzzle starter | Opt-in build from a local public CSV. Retain original IDs, FEN and UCI, ratings, themes and CC0 attribution. Validate each setup and solution with shakmaty. Expose combined rating/theme browsing and keep saves offline. |
+| Full 80–1500 collection | Validate a published, pinned source or a reviewed CC0-only extraction of the owner's existing filtered rows. Build independent bounded-read shards. Confirm supported delivery, validate quotas and replacement, and measure actual ARM latency before release. |
 
-The preview picks 5,000 puzzles in each of four rating bands from the first
-eligible rows of the input. This gives useful coverage across difficulty. It is
-an ordered starter sample, so there is no claim of statistically representative
-theme distribution or fresh engine analysis. All theme tags are preserved, and
-five commonly used tags have on-reader filters. The browser displays three
-results at a time. Picked results navigate within their filter until restart.
-After restart the attempt is restored and navigation uses the unfiltered
-starter order. The rating/theme choice is intentionally session-local.
+The starter takes the first eligible rows in source order, excludes the demo
+IDs, and sorts by ID. There is no solver-colour filter during import. Both
+colours were present in the measured starter. All theme tags are retained,
+and five commonly used tags have on-reader filters. The browser displays
+three results at a time. Picked results navigate within the filter until
+restart. Restart restores the attempt and uses unfiltered starter navigation.
 
-## Cobalt limits verified for this milestone
+## Private import reuse
 
-References are pinned to Cobalt Beta
-`1cc5b6412c4229b85e9960dd956c3d26c4ffd66e` (0.3.37). The standalone SDK is
-pinned to `5ac30a46efce23d7fa0d1cb12a499c9b57b816b0` (0.3.37).
+The public importer already uses the Lichess CSV column contract. It can
+consume a separately reviewed host export of the existing filtered data with
+only `PuzzleId,FEN,Moves,Rating,Themes`. Prefer the retained original
+Lichess rows or an export routine that reproduces them. Request the source
+snapshot identity and checksum or equivalent trusted provenance. Verify
+inclusive rating bounds, unique IDs, both solver sides, and every setup and
+solution. Confirm FEN is pre-setup and Moves still starts with the setup
+move. A normalized post-setup table cannot be supplied to that importer
+without recovering the original representation.
 
-- A signed app package carries one executable, a canonical manifest and a
-  signature. The limits are 64 MiB for the executable and 128 MiB for the
-  package. A build-time data section can fit the starter without relying on
-  extra package files. [Bundle format](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/crates/kobo-app-store/src/bundle.rs) · [Size limits](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/crates/kobo-app-store/src/lib.rs)
-- Durable store limits are 256 KiB per value and 256 keys per application.
-  Preview history uses its own atomic key and refuses a new history entry
-  after 1,000 distinct puzzles. It can still save practice for existing
-  entries. First launch copies the existing demo snapshot in memory, and
-  preview saves leave the original demo key byte-identical. The demo and
-  preview histories diverge after that first load. Use the same indexed pack
-  on subsequent preview builds. A new snapshot or a production-grade larger
-  history requires an explicit ID-based migration and sharding decision.
-  [Protocol bounds](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/crates/kobo-protocol/src/lib.rs)
-- The SDK shelf is app-private, with 256 KiB transfers, 256 MiB total, 4,096
-  blobs and a 64 MiB free-space floor. The reserved `shared-files` capability
-  has no SDK call in this revision. The shelf can serve bounded reads of data
-  already delivered to an app. A supported external puzzle pack installer,
-  USB picker, or offline companion ingress would require separate evidence.
-  Host CSV import uses no device, network capability, filesystem workaround or
-  changes to Cobalt's signing model. [SDK APIs](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/SDK.md)
-- Cobalt keeps up to four hosted apps and uses least-recently-used eviction.
-  Its runtime source explicitly describes the limit as a count of hosted
-  apps. Treat host RSS and startup results as sizing evidence. The retained
-  reader memory and latency budget still needs physical measurement.
-  [Hosted app limit](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/crates/kobod/src/device.rs#L2115)
+Reuse of the **procedure** needs no database connection. Reuse of the **rows**
+needs an owner-provided or explicitly authorized, independently reviewed
+CC0-only export. Generate it beside the data under the owner's control,
+using explicit column projection and a Lichess-only source relation. Exclude
+book or trainer rows, notes, private annotations, accounts, game history,
+progress, credentials, server metadata and database dumps. Review the result
+and manifest before copying data or publishing anything. No private database,
+code, export or credentials were accessed for this work.
 
-The measured starter index is 3,149,487 bytes (about 3.00 MiB, of which 240,000
-bytes are fixed entries). At the same average size, 6.2M rows would occupy
-about 976 MB (931 MiB), before allowing for staging, migration or progress.
-The 12-byte entries alone would take 74.4 MB at that scale. A single zstd
-level-3 stream was 1,175,937 bytes for the starter. Extrapolating that ratio
-gives about 365 MB before random-access block overhead. The current format
-caps itself at 20,000 puzzles and 8 MiB. Full coverage would need smaller
-encoded blocks and a different storage/delivery strategy, even if compressing
-blocks proved sufficiently fast.
+If provenance or source semantics cannot be recovered, use the official source
+and stream it once on the host. Reject rows outside the range before chess
+validation or storage. Keep only eligible rows in bounded staging buckets.
+A prefiltered export avoids reading the unfiltered stream. Neither process
+requires a full uncompressed CSV on disk or reader.
 
-See [pack format and import](PUZZLE-PACKS.md) and
-[verification and measurements](LICHESS-STARTER-VALIDATION.md).
+## Proposed large collection format
+
+- **Shard and block layout.** Sort by original five-byte ID. Start with
+  up to 64 independently compressed blocks per shard. A block contains up
+  to 256 records and at most 65,535 uncompressed bytes. A 24-byte directory
+  entry stores first and last ID, shard-local byte offset, compressed and
+  raw lengths, and record count. Keep a small top-level manifest with version,
+  source and license, rating bounds, shard ID ranges, counts and digests.
+  An import uses bounded host staging buckets or external sort. Validate
+  before committing a build and reject duplicate IDs across shards.
+- **Lookups and filters.** Locate the candidate block by ID ranges. Read
+  only its compressed bytes, expand into a fixed-size buffer, and decode
+  the selected row. Keep a separate paged 3-byte-per-record facet table
+  with rating and bit flags for the five UI themes and solver colour,
+  anchored by ordinal to the directory. Stream facet pages on demand and
+  retain the selected page or a bounded cursor, rather than building a
+  resident match vector for the whole collection. Keep all source tags
+  in each block. Extra theme filters may scan blocks or use a later
+  measured posting-list design.
+- **Publication and recovery.** Assemble the next generation on the host,
+  record file digests and size, and activate only after a complete verified
+  import through a supported path. Keep the prior usable generation until
+  activation. Budget for staged data, previous data, progress and the
+  runtime free-space reserve. Reject an update that exceeds quota. If two
+  complete generations and progress do not fit, measure a resumable
+  shard-reuse update before enabling in-place updates.
+- **Progress.** Anchor records to source ID, never a row number or shard.
+  Use a separate atomic active-session key and sparse paged histories.
+  Design the commit protocol so an interrupted attempt update cannot erase
+  prior history or be counted twice. Preserve schema versions and retain
+  progress for temporarily absent IDs when replacing source snapshots.
+  Budget 32 bytes per record as a sizing example (about 59 MiB if every ID
+  has history), plus framing and recovery overhead. Exact progress encoding,
+  migration and crash tests are release work.
+
+The starter is implemented today. The large format is a design with a
+host block benchmark, not a reader implementation. The measured projected
+index, payload and directory total is about **98 MiB** for the filtered
+collection. A second generation plus dense progress could exhaust the
+256 MiB shelf quota after overhead. See [measurements](LICHESS-STARTER-VALIDATION.md).
+
+## Cobalt constraints
+
+Cobalt Beta inspected at `1cc5b6412c4229b85e9960dd956c3d26c4ffd66e` (0.3.37).
+
+- Signed bundles contain one executable. Limits are 64 MiB for the executable
+  and 128 MiB for the package. The starter can embed its small index. The
+  proposed full filtered collection exceeds the executable limit.
+  [Store limits](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/crates/kobo-app-store/src/lib.rs)
+- Static limits are 256 KiB per store value and 256 keys. The app-private shelf
+  supports 256 KiB chunks and 256 MiB total, capped at 4,096 blobs with a 64 MiB
+  free-space reserve. The reserved user-visible `shared-files` capability
+  has no SDK call. We found no supported external pack installation route
+  for this app. Offline use after legitimate delivery is feasible in design.
+  [Protocol bounds](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/crates/kobo-protocol/src/lib.rs) · [SDK](https://github.com/BandarLabs/Cobalt/blob/1cc5b6412c4229b85e9960dd956c3d26c4ffd66e/SDK.md)
+- The starter uses a separate, rating-scoped progress key and reads the
+  existing demo snapshot on first launch. The older unrestricted preview
+  key is preserved on disk. The revised preview does not merge it, since
+  puzzles may be absent or have moved. Starter history caps at 1,000 distinct
+  IDs per snapshot, with no history eviction. Keep the same starter file
+  across builds until an ID-based migration is implemented.
+- Cold reads, resume, battery behaviour and the physical memory budget
+  need an authorized hardware test. The app and docs ship no data beyond
+  the existing Pocket Twenty by default.

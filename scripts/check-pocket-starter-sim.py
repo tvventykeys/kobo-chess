@@ -20,10 +20,14 @@ assert data[:8] == b"PCSIDX01"
 metadata_size, count = struct.unpack_from("<II", data, 8)
 assert count == 20_000, count
 matches = []
+low_count = 0
 for offset in range(16 + metadata_size, 16 + metadata_size + 12 * count, 12):
     puzzle_id, _, rating, themes = struct.unpack_from("<5sIHB", data, offset)
-    if rating < 1200 and themes & 1:
-        matches.append(puzzle_id.decode("ascii"))
+    assert 80 <= rating <= 1500, rating
+    if rating < 1200:
+        low_count += 1
+        if themes & 1:
+            matches.append(puzzle_id.decode("ascii"))
 assert len(matches) > 3
 
 
@@ -62,7 +66,7 @@ def scenario(template, profile, scale, folder):
             drive(address, folder, [
                 "tap-id continue", "expect 1 / 20", "tap-id home", "tap-id collections",
                 "expect 20 verified puzzles", "tap-id browse-starter", "expect 20000 matches",
-                "tap-id rating-filter", "expect 5000 matches", "tap-id theme-filter",
+                "tap-id rating-filter", f"expect {low_count} matches", "tap-id theme-filter",
                 f"expect {len(matches)} matches", f"expect {matches[0]}", "clean", "shot filtered",
                 "tap-id browse-next", f"expect {matches[3]}", "tap-id browse-prev",
                 "tap-id pick-0", "expect Leave this attempt?", "tap-id confirm-leave", f"expect Lichess {matches[0]}", "tap-id hint",
@@ -76,7 +80,7 @@ def scenario(template, profile, scale, folder):
                                     "tap-id open-line", "expect Solution line", "clean",
                                     "shot solution-line", "tap Back", "wait-for Revealed.",
                                     "tap-id home", "expect Continue studying", "wait-idle"])
-            preview = state_file(root, "pocket.preview.v1")
+            preview = state_file(root, "pocket.preview.80-1500.v1")
             saved = json.loads(preview.read_bytes())
             assert saved["session"]["puzzle_id"] == matches[1], saved["session"]
             assert saved["session"]["revealed"]

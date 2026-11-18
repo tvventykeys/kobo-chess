@@ -756,7 +756,7 @@ fn indexed_rows(rows: &str) -> String {
 }
 
 const INDEX_ROWS: &str = concat!(
-    "[\"zz003\",\"1k1r4/pp3pp1/2p1p3/4b3/P3n1P1/8/KPP2PN1/3rBR1R b - - 2 31\",\"b8c7 e1a5 b7b6 f1d1\",1700,[\"fork\"]]\n",
+    "[\"zz003\",\"1k1r4/pp3pp1/2p1p3/4b3/P3n1P1/8/KPP2PN1/3rBR1R b - - 2 31\",\"b8c7 e1a5 b7b6 f1d1\",1500,[\"fork\"]]\n",
     "[\"zz001\",\"1k1r4/pp3pp1/2p1p3/4b3/P3n1P1/8/KPP2PN1/3rBR1R b - - 2 31\",\"b8c7 e1a5 b7b6 f1d1\",998,[\"mate\"]]\n",
     "[\"zz002\",\"1k1r4/pp3pp1/2p1p3/4b3/P3n1P1/8/KPP2PN1/3rBR1R b - - 2 31\",\"b8c7 e1a5 b7b6 f1d1\",1100,[\"mate\"]]\n",
 );
@@ -785,6 +785,8 @@ fn indexed_import_is_deterministic_and_checks_source_and_index() {
         INDEX_ROWS.replace("b8c7", "b8h8"),
         INDEX_ROWS.replace("f1d1", "f1a8"),
         INDEX_ROWS.replace("zz003", "zz001"),
+        INDEX_ROWS.replace("1500", "1501"),
+        INDEX_ROWS.replace("998", "79"),
     ] {
         assert!(build(&rows).is_err());
     }

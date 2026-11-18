@@ -17,12 +17,13 @@ pub const THEMES: [(&str, &str); 5] = [
     ("endgame", "Endgame"),
     ("middlegame", "Middlegame"),
 ];
-pub const RATINGS: [(u16, u16, &str); 5] = [
-    (0, u16::MAX, "Any rating"),
-    (0, 1199, "Under 1200"),
-    (1200, 1599, "1200–1599"),
-    (1600, 1999, "1600–1999"),
-    (2000, u16::MAX, "2000 and above"),
+const MIN_RATING: u16 = 80;
+const MAX_RATING: u16 = 1500;
+pub const RATINGS: [(u16, u16, &str); 4] = [
+    (MIN_RATING, MAX_RATING, "Any rating"),
+    (MIN_RATING, 1199, "Under 1200"),
+    (1200, 1399, "1200–1399"),
+    (1400, MAX_RATING, "1400–1500"),
 ];
 
 pub const SOURCE: &str = "https://database.lichess.org/#puzzles";
@@ -56,8 +57,9 @@ impl Row {
     }
 
     fn into_puzzle(self) -> Result<Puzzle, String> {
-        if self.1.len() > 160 || self.2.len() > 384 || self.3 == 0 {
-            return Err("Invalid source FEN, move-list bounds or rating".into());
+        if self.1.len() > 160 || self.2.len() > 384 || !(MIN_RATING..=MAX_RATING).contains(&self.3)
+        {
+            return Err("Invalid source FEN, move-list bounds or rating outside 80–1500".into());
         }
         let url = format!("https://lichess.org/training/{}", self.0);
         LichessRow {

@@ -22,7 +22,14 @@ fn app() -> (Pocket, Context) {
     (p, cx)
 }
 fn action(p: &mut Pocket, cx: &mut Context, a: &str) {
-    p.on_action(cx, action_id(a));
+    p.on_action(
+        cx,
+        if a == "back" {
+            ActionId::BACK
+        } else {
+            action_id(a)
+        },
+    );
 }
 fn fen(pos: &shakmaty::Chess) -> String {
     Fen::from_position(pos.clone(), EnPassantMode::Always).to_string()
@@ -437,25 +444,6 @@ fn corrupt_saved_cursor_and_missing_record_rejected() {
     p.progress.records.clear();
     assert!(Progress::decode(&serde_json::to_vec(&p.progress).unwrap(), &p.pack).is_err());
 }
-#[test]
-fn trainer_import_preserves_collection_puzzle_and_explanation() {
-    let input=br#"{"bookId":"test-mates","bookTitle":"Test mates","problems":[{"problemid":7,"fen":"7k/5Q2/6K1/8/8/8/8/8 w - - 0 1","moves":"f7-g7","explanation":"A protected queen finishes the mate."}]}"#;
-    let p = Pack::parse(import::trainer(input, &[7]).unwrap()).unwrap();
-    assert_eq!(p.header.collection_id, "test-mates");
-    assert_eq!(p.puzzle(0).id, "7");
-    assert_eq!(
-        p.puzzle(0).explanation,
-        "A protected queen finishes the mate."
-    );
-    assert!(import::trainer(input, &[8]).is_err());
-    assert!(import::trainer(input, &[7, 7]).is_err());
-}
-#[test]
-fn trainer_rejects_non_mating_published_line() {
-    let input=br#"{"bookId":"test","bookTitle":"Test","problems":[{"problemid":1,"fen":"7k/5Q2/6K1/8/8/8/8/8 w - - 0 1","moves":"f7-e7"}]}"#;
-    assert!(import::trainer(input, &[1]).is_err());
-}
-
 // v0.2 regressions found by auditing the real lifecycle and storage paths.
 #[test]
 fn storage_reload_while_studying_returns_to_valid_home() {
@@ -757,4 +745,115 @@ fn contributor_clara_completion_and_storage_dialog_fit_at_170_percent() {
     action(&mut app, &mut context, "storage-dismiss");
     assert!(app.storage_notice.is_some());
     assert!(!app.storage_open);
+}
+
+fn indexed_rows(rows: &str) -> String {
+    format!(
+        "{{\"source\":\"{}\",\"license\":\"CC0-1.0\",\"input_sha256\":\"{}\",\"selection\":\"test\"}}\n{rows}",
+        index::SOURCE,
+        "0".repeat(64)
+    )
+}
+
+const INDEX_ROWS: &str = concat!(
+    "[\"zz003\",\"1k1r4/pp3pp1/2p1p3/4b3/P3n1P1/8/KPP2PN1/3rBR1R b - - 2 31\",\"b8c7 e1a5 b7b6 f1d1\",1700,[\"fork\"]]\n",
+    "[\"zz001\",\"1k1r4/pp3pp1/2p1p3/4b3/P3n1P1/8/KPP2PN1/3rBR1R b - - 2 31\",\"b8c7 e1a5 b7b6 f1d1\",998,[\"mate\"]]\n",
+    "[\"zz002\",\"1k1r4/pp3pp1/2p1p3/4b3/P3n1P1/8/KPP2PN1/3rBR1R b - - 2 31\",\"b8c7 e1a5 b7b6 f1d1\",1100,[\"mate\"]]\n",
+);
+
+#[test]
+fn indexed_import_is_deterministic_and_checks_source_and_index() {
+    let build = |rows: &str| index::build(indexed_rows(rows).as_bytes());
+    let output = build(INDEX_ROWS).unwrap();
+    let reversed = INDEX_ROWS.lines().rev().collect::<Vec<_>>().join("\n");
+    assert_eq!(output, build(&reversed).unwrap());
+    let index = index::Index::parse(&output).unwrap();
+    assert_eq!(index.id(0), "zz001");
+    assert!(index.contains("zz002"));
+    assert!(!index.contains("zz004"));
+    let puzzle = index.puzzle(0);
+    assert_eq!(puzzle.side_to_move, "white");
+    assert_eq!(puzzle.difficulty, Some(998));
+    assert_eq!(puzzle.tags, ["mate"]);
+    assert_eq!(puzzle.solution, ["e1a5", "b7b6", "f1d1"]);
+    assert!(rules::position(&puzzle.fen)
+        .unwrap()
+        .board()
+        .piece_at(Square::C7)
+        .is_some());
+    for rows in [
+        INDEX_ROWS.replace("b8c7", "b8h8"),
+        INDEX_ROWS.replace("f1d1", "f1a8"),
+        INDEX_ROWS.replace("zz003", "zz001"),
+    ] {
+        assert!(build(&rows).is_err());
+    }
+    let mut corrupt = output;
+    let metadata = u32::from_le_bytes(corrupt[8..12].try_into().unwrap()) as usize;
+    corrupt[16 + metadata + 11] ^= 1;
+    assert!(index::Index::parse(&corrupt).is_err());
+    assert!(index::Index::parse(&corrupt[..12]).is_err());
+}
+
+#[test]
+fn starter_browse_applies_both_filters_and_keeps_active_attempt() {
+    let bytes = index::build(indexed_rows(INDEX_ROWS).as_bytes())
+        .unwrap()
+        .into_boxed_slice();
+    let mut app = Pocket::new(bundled_pack(Box::leak(bytes)).unwrap());
+    let mut cx = Context::default();
+    app.ready = true;
+    action(&mut app, &mut cx, "collections");
+    action(&mut app, &mut cx, "browse-starter");
+    action(&mut app, &mut cx, "rating-filter");
+    action(&mut app, &mut cx, "theme-filter");
+    action(&mut app, &mut cx, "pick-0");
+    assert_eq!(app.session.as_ref().unwrap().puzzle.id, "zz001");
+    action(&mut app, &mut cx, "hint");
+    app.on_page_turn(&mut cx, true);
+    assert!(app.leave.is_some());
+    action(&mut app, &mut cx, "cancel");
+    assert_eq!(app.session.as_ref().unwrap().hints, 1);
+    app.on_page_turn(&mut cx, true);
+    action(&mut app, &mut cx, "confirm-leave");
+    assert_eq!(app.session.as_ref().unwrap().puzzle.id, "zz002");
+    app.on_page_turn(&mut cx, true);
+    assert_eq!(app.session.as_ref().unwrap().puzzle.id, "zz001");
+    action(&mut app, &mut cx, "reveal");
+    action(&mut app, &mut cx, "open-line");
+    assert!(app.page == Page::Line);
+    action(&mut app, &mut cx, "back");
+    assert!(app.page == Page::Study);
+}
+
+#[test]
+fn preview_history_limit_fits_sdk_store_even_with_largest_counters() {
+    let (app, _) = app();
+    let mut progress = Progress::new(&app.pack);
+    progress.records = (0..progress::PREVIEW_RECORD_LIMIT)
+        .map(|i| {
+            (
+                format!("{i:05}"),
+                progress::Record {
+                    attempts: u32::MAX,
+                    incorrect_attempts: u32::MAX,
+                    hints_used: u32::MAX,
+                    revealed: false,
+                    completed: false,
+                    clean_solves: u32::MAX,
+                    completion_timestamp: Some(u64::MAX),
+                },
+            )
+        })
+        .collect();
+    progress.current = index::MAX_PUZZLES + 19;
+    progress.revision = u64::MAX;
+    progress.session = Some(progress::SavedSession {
+        puzzle_id: "00000".into(),
+        cursor: 63,
+        wrong: u32::MAX,
+        hints: 1,
+        revealed: false,
+    });
+    assert!(serde_json::to_vec(&progress).unwrap().len() < kobo_sdk::MAX_STORE_VALUE);
 }

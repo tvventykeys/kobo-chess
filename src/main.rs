@@ -1,5 +1,7 @@
 mod board;
+mod browse;
 mod import;
+mod index;
 mod pack;
 mod progress;
 mod rules;
@@ -16,16 +18,21 @@ use kobo_sdk::{action_id, ActionId, Context, KoboApp, Screen, ScreenBuilder, Sto
 use shakmaty::{Position, Square};
 
 const KEY: &str = "pocket.progress.v1";
+const PREVIEW_KEY: &str = "pocket.preview.v1";
+const STARTER: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/pocket-starter.idx"));
 #[derive(Clone, Copy, PartialEq)]
 enum Page {
     Home,
     Collections,
+    Browse,
+    Line,
     Study,
     Settings,
 }
 #[derive(Clone, Copy)]
 enum Leave {
     Index(usize),
+    Browse(usize, browse::Filter),
     Home,
 }
 #[allow(
@@ -34,6 +41,10 @@ enum Leave {
 )]
 struct Pocket {
     pack: Pack,
+    browser: browse::Browser,
+    starter_matches: Vec<usize>,
+    capacity_notice: bool,
+    line_page: usize,
     progress: Progress,
     session: Option<Session>,
     page: Page,
@@ -57,6 +68,10 @@ impl Pocket {
         let progress = Progress::new(&pack);
         Self {
             pack,
+            browser: browse::Browser::default(),
+            starter_matches: Vec::new(),
+            capacity_notice: false,
+            line_page: 0,
             progress,
             session: None,
             page: Page::Home,
@@ -76,6 +91,30 @@ impl Pocket {
             last_screen: None,
         }
     }
+    fn preview(&self) -> bool {
+        self.pack.demo_len() < self.pack.len()
+    }
+
+    fn store_key(&self) -> &'static str {
+        if self.preview() {
+            PREVIEW_KEY
+        } else {
+            KEY
+        }
+    }
+
+    fn step_index(&self, forward: bool) -> usize {
+        let current = self.progress.current;
+        if current < self.pack.demo_len() {
+            return step(current, self.pack.demo_len(), forward);
+        }
+        let i = self
+            .starter_matches
+            .binary_search(&current)
+            .expect("active filter includes session");
+        self.starter_matches[step(i, self.starter_matches.len(), forward)]
+    }
+
     fn show(&mut self, cx: &mut Context) {
         let screen = self.screen();
         if self.last_screen.as_ref() != Some(&screen) {
@@ -143,17 +182,40 @@ impl Pocket {
                     .button("settings", "Settings")
                     .button("exit", "Exit to launcher");
             }
+            Page::Browse => b = self.browser.screen(&self.pack, b),
+            Page::Line => {
+                let session = self.session.as_ref().expect("line has session");
+                b = b.heading("Solution line");
+                let moves = session.solution_moves();
+                for (i, line) in moves.chunks(4).enumerate().skip(self.line_page * 4).take(4) {
+                    b = b.secondary(format!(
+                        "{}–{}  {}",
+                        i * 4 + 1,
+                        i * 4 + line.len(),
+                        line.join(" ")
+                    ));
+                }
+                if moves.len() > 16 {
+                    b = b.buttons([("line-prev", "Earlier moves"), ("line-next", "Later moves")]);
+                }
+            }
             Page::Collections => {
                 b = b
                     .heading("Study collections")
                     .button("select-pack", &self.pack.header.title)
                     .secondary(format!(
                         "{} verified puzzles · {}",
-                        self.pack.len(),
+                        self.pack.demo_len(),
                         self.pack.header.license
                     ))
-                    .text("Selected for offline study. Original Lichess puzzle IDs are preserved.")
-                    .button("home", "Home");
+                    .text("Selected for offline study. Original Lichess puzzle IDs are preserved.");
+                if self.preview() {
+                    b = b.button(
+                        "browse-starter",
+                        format!("Browse {} more", self.pack.len() - self.pack.demo_len()),
+                    );
+                }
+                b = b.button("home", "Home");
             }
             Page::Settings => {
                 b=b.heading("Study settings")
@@ -182,21 +244,31 @@ impl Pocket {
                 } else {
                     "Find the best move"
                 };
-                b = b
-                    .top_bar_action(
-                        if s.complete() {
-                            "previous"
-                        } else {
-                            "coordinates"
-                        },
-                        if s.complete() { "Prev" } else { "Coords" },
-                    )
-                    .secondary(format!(
+                let current = self.progress.current;
+                let status = if current < self.pack.demo_len() {
+                    format!(
                         "{} · {} / {}",
                         self.pack.header.title,
-                        self.progress.current + 1,
-                        self.pack.len()
-                    ))
+                        current + 1,
+                        self.pack.demo_len()
+                    )
+                } else {
+                    format!(
+                        "Lichess {} · Rating {}",
+                        s.puzzle.id,
+                        self.pack.facets(current).0
+                    )
+                };
+                let (action, label) = if current >= self.pack.demo_len() && s.revealed {
+                    ("open-line", "Line")
+                } else if s.complete() {
+                    ("previous", "Prev")
+                } else {
+                    ("coordinates", "Coords")
+                };
+                b = b
+                    .top_bar_action(action, label)
+                    .secondary(status)
                     .secondary(if s.complete() {
                         format!(
                             "{} exercise · {state}",
@@ -239,7 +311,7 @@ impl Pocket {
                 if s.complete() && !s.puzzle.explanation.is_empty() {
                     b = b.secondary(&s.puzzle.explanation);
                 }
-                if s.revealed {
+                if s.revealed && current < self.pack.demo_len() {
                     b = b.secondary(format!("Line: {}", s.solution_text()));
                 }
                 b = if s.complete() {
@@ -275,7 +347,12 @@ impl Pocket {
                 });
             }
         }
-        if self.leave.is_some() {
+        if self.capacity_notice {
+            b = b.dialog("Preview history is full", "dismiss-capacity", |d| {
+                d.text("Saved history is kept. Choose a puzzle you have already studied.")
+                    .button("dismiss-capacity", "Close")
+            });
+        } else if self.leave.is_some() {
             b = b.dialog("Leave this attempt?", "cancel", |d| {
                 d.text("History is kept. Switching puzzles starts a fresh attempt.")
                     .buttons([("confirm-leave", "Leave"), ("cancel", "Keep studying")])
@@ -296,7 +373,7 @@ impl Pocket {
             && self.storage_notice.is_none()
         {
             let bytes = serde_json::to_vec(&self.progress).expect("serializable progress");
-            cx.store().save(KEY, bytes);
+            cx.store().save(self.store_key(), bytes);
             self.saving = true;
             self.storage_waiver = false;
             self.dirty = false;
@@ -318,7 +395,18 @@ impl Pocket {
         self.promotion = None;
     }
     fn request_leave(&mut self, cx: &mut Context, target: Leave) {
-        if matches!(target, Leave::Index(_)) && self.session.as_ref().is_some_and(Session::active) {
+        let index = match target {
+            Leave::Index(i) | Leave::Browse(i, _) => Some(i),
+            Leave::Home => None,
+        };
+        if self.preview()
+            && self.progress.records.len() >= progress::PREVIEW_RECORD_LIMIT
+            && index.is_some_and(|i| !self.progress.records.contains_key(&self.pack.puzzle(i).id))
+        {
+            self.capacity_notice = true;
+        } else if index.is_some_and(|i| i != self.progress.current)
+            && self.session.as_ref().is_some_and(Session::active)
+        {
             self.leave = Some(target);
         } else {
             self.navigate(cx, target);
@@ -328,7 +416,17 @@ impl Pocket {
         self.leave = None;
         self.clear_selection();
         match target {
-            Leave::Index(i) => self.start(cx, i),
+            Leave::Index(i) => {
+                if self.session.is_none() || self.progress.current != i {
+                    self.start(cx, i);
+                } else {
+                    self.page = Page::Study;
+                }
+            }
+            Leave::Browse(i, filter) => {
+                self.starter_matches = filter.select(&self.pack);
+                self.navigate(cx, Leave::Index(i));
+            }
             Leave::Home => {
                 self.page = Page::Home;
                 self.save(cx);
@@ -402,7 +500,7 @@ impl Pocket {
 }
 impl KoboApp for Pocket {
     fn on_start(&mut self, cx: &mut Context) {
-        cx.store().load(KEY);
+        cx.store().load(self.store_key());
         self.show(cx);
     }
     #[allow(
@@ -410,15 +508,16 @@ impl KoboApp for Pocket {
         reason = "Keep action routing and its modal guards together"
     )]
     fn on_action(&mut self, cx: &mut Context, a: ActionId) {
+        let back = a == ActionId::BACK;
         if !self.ready {
-            if a == action_id("back") {
+            if back {
                 cx.exit();
             }
             return;
         }
         let is = |name: &str| a == action_id(name);
         if self.exit_requested {
-            if is("cancel-exit") || is("back") {
+            if is("cancel-exit") || back {
                 self.exit_requested = false;
             } else if is("save-progress") && self.storage_notice.is_some() && self.writable {
                 self.storage_notice = None;
@@ -429,12 +528,19 @@ impl KoboApp for Pocket {
             self.show(cx);
             return;
         }
+        if self.capacity_notice {
+            if is("dismiss-capacity") || back {
+                self.capacity_notice = false;
+                self.show(cx);
+            }
+            return;
+        }
         if is("storage-open") && self.storage_notice.is_some() {
             self.storage_open = true;
             self.show(cx);
             return;
         }
-        if is("storage-dismiss") || (is("back") && self.storage_open) {
+        if is("storage-dismiss") || (back && self.storage_open) {
             self.storage_open = false;
             self.show(cx);
             return;
@@ -443,14 +549,14 @@ impl KoboApp for Pocket {
             if is("confirm-leave") {
                 let target = self.leave.take().unwrap();
                 self.navigate(cx, target);
-            } else if is("cancel") || is("back") {
+            } else if is("cancel") || back {
                 self.leave = None;
             }
             self.show(cx);
             return;
         }
         if self.promotion.is_some() {
-            if is("cancel") || is("back") {
+            if is("cancel") || back {
                 self.promotion = None;
             } else {
                 for role in ['q', 'r', 'b', 'n'] {
@@ -467,7 +573,7 @@ impl KoboApp for Pocket {
         if is("allow-sleep") && self.storage_notice.is_some() && !self.saving {
             self.storage_waiver = true;
             self.storage_open = false;
-        } else if is("exit") || (is("back") && self.page == Page::Home) {
+        } else if is("exit") || (back && self.page == Page::Home) {
             self.request_exit(cx);
         } else if is("save-progress") {
             self.storage_open = false;
@@ -476,10 +582,32 @@ impl KoboApp for Pocket {
                 self.flush(cx);
             } else {
                 self.ready = false;
-                cx.store().load(KEY);
+                cx.store().load(self.store_key());
             }
-        } else if is("back") || is("home") {
+        } else if self.page == Page::Line {
+            if back {
+                self.page = Page::Study;
+            } else if is("line-prev") {
+                self.line_page = self.line_page.saturating_sub(1);
+            } else if is("line-next")
+                && (self.line_page + 1) * 16
+                    < self
+                        .session
+                        .as_ref()
+                        .expect("line has session")
+                        .puzzle
+                        .solution
+                        .len()
+            {
+                self.line_page += 1;
+            }
+        } else if back && self.page == Page::Browse {
+            self.page = Page::Collections;
+        } else if back || is("home") {
             self.request_leave(cx, Leave::Home);
+        } else if is("browse-starter") && self.page == Page::Collections && self.preview() {
+            self.browser.refresh(&self.pack);
+            self.page = Page::Browse;
         } else if is("collections") {
             self.page = Page::Collections;
         } else if is("settings") {
@@ -491,19 +619,25 @@ impl KoboApp for Pocket {
             self.progress.flipped = !self.progress.flipped;
             self.save(cx);
         } else if is("continue") || is("select-pack") {
-            if self.session.is_some() {
-                self.page = Page::Study;
+            let index = if is("select-pack") && self.progress.current >= self.pack.demo_len() {
+                0
             } else {
-                self.start(cx, self.progress.current);
+                self.progress.current
+            };
+            self.request_leave(cx, Leave::Index(index));
+        } else if self.page == Page::Browse {
+            if let Some(index) = self.browser.action(a, &self.pack) {
+                self.request_leave(cx, Leave::Browse(index, self.browser.filter));
             }
         } else if self.page == Page::Study {
             if is("next") || is("previous") {
-                let i = if is("next") {
-                    (self.progress.current + 1) % self.pack.len()
-                } else {
-                    (self.progress.current + self.pack.len() - 1) % self.pack.len()
-                };
-                self.request_leave(cx, Leave::Index(i));
+                self.request_leave(cx, Leave::Index(self.step_index(is("next"))));
+            } else if is("open-line")
+                && self.progress.current >= self.pack.demo_len()
+                && self.session.as_ref().is_some_and(|s| s.revealed)
+            {
+                self.line_page = 0;
+                self.page = Page::Line;
             } else if is("retry") {
                 let s = self.session.as_mut().unwrap();
                 s.retry();
@@ -547,16 +681,34 @@ impl KoboApp for Pocket {
         }
     }
     fn on_load(&mut self, cx: &mut Context, key: &str, result: StoreResult) {
-        if key != KEY {
+        if key != self.store_key() && !(self.preview() && key == KEY && !self.ready) {
+            return;
+        }
+        if self.preview()
+            && key == PREVIEW_KEY
+            && matches!(&result, StoreResult::Loaded { value: None, .. })
+        {
+            cx.store().load(KEY);
             return;
         }
         if let StoreResult::Loaded { value, .. } = result {
             let restored = value
-                .map(|bytes| Progress::decode(&bytes, &self.pack))
+                .map(|bytes| {
+                    if self.preview() && key == KEY {
+                        Progress::decode(&bytes, &bundled_pack(&[])?)
+                    } else {
+                        Progress::decode(&bytes, &self.pack)
+                    }
+                })
                 .transpose();
             if let Ok(p) = restored {
                 self.progress = p.unwrap_or_else(|| Progress::new(&self.pack));
                 self.session = self.progress.restore(&self.pack).unwrap();
+                self.starter_matches = if self.progress.current >= self.pack.demo_len() {
+                    browse::Filter::default().select(&self.pack)
+                } else {
+                    Vec::new()
+                };
                 self.writable = true;
                 self.storage_notice = None;
             } else {
@@ -583,7 +735,7 @@ impl KoboApp for Pocket {
         self.show(cx);
     }
     fn on_save(&mut self, cx: &mut Context, key: &str, result: StoreResult) {
-        if key != KEY {
+        if key != self.store_key() {
             return;
         }
         self.saving = false;
@@ -608,30 +760,45 @@ impl KoboApp for Pocket {
         self.show(cx);
     }
 }
+fn step(current: usize, len: usize, forward: bool) -> usize {
+    if forward {
+        (current + 1) % len
+    } else {
+        (current + len - 1) % len
+    }
+}
+
 fn main() -> std::process::ExitCode {
     let args: Vec<String> = std::env::args().collect();
-    if args.len() == 5 && args[1] == "--import-trainer" {
-        let result = args[4]
-            .split(',')
-            .map(|s| s.parse::<u32>().map_err(|e| e.to_string()))
-            .collect::<Result<Vec<_>, _>>()
-            .and_then(|ids| {
-                std::fs::File::open(&args[2])
-                    .map_err(|e| e.to_string())
-                    .and_then(pack::read_input)
-                    .and_then(|bytes| import::trainer(&bytes, &ids))
-            })
-            .and_then(|pack| std::fs::write(&args[3], pack).map_err(|e| e.to_string()));
-        return match result {
-            Ok(()) => {
-                println!("Validated private pack written locally; do not commit it.");
-                std::process::ExitCode::SUCCESS
-            }
-            Err(e) => {
-                eprintln!("Import failed: {e}");
-                std::process::ExitCode::FAILURE
-            }
-        };
+    if args.len() == 4 && args[1] == "--build-lichess-index" {
+        return cli_result(
+            std::fs::File::open(&args[2])
+                .map_err(|e| e.to_string())
+                .and_then(|file| index::build(std::io::BufReader::new(file)))
+                .and_then(|bytes| std::fs::write(&args[3], bytes).map_err(|e| e.to_string())),
+        );
+    }
+    if args.len() == 3 && args[1] == "--validate-lichess-index" {
+        use std::io::Read;
+        return cli_result(
+            std::fs::File::open(&args[2])
+                .and_then(|file| {
+                    let mut bytes = Vec::new();
+                    file.take((index::MAX_BYTES + 1) as u64)
+                        .read_to_end(&mut bytes)?;
+                    Ok(bytes)
+                })
+                .map_err(|e| e.to_string())
+                .and_then(|bytes| {
+                    let pack = index::Index::parse(&bytes)?;
+                    let demo = Pack::parse(pack::BUILTIN.to_owned())?;
+                    if (0..demo.len()).any(|i| pack.contains(&demo.puzzle(i).id)) {
+                        return Err("Starter repeats a demo puzzle ID".into());
+                    }
+                    println!("Validated {} indexed CC0 puzzles", pack.len());
+                    Ok(())
+                }),
+        );
     }
     if args.len() == 4 && args[1] == "--import-lichess" {
         let result = std::fs::File::open(&args[2])
@@ -672,14 +839,36 @@ fn main() -> std::process::ExitCode {
         };
     }
     if args.len() > 1 {
-        eprintln!("Usage: polgar-pocket [--validate-pack FILE | --import-lichess INPUT OUTPUT | --import-trainer INPUT OUTPUT IDS]");
+        eprintln!("Usage: polgar-pocket [--validate-pack FILE | --import-lichess INPUT OUTPUT | --build-lichess-index ROWS OUTPUT | --validate-lichess-index FILE]");
         return std::process::ExitCode::FAILURE;
     }
-    let pack = Pack::parse(pack::BUILTIN.to_owned()).expect("bundled pack validated during tests");
+    let pack = match bundled_pack(STARTER) {
+        Ok(pack) => pack,
+        Err(e) => return cli_result(Err(format!("Invalid bundled starter: {e}"))),
+    };
     match kobo_sdk::run("polgar-pocket", Pocket::new(pack)) {
         Ok(()) => std::process::ExitCode::SUCCESS,
         Err(e) => {
             eprintln!("polgar-pocket: {e}");
+            std::process::ExitCode::FAILURE
+        }
+    }
+}
+
+fn bundled_pack(starter: &'static [u8]) -> Result<Pack, String> {
+    let demo = Pack::parse(pack::BUILTIN.to_owned())?;
+    if starter.is_empty() {
+        Ok(demo)
+    } else {
+        demo.with_starter(starter)
+    }
+}
+
+fn cli_result(result: Result<(), String>) -> std::process::ExitCode {
+    match result {
+        Ok(()) => std::process::ExitCode::SUCCESS,
+        Err(error) => {
+            eprintln!("{error}");
             std::process::ExitCode::FAILURE
         }
     }

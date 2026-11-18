@@ -19,9 +19,11 @@ if output == repo or repo in output.parents or Path('/workspace/deps/Cobalt') in
     parser.error('write the review tree outside the app and upstream checkouts')
 app = output/'apps/polgar-pocket'
 app.mkdir(parents=True)
-for name in ['src','packs']:
-    shutil.copytree(repo/name, app/name)
-for name in ['cobalt-app.json','LICENSE','THIRD-PARTY.md']:
+shutil.copytree(repo/'src', app/'src')
+(app/'packs').mkdir()
+for name in ['lichess-20.jsonl', 'lichess-20-source.csv', 'SOURCE.md']:
+    shutil.copy2(repo/'packs'/name, app/'packs'/name)
+for name in ['build.rs','cobalt-app.json','LICENSE','THIRD-PARTY.md']:
     shutil.copy2(repo/name, app/name)
 manifest = json.loads((app/'cobalt-app.json').read_text())
 manifest['minimum_cobalt_version'] = '0.3.37'

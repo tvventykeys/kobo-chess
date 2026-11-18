@@ -13,3 +13,6 @@ __pycache__/
 *.cobaltapp
 packs/*.private.jsonl
 packs/*.local.jsonl
+
+# Host-generated public datasets and preview packs
+packs/*.idx

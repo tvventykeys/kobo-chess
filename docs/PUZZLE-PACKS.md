@@ -1,51 +1,63 @@
-# Pocket pack v1
+# Local Lichess packs
 
-UTF-8 JSON Lines: one header followed by one puzzle object per line. No comments,
-blank records or unknown fields. `packs/lichess-20.jsonl` is the reference.
+Pocket Twenty is the default build. Its v1 JSON Lines pack contains one header
+and twenty records in their established order. Each record starts after the
+opponent's setup move. The app keeps a byte-offset index, validates all moves
+using shakmaty, and accepts the supplied solution line. The existing demo pack
+and its persisted schema are unchanged.
 
-Header fields: `schema_version` (1), `collection_id`, `title`, `source`, `license`.
-Puzzle fields: `id`, `fen`, `side_to_move` (`white` or `black`), `solution` (array
-of standard UCI moves), `explanation`, optional `difficulty`, `tags`, `source_url`.
-The starting FEN is **after** any setup move; solution index zero belongs to the
-solver. Lines alternate solver/opponent and end after a solver move. Castling
-uses king destinations (`e1g1`); promotions include the piece (`a7a8n`).
+## Build the starter preview
 
-Loading verifies standard-chess FEN validity, side, every move through shakmaty,
-odd nonzero line length, unique IDs, version, fields and bounds. v0.2 compares
-against the supplied ordered line, so another legal winning move is reported
-as outside this solution. It does not claim engine verification of alternate wins.
-
-Bounds: 4 MiB per pack, 8 KiB per line, 4,096 puzzles, 63 plies, 48 title
-characters and 180 explanation characters. Bounds reject rather than truncate.
-The initial pack is about 12 KiB. A byte-offset index keeps one decoded puzzle
-in memory at a time; loading validates each record sequentially. Raw bytes of a
-selected pack remain resident. Future library browsing should index files on
-the runtime shelf instead of increasing this bound or importing a whole database.
-
-Host commands, after `source scripts/env.sh` and a locked host build:
+Download a CC0 puzzle snapshot from the [Lichess open database](https://database.lichess.org/#puzzles)
+on a host, then work from the local decompressed CSV. Keep the input stable
+during import and keep generated files outside Git.
 
 ```bash
-"$CARGO_TARGET_DIR/debug/polgar-pocket" --validate-pack packs/lichess-20.jsonl
-python3 scripts/import-lichess-csv.py packs/lichess-20-source.csv /workspace/work/reproduced.jsonl
-"$CARGO_TARGET_DIR/debug/polgar-pocket" --import-lichess /private/selected-rows.json /private/study.jsonl
-"$CARGO_TARGET_DIR/debug/polgar-pocket" --import-trainer /private/book.json /private/selected.jsonl 1,2,3
+source scripts/env.sh
+cargo +1.85.1 build --locked
+zstd -d /path/to/lichess_db_puzzle.csv.zst -o /path/to/lichess_db_puzzle.csv
+python3 scripts/import-lichess-starter.py /path/to/lichess_db_puzzle.csv /path/to/starter.idx
+"$CARGO_TARGET_DIR/debug/polgar-pocket" --validate-lichess-index /path/to/starter.idx
+POCKET_STARTER_PACK=/path/to/starter.idx cargo +1.85.1 build --locked
+POCKET_STARTER_PACK=/path/to/starter.idx KOBO_SIM_PROFILE=libra-colour-390 \
+  KOBO_SIM_OFFLINE=1 "$CARGO_TARGET_DIR/debug/kobo" dev 127.0.0.1:8787
 ```
 
-Lichess imports accept the inspected trainer export shape: an array containing
-`puzzleId`, `fen`, `moves` (space-separated UCI including setup), `rating`,
-`themes` and optional `gameUrl`. Setup is applied exactly once. Collection ID
-is `lichess-tactics`; original puzzle IDs remain unchanged. CSV conversion
-streams only until the requested count, default 20 at ratings 800–1500.
+The default importer requires 5,000 rows per rating band. Use
+`--per-band N` for smaller test packs. The importer selects in input order,
+excludes the demo IDs, then emits entries in ascending ASCII puzzle-ID order.
+The same input bytes and options produce identical output. A malformed selected
+row, illegal move, duplicate selected ID or shortage in any band fails the
+import. Final replacement is atomic on the output filesystem. Provenance
+includes the official source URL, CC0 identifier, SHA-256 of the exact input CSV
+and selection policy. Obtain that CSV from Lichess or a traceable public source.
+The provenance fields describe the input and do not independently authenticate
+it. The build flag embeds the file's contents, so review them before using
+the flag. Build without the variable for the demo and for default submission
+preparation. Neither host command implies a supported Kobo install procedure.
 
-The private trainer importer accepts `bookId`, `bookTitle`, `problems`, and
-problem fields `problemid`, `fen`, `moves` (semicolon-separated `c3-c8` syntax),
-optional `explanation` and `difficulty`. It preserves IDs and FEN, normalizes
-moves to UCI, and additionally requires the line to end in checkmate, matching
-the inspected interactive trainer. IDs are stored as decimal strings; a future
-sync adapter must convert book IDs back to numbers. Missing, repeated, illegal
-or self-assessed problems fail the import. No answer reconstruction is performed.
+Local demo reproduction still uses
+`python3 scripts/import-lichess-csv.py packs/lichess-20-source.csv /path/to/demo.jsonl`.
+The bounded legacy `--import-lichess` JSON converter only supports Lichess rows.
+The public application accepts no book-study or private trainer import format.
 
-Imported private packs belong outside the repository and public artifacts. Book
-ownership does not grant redistribution permission. The v0.2 application bundles
-one selected pack at build time; external shelf installation and a multi-pack
-catalog are future work. The collection screen lists only that functioning pack.
+## PCSIDX01 storage format
+
+All integers are little-endian. The 16-byte prefix contains an 8-byte magic
+(`PCSIDX01`), u32 provenance JSON length and u32 record count. Provenance JSON
+is followed by sorted 12-byte entries. An entry contains the original
+five-byte ASCII ID, u32 exclusive end offset into the payload, u16 rating and
+u8 theme bitset. Bits 0–4 encode mate, fork, pin, endgame and middlegame.
+A payload record is a compact JSON array of original ID, pre-setup FEN, full
+UCI sequence including setup, rating and all theme tags. The original games
+and unused CSV columns are excluded.
+
+At validation, IDs, offsets, sizes, ratings and theme bits must match the
+payload, and every setup move and solver/opponent move must replay legally
+using the app's standard chess rules. Setup is applied once to construct the
+solver's position. Solutions retain Lichess UCI, including underpromotion and
+standard king-destination castling. The preview validates all records on
+startup. It retains the embedded bytes and uses index-only scans for filtering.
+Only the chosen record is decoded into a study session. This format is capped
+at 8 MiB and 20,000 puzzles. See the [roadmap](ROADMAP.md) for progress and
+installation constraints.

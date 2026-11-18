@@ -68,7 +68,7 @@ for path in (repo/'src').glob('*.rs'):
     shutil.copy2(path, app/'src'/path.name)
 for name in ['lichess-20.jsonl', 'lichess-20-source.csv', 'SOURCE.md']:
     shutil.copy2(repo/'packs'/name, app/'packs'/name)
-for name in ['LICENSE', 'THIRD-PARTY.md']:
+for name in ['build.rs', 'LICENSE', 'THIRD-PARTY.md']:
     shutil.copy2(repo/name, app/name)
 manifest['minimum_cobalt_version'] = policy['minimum_cobalt_version']
 (app/'cobalt-app.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2)+'\n')

@@ -1,5 +1,9 @@
 # Cobalt Beta Store submission preparation
 
+This packet records the previous demo-only candidate. The CC0 starter preview has
+its own [roadmap](ROADMAP.md) and [validation](LICHESS-STARTER-VALIDATION.md).
+Refresh the packet before proposing a new upstream submission.
+
 This is a **local, reviewable submission packet**, not an upstream submission or
 Store release. The application stays at version **0.2.0**. The owner must approve
 naming and an upstream PR/publication step separately; no fork was created,

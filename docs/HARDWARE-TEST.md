@@ -63,7 +63,7 @@ The exact stock path, once externally approved and legitimately available, is:
    `app-verify` under a supplied development key does not satisfy this gate.
 2. If the owner separately approves a maintained Cobalt catalog route, launch the
    existing Cobalt entry from NickelMenu using its normal reader handoff. Open
-   **App Store**, find Polgár Trainer Pocket in the approved channel, review its
+   **App Store**, find Pocket Chess Studies in the approved channel, review its
    details and choose Install. If the app is absent, stop; do not switch the whole
    platform to Beta or hand-edit a catalog as a substitute.
 3. Wait for the runtime's successful install acknowledgement and launcher tile.
@@ -85,8 +85,8 @@ After every gate above is satisfied, keep the first session to about five minute
 
 1. Close KOReader, Focus Reader and Zen OS reader views normally and reach the
    confirmed compatible launch state. Do not run competing display owners.
-2. Launch existing Cobalt from its existing NickelMenu entry, then the Polgár
-   Pocket tile. Confirm portrait screen, collection name and no network request.
+2. Launch existing Cobalt from its existing NickelMenu entry, then the Pocket Chess
+   tile. Confirm portrait screen, collection name and no network request.
 3. Open the collection and tap Continue. Check large brown/paper squares, both
    piece colours, side to move, square selection, legal dots and capture outlines.
    Tap a wrong legal move: the position must remain available with feedback.
@@ -128,7 +128,7 @@ After every gate above is satisfied, keep the first session to about five minute
   before exiting. Corrupted progress is preserved and study becomes read-only;
   back it up before an owner-directed repair. Do not automatically delete it.
 * **Uninstall just this app:** in the already working Cobalt App Store, select
-  Polgár Trainer Pocket and its Uninstall action. The runtime removes only the
+  Pocket Chess Studies and its Uninstall action. The runtime removes only the
   app installation; its implementation deliberately preserves separate app state.
   Keep that state/backup until the test is accepted. No reader/menu configuration
   should be removed for an app-only uninstall.

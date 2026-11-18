@@ -29,7 +29,7 @@
   "frame": {
     "colourAppearance": "renderer RGB; physical panel appearance uncalibrated",
     "format": "rgb24",
-    "sha256": "367a4c5396263846312ff568b358521f0e02cfc29d21b7f01092c3c7461513c1",
+    "sha256": "4ed3256086a7e9291a19caa9c32e1775f6f29f685ab67e8b7b36f21dc2c47e88",
     "view": "ideal"
   },
   "interfaceScalePercent": 170,
@@ -64,11 +64,11 @@
     "clock": {
       "date": "2026-11-17",
       "mode": "real",
-      "monotonicMillis": "13665",
-      "unixMillis": "1794941003870",
+      "monotonicMillis": "13055",
+      "unixMillis": "1794960445063",
       "utcOffsetMinutes": -420
     },
-    "dirtyPixelsSinceClean": 2054367,
+    "dirtyPixelsSinceClean": 2048182,
     "hardware": {
       "batteryPercent": 72,
       "charging": false,
@@ -103,14 +103,14 @@
       "contentsKnown": true,
       "dueAtFixtureMillis": null,
       "failures": "0",
-      "finishedAtMillis": "13903",
+      "finishedAtMillis": "13323",
       "fixtureClockMillis": "0",
       "mode": "automatic",
       "queued": false,
       "status": "idle",
       "submissionMarker": null,
       "submitted": "14",
-      "submittedAtMillis": "13642",
+      "submittedAtMillis": "13079",
       "syntheticDelayMillis": "0",
       "timing": "host control observations; not hardware calibration",
       "visibleFrame": "last confirmed completion with approximate residue"
@@ -146,7 +146,7 @@
       }
     },
     "transition": {
-      "dirty": 2054367,
+      "dirty": 2048182,
       "full": false,
       "refresh": 14,
       "region": {
@@ -212,11 +212,11 @@
     }
   },
   "source": {
-    "binarySha256": "cb75e51c25941122237bdfc4a49b99bddacc3f221595228d69d4d2c8549bdce7",
+    "binarySha256": "c80e9380f15cc15dfd2f9c36ea6cdb6e4eb9c0ec00daa1a5d54e9b48fc1626df",
     "dirty": true,
     "fixture": null,
     "requestedSeed": null,
-    "revision": "1cc5b6412c4229b85e9960dd956c3d26c4ffd66e"
+    "revision": "b8da05efa0495a26ec36fa6ead71c4946b65864c"
   },
   "version": 1
 }

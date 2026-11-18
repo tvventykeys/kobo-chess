@@ -97,7 +97,7 @@ impl Pocket {
     )]
     fn screen(&self) -> Screen {
         let mut b = ScreenBuilder::new("polgar-pocket")
-            .top_bar("Polgár Pocket")
+            .top_bar("Pocket Chess")
             .owns_back(true);
         if !self.ready {
             return b.heading("Opening your study book…").build();
@@ -131,7 +131,7 @@ impl Pocket {
                     .filter(|r| r.clean_solves > 0)
                     .count();
                 b = b
-                    .heading("Polgár Trainer Pocket")
+                    .heading("Pocket Chess Studies")
                     .secondary("A quiet chess puzzle book. Entirely offline.")
                     .section("Your collection")
                     .button("collections", &self.pack.header.title)

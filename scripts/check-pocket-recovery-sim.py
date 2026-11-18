@@ -83,7 +83,11 @@ for scale in ['default', '170']:
             # Depending on the final response race, the upstream driver either
             # acknowledges the tap or reports disconnection. Accept only those
             # outcomes, followed by an independently observed clean CLI exit.
-            assert result.returncode == 0 or (result.returncode == 1 and 'the app disconnected while handling the tap' in result.stderr)
+            assert result.returncode == 0 or (result.returncode == 1 and any(
+                message in result.stderr for message in [
+                    'the app disconnected while handling the tap',
+                    'tap-id exit: read the answer to GET /activity: Connection reset by peer',
+                ]))
             # A normal successful app exit must be observed, not assumed from a tap.
             deadline = time.monotonic()+10
             while proc.poll() is None and time.monotonic()<deadline:
